@@ -1,0 +1,68 @@
+/* NX = not expanded */
+
+.side-nav-container {
+	position: relative;
+	width: 250px;
+	height: 100vh;
+	transition: width .3s ease-in-out;
+}
+
+.side-nav-container-NX {
+	width: 4.6rem;
+}
+
+.nav-heading {
+	border-bottom: 1px solid #4b545c;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 77px;
+}
+
+.user-panel {
+	border-bottom: 1px solid #4f5962;
+}
+
+.sidebar-toggle-btn {
+	margin: auto;
+	padding: 0.5rem 1rem;
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, .8);
+}
+
+.sidebar-toggle-btn:hover {
+	background-color: rgba(255, 255, 255, .1);
+	color: #fff;
+}
+
+.menu-item {
+	display: flex;
+	cursor: pointer;
+	text-decoration: none;
+	border-radius: 0.25rem;
+}
+
+.menu-item-NX {
+	margin: auto;
+}
+
+.menu-item .nav-link,
+.info-text {
+	color: #001c4e;
+}
+
+.info-text {
+	color: rgba(225, 225, 225, 0.9);
+	vertical-align: middle;
+}
+
+.menu-item:hover {
+	background-color: rgba(255, 255, 255, .1);
+}
+
+.menu-item:hover .nav-link,
+.menu-item:hover .nav-link:hover,
+.info-text:hover {
+	color: #fff;
+}

@@ -1,0 +1,198 @@
+/* @import 'bootstrap/dist/css/bootstrap.min.css'; */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  transition: margin-left .3s ease-in-out, width .3s ease-in-out !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#msg-container {
+  text-align: center;
+}
+
+button.thumbnail {
+  padding: 0;
+}
+
+/* ----------- Map Styling ------------- */
+.full-box {
+  height: 50vh;
+  max-width: initial;
+}
+
+.map-input-box {
+  box-sizing: border-box;
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  margin: 0.5rem auto;
+  width: 25rem;
+  height: 3rem;
+  display: flex;
+}
+
+.map-input-box input {
+  border-radius: 10px 0 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-right: 0;
+  padding: 0.5rem;
+}
+
+.map-input-box input:focus-visible {
+  outline: none;
+}
+
+.map-input-box button {
+  border-radius: 0 10px 10px 0;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-left: 0;
+}
+.p-bold {
+  margin: 1rem;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+/* --------------------- */
+.main-footer {
+  text-align: center;
+  margin-left: 0 !important;
+}
+
+.on,
+.green {
+  font-size: 2em;
+  color: rgba(0, 128, 0, 0.836);
+  transform: all 0.5s;
+}
+
+.off,
+.red {
+  font-size: 2em;
+  color: rgba(226, 86, 43, 0.747);
+  transform: all 0.5s;
+}
+
+.red {
+  font-size: 1.2em;
+}
+
+.header {
+  border-bottom: 1px solid #dee2e6;
+  z-index: 1034;
+  background: rgb(15, 145, 122);
+  background: linear-gradient(120deg, rgba(15, 145, 122, 1) 0%, rgba(131, 227, 124, 1) 75%);
+}
+
+.header-link {
+  color: rgba(255, 255, 255, .8) !important;
+}
+
+.header-link:hover {
+  background-color: rgba(255, 255, 255, .1);
+  color: #fff !important;
+}
+
+.td-img {
+  transition: all 0.5s !important;
+}
+
+.td-img:hover {
+  transform: scale(3);
+  transition: all 0.5s !important;
+}
+
+.open-model {
+  font-size: 2em;
+  color: blue;
+  cursor: pointer;
+}
+
+.card-header-primary {
+  background-color: #02a97b5e;
+}
+
+.card-tools>i.fa {
+  cursor: pointer;
+}
+
+.navbar-nav a.right-profile-logo {
+  color: #001c4e !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-profile-logo>img {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+/* ------------------- */
+.main-wrapper {
+  display: flex;
+  min-height: 100%;
+}
+
+.body-wrapper {
+  flex: 1;
+  transition: width .3s ease-in-out;
+}
+
+.sidebar-wrapper {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22) !important;
+  background: linear-gradient(rgba(15, 145, 122, 1) 0%, rgba(131, 227, 124, 1) 75%);
+  z-index: 1038;
+  /* overflow-y: hidden; */
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  transition: width .3s ease-in-out;
+}
+
+.wrapper {
+  padding: 0 1rem;
+}
+
+.brand-link {
+  width: auto !important;
+  color: rgba(255, 255, 255, .8)
+}
+
+/* --------- Not required ----------- */
+/*
+#small-container {
+  width: 800px;
+}
+
+.full-box header,
+.full-box footer {
+  display: none;
+}
+
+.full-box .container {
+  height: 100vh;
+  max-width: initial;
+  margin: 0;
+  padding: 0;
+}
+
+.full-box .mt-3 {
+  margin-top: 0 !important;
+}
+
+*/
