@@ -14,7 +14,6 @@
 .nav-heading {
 	border-bottom: 1px solid #4b545c;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	height: 77px;
 }
@@ -24,7 +23,6 @@
 }
 
 .sidebar-toggle-btn {
-	margin: auto;
 	padding: 0.5rem 1rem;
 	background: transparent;
 	border: none;
@@ -47,6 +45,10 @@
 	margin: auto;
 }
 
+.menu-item .nav-link {
+	width: 100%;
+}
+
 .menu-item .nav-link,
 .info-text {
 	color: #001c4e;
@@ -57,11 +59,15 @@
 	vertical-align: middle;
 }
 
+.menu-item.active-item {
+	background-color: rgba(255, 255, 255, .3);
+}
 .menu-item:hover {
 	background-color: rgba(255, 255, 255, .1);
 }
-
+ 
 .menu-item:hover .nav-link,
+.menu-item.active-item .nav-link,
 .menu-item:hover .nav-link:hover,
 .info-text:hover {
 	color: #fff;

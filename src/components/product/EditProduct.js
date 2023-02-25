@@ -13,11 +13,7 @@ const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        categories: action.payload.categories,
-      };
+      return { ...state, loading: false };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     case "UPDATE_REQUEST":
@@ -32,24 +28,34 @@ const reducer = (state, action) => {
   }
 };
 
-export default function EditSubCategoryModel(props) {
+function getAllSubCategory(subCategories, categoryId) {
+  if (!categoryId) return [];
+
+  const subCategoryList = subCategories.filter((subCat) => {
+    return subCat.category._id === categoryId;
+  });
+  return subCategoryList;
+}
+
+export default function EditProductModel(props) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // category/:id
+  const { id } = useParams(); // product/:id
 
-  const [{ loading, error, loadingUpdate, categories }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-    }
-  );
+  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [product_images, setProductImage] = useState("");
   const [category, setCategory] = useState("");
-  const [sub_category_image, setSubCategoryImage] = useState("");
+  const [sub_category, setSubCategory] = useState("");
   const [preview, setPreview] = useState("");
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -69,7 +75,7 @@ export default function EditSubCategoryModel(props) {
           throw location.error;
         }
 
-        setSubCategoryImage("location");
+        setProductImage("location");
         setTimeout(() => {
           setUploadPercentage(0);
         }, 1000);
@@ -86,25 +92,37 @@ export default function EditSubCategoryModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res = await axios.get("http://localhost:5000/api/category/all", {
+        const res1 = await axios.get("http://localhost:5000/api/category/all", {
           headers: { Authorization: token },
         });
 
+        const res2 = await axios.get(
+          "http://localhost:5000/api/subCategory/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
+
         const { data } = await axios.get(
-          `http://localhost:5000/api/subCategory/${id}`,
+          `http://localhost:5000/api/product/${id}`,
           {
             headers: { Authorization: token },
           }
         );
         console.log(data);
 
-        const subCategory = data.subCategory;
-        setName(subCategory.name);
-        setDescription(subCategory.description);
-        setCategory(subCategory.category);
-        setSubCategoryImage(subCategory.sub_category_image);
-        setPreview(subCategory.sub_category_image);
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        const product = data.product;
+        console.log("product", product);
+        setName(product.name);
+        setDescription(product.description);
+        setAmount(product.amount);
+        setCategory(product.category);
+        setSubCategory(product.sub_category);
+        setProductImage(product.product_images);
+        setPreview(category.product_images);
+        setCategories(res1.data.categories);
+        setSubCategories(res2.data.subCategories);
+        dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -124,12 +142,14 @@ export default function EditSubCategoryModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/subCategory/${id}`,
+        `http://localhost:5000/api/admin/product/${id}`,
         {
           name,
           description,
-          sub_category_image,
+          amount,
+          product_images,
           category,
+          sub_category,
         },
         {
           headers: {
@@ -138,14 +158,14 @@ export default function EditSubCategoryModel(props) {
         }
       );
 
-      console.log("category update data", data);
-      if (data.subCategory) {
+      console.log("product update data", data);
+      if (data.product) {
         dispatch({ type: "UPDATE_SUCCESS" });
-        toast.success("Sub Category Updated Succesfully.  Redirecting...", {
+        toast.success("Product Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
-          navigate("/admin/sub-category");
+          navigate("/admin/products");
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -160,6 +180,11 @@ export default function EditSubCategoryModel(props) {
     }
   };
 
+  console.log("category", category, sub_category);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openSubCategory, setOpenSubCategory] = useState(false);
+  const selectCategoryHandler = () => setOpenCategory(!openCategory);
+  const selectSubCategoryHandler = () => setOpenSubCategory(!openSubCategory);
   return (
     <Modal
       {...props}
@@ -169,7 +194,7 @@ export default function EditSubCategoryModel(props) {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          Edit Sub Category
+          Edit Product
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -185,6 +210,7 @@ export default function EditSubCategoryModel(props) {
                 required
               />
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -193,22 +219,63 @@ export default function EditSubCategoryModel(props) {
                 required
               />
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="amount">
+              <Form.Label>Amount</Form.Label>
+              <Form.Control
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label className="mr-3">Category</Form.Label>
               <Form.Select
                 aria-label="Select Category"
+                value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                onClick={selectCategoryHandler}
               >
-                <option value={category._id}>{category.name}</option>
+                <option>
+                  {openCategory ? "Select Category" : `${category.name}`}
+                </option>
                 {categories &&
                   categories.map((cat) => (
-                    <option key={cat.name} value={cat._id}>
+                    <option key={cat._id} value={cat._id}>
                       {cat.name}
                     </option>
                   ))}
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="sub_category_image">
+
+            {category && (
+              <Form.Group className="mb-3">
+                <Form.Label className="mr-3">Sub Category</Form.Label>
+                <Form.Select
+                  aria-label="Select Sub Category"
+                  value={sub_category}
+                  onChange={(e) => setSubCategory(e.target.value)}
+                  onClick={selectSubCategoryHandler}
+                >
+                  <option>
+                    {openSubCategory
+                      ? "Select Sub Category"
+                      : `${sub_category.name}`}
+                  </option>
+
+                  {subCategories &&
+                    category &&
+                    getAllSubCategory(subCategories, category).map((subCat) => (
+                      <option key={subCat._id} value={subCat._id}>
+                        {subCat.name}
+                      </option>
+                    ))}
+                </Form.Select>
+              </Form.Group>
+            )}
+
+            <Form.Group className="mb-3" controlId="product_image">
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 type="file"

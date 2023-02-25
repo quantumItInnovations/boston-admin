@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -158,24 +159,24 @@ export default function Category() {
                   </div>
 
                   <div className="card-body">
-                    <table
+                    <Table
                       id="example1"
                       className="table table-bordered table-striped"
                     >
-                      <thead>
-                        <tr>
-                          <th>S.No</th>
-                          <th>Image</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                      <Thead>
+                        <Tr>
+                          <Th>S.No</Th>
+                          <Th>Image</Th>
+                          <Th>Name</Th>
+                          <Th>Description</Th>
+                          <Th>Actions</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
                         {categories.slice(a, a + 5).map((category, i) => (
-                          <tr key={category._id} className="odd">
-                            <td>{i + 1}</td>
-                            <td>
+                          <Tr key={category._id} className="odd">
+                            <Td>{i + 1}</Td>
+                            <Td>
                             <img
                               className="td-img"
                               src={category.category_image}
@@ -186,12 +187,12 @@ export default function Category() {
                                 borderRadius: "50%",
                               }}
                             />
-                            </td>
-                            <td className="dtr-control sorting_1" tabIndex={0}>
+                            </Td>
+                            <Td className="dtr-control sorting_1" tabIndex={0}>
                               {category.name}
-                            </td>
-                            <td>{category.description}</td>
-                            <td>
+                            </Td>
+                            <Td>{category.description}</Td>
+                            <Td>
                               <Button
                                 onClick={() => {
                                   navigate(`/admin/view/category/${category._id}`);
@@ -210,17 +211,17 @@ export default function Category() {
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </Button>
-                            </td>
-                          </tr>
+                            </Td>
+                          </Tr>
                         ))}
-                      </tbody>
-                    </table>
+                      </Tbody>
+                    </Table>
 
                     <div className="mt-3 float-right">
                       <div className="dataTables_paginate paging_simple_numbers">
                         <ul className="pagination">
                           {[...Array(pages).keys()].map((x) => (
-                            <div>
+                            <div key={x}>
                               <Link
                                 className={
                                   x + 1 === Number(page)

@@ -26,6 +26,16 @@ const reducer = (state, action) => {
   }
 };
 
+function getAllSubCategory(subCategories, categoryId) {
+  if (!categoryId)
+      return [];
+  
+  const subCategoryList = subCategories.filter((subCat) => {
+      return subCat.category._id === categoryId;
+  });
+  return subCategoryList;
+}
+
 export default function AddProduct() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
@@ -158,7 +168,7 @@ export default function AddProduct() {
       }
     };
     fetchData();
-  }, [token]);
+  }, [token, category]);
 
   return (
     <div className="wrapper">
@@ -218,40 +228,36 @@ export default function AddProduct() {
                       <Form.Label className="mr-3">Category</Form.Label>
                       <Form.Select
                         aria-label="Select Category"
+                        value={category}
                         onChange={(e) => setCategory(e.target.value)}
                       >
                         <option>Select Category</option>
-                        {/* {console.log("dfsdf", categories)} */}
-
                         {categories &&
                           categories.map((cat) => (
-                            <option key={cat.name} value={cat._id}>
+                            <option key={cat._id} value={cat._id}>
                               {cat.name}
                             </option>
                           ))}
                       </Form.Select>
                     </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label className="mr-3">Sub Category</Form.Label>
-                      <Form.Select
-                        aria-label="Select Sub Category"
-                        onChange={(e) => setSubCategory(e.target.value)}
-                      >
-                        <option>Select Sub Category</option>
-                        {subCategories &&
-                          subCategories.map((subCat) =>
-                            subCat.category._id === category ? (
-                              <option key={subCat.name} value={subCat._id}>
+                    {category && (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mr-3">Sub Category</Form.Label>
+                        <Form.Select
+                          aria-label="Select Sub Category"
+                          value={sub_category}
+                          onChange={(e) => setSubCategory(e.target.value)}
+                        >
+                          <option>Select Sub Category</option>
+                          {subCategories && category && getAllSubCategory(subCategories, category).map((subCat) => (
+                              <option key={subCat._id} value={subCat._id}>
                                 {subCat.name}
                               </option>
-                            ) : (
-                              <></>
-                            )
-                          )}
-                      </Form.Select>
-                    </Form.Group>
-
+                            ))}
+                        </Form.Select>
+                      </Form.Group>
+                    )}
                     <Form.Group className="mb-3" controlId="product_image">
                       <Form.Label>Upload Image</Form.Label>
                       <Form.Control

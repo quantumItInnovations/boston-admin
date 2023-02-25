@@ -4,15 +4,7 @@ import { getError } from "../../utils";
 import { uploadImage } from "../../uploadImage";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import {
-  Modal,
-  Form,
-  Button,
-  Container,
-  Col,
-  Row,
-  ProgressBar,
-} from "react-bootstrap";
+import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
 import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
 
@@ -36,50 +28,23 @@ const reducer = (state, action) => {
   }
 };
 
-export default function EditCategoryModel(props) {
+export default function EditUserModel(props) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // category/:id
+  const { id } = useParams(); // user/:id
 
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category_image, setCategoryImage] = useState("");
-  const [preview, setPreview] = useState("");
-
-  const [uploadPercentage, setUploadPercentage] = useState(0);
-  const uploadPercentageHandler = (per) => {
-    setUploadPercentage(per);
-  };
-
-  const uploadFileHandler = async (e, type) => {
-    try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setCategoryImage("location");
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
-      }
-    } catch (error) {
-      toast.error(error, {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-    }
-  };
+  const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [fax, setFax] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,18 +52,21 @@ export default function EditCategoryModel(props) {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/category/${id}`,
+          `http://localhost:5000/api/admin/user/${id}`,
           {
             headers: { Authorization: token },
           }
         );
         console.log(data);
 
-        const category = data.category;
-        setName(category.name);
-        setDescription(category.description);
-        setCategoryImage(category.category_image);
-        setPreview(category.category_image);
+        const user = data.user;
+        // setPassword(user.password);
+        setFirstname(user.firstname);
+        setLastname(user.lastname);
+        setTelephone(user.telephone);
+        setFax(user.fax);
+        setRole(user.role);
+
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
@@ -118,12 +86,16 @@ export default function EditCategoryModel(props) {
 
     try {
       dispatch({ type: "UPDATE_REQUEST" });
+
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/category/${id}`,
+        `http://localhost:5000/api/admin/user/${id}`,
         {
-          name,
-          description,
-          category_image,
+          firstname,
+          lastname,
+          telephone,
+          fax,
+          role,
+        //   password,
         },
         {
           headers: {
@@ -132,14 +104,14 @@ export default function EditCategoryModel(props) {
         }
       );
 
-      console.log("category update data", data);
-      if (data.category) {
+      console.log("user update data", data);
+      if (data.user) {
         dispatch({ type: "UPDATE_SUCCESS" });
-        toast.success("Category Updated Succesfully.  Redirecting...", {
+        toast.success("User Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
-          navigate("/admin/category");
+          navigate("/admin/users");
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -162,47 +134,65 @@ export default function EditCategoryModel(props) {
       centered
     >
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">Edit Category</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Edit User</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container className="small-container">
-          <img src={preview} width={200} height={200}></img>
 
           <Form>
-            <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Name</Form.Label>
+            {/* <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Password</Form.Label>
               <Form.Control
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group> */}
+
+
+            <Form.Group className="mb-3" controlId="firstname">
+              <Form.Label>Firstname</Form.Label>
+              <Form.Control
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                required
+              />
+            </Form.Group>
+            
+            <Form.Group className="mb-3" controlId="lastname">
+              <Form.Label>Lastname</Form.Label>
+              <Form.Control
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
                 required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="description">
-              <Form.Label>Description</Form.Label>
+            <Form.Group className="mb-3" controlId="telephone">
+              <Form.Label>Telephone</Form.Label>
               <Form.Control
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+                required
+              />
+            </Form.Group>
+            
+            <Form.Group className="mb-3" controlId="fax">
+              <Form.Label>Fax</Form.Label>
+              <Form.Control
+                value={fax}
+                onChange={(e) => setFax(e.target.value)}
                 required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="product_image">
-              <Form.Label>Upload Image</Form.Label>
+            <Form.Group className="mb-3" controlId="role">
+              <Form.Label>Role</Form.Label>
               <Form.Control
-                type="file"
-                accept="image/png, image/jpeg image/jpg"
-                onChange={(e) => {
-                  uploadFileHandler(e);
-                }}
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
               />
-              {uploadPercentage > 0 && (
-                <ProgressBar
-                  now={uploadPercentage}
-                  active
-                  label={`${uploadPercentage}%`}
-                />
-              )}
             </Form.Group>
           </Form>
           <ToastContainer />

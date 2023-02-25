@@ -6,5 +6,5 @@ import { Store } from '../../Store';
 export default function AdminProtectedRoute({ children }) {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  return userInfo ? (userInfo.role === "admin"?(children):<MessageBox variant={"danger"}>Restricted</MessageBox>) : <Navigate to="/admin/login" />;
+  return userInfo ? (userInfo.role === "admin"?(children):<MessageBox variant={"danger"}>Restricted</MessageBox>) : <Navigate to="//" />;
 }

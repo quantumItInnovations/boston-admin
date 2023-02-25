@@ -18,12 +18,14 @@ import AddSubCategory from "./components/subCategory/AddSubCategory.js";
 import ViewSubCategory from "./components/subCategory/ViewSubCategory.js";
 
 import Products from "./components/product/Products.js";
-import AddProduct from "./components/product/AddProducts.js";
+import AddProduct from "./components/product/AddProduct.js";
+import ViewProduct from "./components/product/ViewProduct.js";
 
 import Users from "./components/user/Users.js";
+import ViewUser from "./components/user/ViewUser.js";
 
 import AdminLoginScreen from "./components/AdminLoginScreen";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/layout/Dashboard";
 
 const Children = ({ child }) => (
   <AdminProtectedRoute>{child}</AdminProtectedRoute>
@@ -57,6 +59,11 @@ function App() {
                 element={<Children child={<Users />} />}
               />
               <Route
+                path="/admin/view/user/:id"
+                element={<Children child={<ViewUser />} />}
+              />
+
+              <Route
                 path="/admin/category"
                 element={<Children child={<Category />} />}
               />
@@ -85,6 +92,14 @@ function App() {
               <Route
                 path="/admin/products"
                 element={<Children child={<Products />} />}
+              />
+              <Route
+                path="/admin/product/create"
+                element={<Children child={<AddProduct />} />}
+              />
+              <Route
+                path="/admin/view/product/:id"
+                element={<Children child={<ViewProduct />} />}
               />
 
               <Route
