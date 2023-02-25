@@ -13,7 +13,7 @@ const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, category: action.payload.category };
+      return { ...state, loading: false, subCategory: action.payload.subCategory };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
 
@@ -22,13 +22,13 @@ const reducer = (state, action) => {
   }
 };
 
-const ViewCategory = () => {
+const ViewSubCategory = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // category/:id
+  const { id } = useParams(); // subCategory/:id
 
   const [modalShow, setModalShow] = useState(false);
-  const [{ loading, error, category }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, subCategory }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -39,7 +39,7 @@ const ViewCategory = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/category/${id}`,
+          `http://localhost:5000/api/subCategory/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -78,7 +78,7 @@ const ViewCategory = () => {
             <div className="container-fluid">
               <div className="card card-primary card-outline">
                 <div className="card-header">
-                  <h3 className="card-title">{category.name} Details</h3>
+                  <h3 className="card-title">{subCategory.name} Details</h3>
                   <div className="card-tools">
                     <i
                       className="fa fa-edit"
@@ -100,7 +100,7 @@ const ViewCategory = () => {
                             <div className="col-md-4">
                               <div className="form-group">
                                 <img
-                                  src={category.category_image}
+                                  src={subCategory.sub_category_image}
                                   alt=""
                                   width={"200px"}
                                   height={"200px"}
@@ -116,7 +116,7 @@ const ViewCategory = () => {
                                     <p className="mb-0">
                                       <label>Name</label>
                                     </p>
-                                    <p>{category.name}</p>
+                                    <p>{subCategory.name}</p>
                                   </div>
                                 </div>
 
@@ -125,7 +125,16 @@ const ViewCategory = () => {
                                     <p className="mb-0">
                                       <label>Description</label>
                                     </p>
-                                    <p>{category.description}</p>
+                                    <p>{subCategory.description}</p>
+                                  </div>
+                                </div>
+
+                                <div className="col-md-4">
+                                  <div className="form-group">
+                                    <p className="mb-0">
+                                      <label>Category</label>
+                                    </p>
+                                    <p>{subCategory.category.name}</p>
                                   </div>
                                 </div>
 
@@ -134,7 +143,7 @@ const ViewCategory = () => {
                                     <p className="mb-0">
                                       <label>Created At</label>
                                     </p>
-                                    <p>{getDateTime(category.createdAt)}</p>
+                                    <p>{getDateTime(subCategory.createdAt)}</p>
                                   </div>
                                 </div>
 
@@ -143,7 +152,7 @@ const ViewCategory = () => {
                                     <p className="mb-0">
                                       <label>Last Update</label>
                                     </p>
-                                    <p>{getDateTime(category.updatedAt)}</p>
+                                    <p>{getDateTime(subCategory.updatedAt)}</p>
                                   </div>
                                 </div>
                               </div>
@@ -178,4 +187,4 @@ const ViewCategory = () => {
   );
 };
 
-export default ViewCategory;
+export default ViewSubCategory;

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -23,19 +24,13 @@ const reducer = (state, action) => {
       };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-      case "UPDATE_REQUEST":
-      return { ...state, loadingUpdate: true };
-    case "UPDATE_SUCCESS":
-      return { ...state, loadingUpdate: false };
-    case "UPDATE_FAIL":
-      return { ...state, loadingUpdate: false };
 
     default:
       return state;
   }
 };
 
-export default function UserTableScreen() {
+export default function Users() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
@@ -47,10 +42,9 @@ export default function UserTableScreen() {
 
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState(false);
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, loadingUpdate, users, pages }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, users, pages }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -58,7 +52,7 @@ export default function UserTableScreen() {
   const deleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?") === true) {
       try {
-        dispatch({ type: "UPDATE_REQUEST" });
+        setDel(true);
         const res = await axios.delete(
           `http://localhost:5000/api/admin/user/${id}`,
 
@@ -66,9 +60,8 @@ export default function UserTableScreen() {
             headers: { Authorization: token },
           }
         );
-        dispatch({ type: "UPDATE_SUCCESS" });
+        setDel(false);
       } catch (error) {
-        dispatch({ type: "UPDATE_FAIL" });
         toast.error(getError(error), {
           position: toast.POSITION.BOTTOM_CENTER,
         });
@@ -99,7 +92,7 @@ export default function UserTableScreen() {
               headers: { Authorization: token },
             }
           );
-
+            console.log(res.data)
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         }
       } catch (error) {
@@ -113,33 +106,12 @@ export default function UserTableScreen() {
       }
     };
     fetchData();
-  }, [page, token, del, query, loadingUpdate]);
+  }, [page, token, del, query]);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };
-  
-  const paymentStatusHandler = async (id, pay_sts) => {
-    try {
-        dispatch({type: "UPDATE_REQUEST"});
-      const res = await axios.post(
-        "http://localhost:5000/api/user/paymentStatus",
-        { id: id, payment: pay_sts},
-        {
-          headers: { Authorization: token },
-        }
-      );
-      console.log(res);
-      //if(res.data.data)
-        dispatch({type: "UPDATE_SUCCESS"});
-    } catch (error) {
-      dispatch({type: "UPDATE_FAIL"});
-      toast.error(getError(error), {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-    }
-  }
 
   return (
     <div className="wrapper">
@@ -183,32 +155,32 @@ export default function UserTableScreen() {
                 </div>
 
                 <div className="card-body" style={{overflowX: "auto"}}>
-                  <table
+                  <Table
                     id="example1"
                     className="table table-bordered table-striped"
                     style={{ overflowX: "auto" }}
                   >
-                    <thead>
-                      <tr>
-                        <th>S.No</th>
-                        {/* <th>Image</th> */}
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Reg. Date</th>
-                        {/* <th>DOB</th> */}
-                        {/* <th>Sex</th> */}
-                        <th>Phone</th>
-                        <th>Fax</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                    <Thead>
+                      <Tr>
+                        <Th>S.No</Th>
+                        {/* <Th>Image</Th> */}
+                        <Th>Firstname</Th>
+                        <Th>Lastname</Th>
+                        <Th>Email</Th>
+                        <Th>Reg. Date</Th>
+                        {/* <Th>DOB</Th> */}
+                        {/* <Th>Sex</Th> */}
+                        <Th>Telephone</Th>
+                        <Th>Fax</Th>
+                        <Th>Role</Th>
+                        <Th>Actions</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
                       {users.slice(a, a + 15).map((user, i) => (
-                        <tr key={user._id} className="odd">
-                          <td>{i + 1}</td>
-                          {/* <td>
+                        <Tr key={user._id} className="odd">
+                          <Td>{i + 1}</Td>
+                          {/* <Td>
                             <img
                               className="td-img"
                               src={user.profile_image}
@@ -219,16 +191,16 @@ export default function UserTableScreen() {
                                 borderRadius: "50%",
                               }}
                             />
-                          </td> */}
-                          <td>{user.firstname}</td>
-                          <td>{user.lastname}</td>
-                          <td>{user.email}</td>
-                          <td>{getDateTime(user.createdAt&&user.createdAt)}</td>
-                          {/* <td>{user.dob}</td> */}
-                          {/* <td>{user.sex}</td> */}
-                          <td>{user.phone}</td>
-                          <td>{user.fax}</td>
-                          {/* <td>
+                          </Td> */}
+                          <Td>{user.firstname}</Td>
+                          <Td>{user.lastname}</Td>
+                          <Td>{user.email}</Td>
+                          <Td>{getDateTime(user.createdAt&&user.createdAt)}</Td>
+                          {/* <Td>{user.dob}</Td> */}
+                          {/* <Td>{user.sex}</Td> */}
+                          <Td>{user.telephone}</Td>
+                          <Td>{user.fax}</Td>
+                          {/* <Td>
                             {user.payment_status == 1 ? (
                               <MdToggleOn
                                 className="on"
@@ -250,9 +222,9 @@ export default function UserTableScreen() {
                                 }
                               />
                             )}
-                          </td> */}
-                          <td>{user.role}</td>
-                          <td>
+                          </Td> */}
+                          <Td>{user.role}</Td>
+                          <Td>
                             <Button
                               onClick={() => {
                                 navigate(`/admin/view/user/${user._id}`);
@@ -271,17 +243,17 @@ export default function UserTableScreen() {
                             >
                               <i className="fas fa-trash-alt"></i>
                             </Button>
-                          </td>
-                        </tr>
+                          </Td>
+                        </Tr>
                       ))}
-                    </tbody>
-                  </table>
+                    </Tbody>
+                  </Table>
 
                   <div className="mt-3 float-right">
                     <div className="dataTables_paginate paging_simple_numbers">
                       <ul className="pagination">
                         {[...Array(pages).keys()].map((x) => (
-                          <div>
+                          <div key={x}>
                             <Link
                               className={
                                 x + 1 === Number(page)

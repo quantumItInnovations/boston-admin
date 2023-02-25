@@ -6,5 +6,5 @@ import { Store } from '../Store';
 export default function ShopProtectedRoute({ children }) {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  return userInfo ? (userInfo.account_type==="shop"?(children):<MessageBox variant={"danger"}>Restricted</MessageBox>) : <Navigate to="/admin/login" />;
+  return userInfo ? (userInfo.account_type==="shop"?(children):<MessageBox variant={"danger"}>Restricted</MessageBox>) : <Navigate to="//" />;
 }

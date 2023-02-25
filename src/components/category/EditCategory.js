@@ -162,7 +162,7 @@ export default function EditCategoryModel(props) {
       centered
     >
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">Edit User</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Edit Category</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container className="small-container">

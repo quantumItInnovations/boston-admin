@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -48,8 +49,8 @@ export default function Products() {
     error: "",
   });
 
-  const deleteSubCategory = async (id) => {
-    if (window.confirm("Are you sure you want to delete this sub-category?") === true) {
+  const deleteProduct = async (id) => {
+    if (window.confirm("Are you sure you want to delete this product?") === true) {
       try {
         setDel(true);
         const res = await axios.delete(
@@ -158,27 +159,27 @@ export default function Products() {
                   </div>
 
                   <div className="card-body">
-                    <table
+                    <Table
                       id="example1"
                       className="table table-bordered table-striped"
                     >
-                      <thead>
-                        <tr>
-                          <th>S.No</th>
-                          <th>Image</th>
-                          <th>Name</th>
-                          <th>Category</th>
-                          <th>SubCategory</th>
-                          <th>Amount</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                      <Thead>
+                        <Tr>
+                          <Th>S.No</Th>
+                          <Th>Image</Th>
+                          <Th>Name</Th>
+                          <Th>Category</Th>
+                          <Th>SubCategory</Th>
+                          <Th>Amount</Th>
+                          <Th>Description</Th>
+                          <Th>Actions</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
                         {products.slice(a, a + 5).map((product, i) => (
-                          <tr key={product._id} className="odd">
-                            <td>{i + 1}</td>
-                            <td>
+                          <Tr key={product._id} className="odd">
+                            <Td>{i + 1}</Td>
+                            <Td>
                             <img
                               className="td-img"
                               src={product.product_images[0]}
@@ -189,15 +190,15 @@ export default function Products() {
                                 borderRadius: "50%",
                               }}
                             />
-                            </td>
-                            <td className="dtr-control sorting_1" tabIndex={0}>
+                            </Td>
+                            <Td className="dtr-control sorting_1" tabIndex={0}>
                               {product.name}
-                            </td>
-                            <td>{product.category.name}</td>
-                            <td>{product.sub_category.name}</td>
-                            <td>{product.amount}</td>
-                            <td>{product.description}</td>
-                            <td>
+                            </Td>
+                            <Td>{product.category.name}</Td>
+                            <Td>{product.sub_category.name}</Td>
+                            <Td>{product.amount}</Td>
+                            <Td>{product.description}</Td>
+                            <Td>
                               <Button
                                 onClick={() => {
                                   navigate(`/admin/view/product/${product._id}`);
@@ -209,24 +210,24 @@ export default function Products() {
                               </Button>
                               <Button
                                 onClick={() => {
-                                  deleteSubCategory(product._id);
+                                  deleteProduct(product._id);
                                 }}
                                 type="danger"
                                 className="btn btn-danger btn-block"
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </Button>
-                            </td>
-                          </tr>
+                            </Td>
+                          </Tr>
                         ))}
-                      </tbody>
-                    </table>
+                      </Tbody>
+                    </Table>
 
                     <div className="mt-3 float-right">
                       <div className="dataTables_paginate paging_simple_numbers">
                         <ul className="pagination">
                           {[...Array(pages).keys()].map((x) => (
-                            <div>
+                            <div key={x}>
                               <Link
                                 className={
                                   x + 1 === Number(page)
