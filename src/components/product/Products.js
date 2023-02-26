@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -8,7 +7,8 @@ import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import { IoMdOpen } from "react-icons/io";
+import {TiTick} from "react-icons/ti";
+import {ImCross} from "react-icons/im";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -158,28 +158,29 @@ export default function Products() {
                     </div>
                   </div>
 
-                  <div className="card-body">
-                    <Table
+                  <div className="card-body" style={{overflowX: "scroll"}}>
+                    <table
                       id="example1"
                       className="table table-bordered table-striped"
                     >
-                      <Thead>
-                        <Tr>
-                          <Th>S.No</Th>
-                          <Th>Image</Th>
-                          <Th>Name</Th>
-                          <Th>Category</Th>
-                          <Th>SubCategory</Th>
-                          <Th>Amount</Th>
-                          <Th>Description</Th>
-                          <Th>Actions</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Image</th>
+                          <th>Name</th>
+                          <th>Amount</th>
+                          <th>Stock</th>
+                          <th>Category</th>
+                          <th>SubCategory</th>
+                          <th>Description</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                         {products.slice(a, a + 5).map((product, i) => (
-                          <Tr key={product._id} className="odd">
-                            <Td>{i + 1}</Td>
-                            <Td>
+                          <tr key={product._id} className="odd">
+                            <td>{i + 1}</td>
+                            <td>
                             <img
                               className="td-img"
                               src={product.product_images[0]}
@@ -190,15 +191,16 @@ export default function Products() {
                                 borderRadius: "50%",
                               }}
                             />
-                            </Td>
-                            <Td className="dtr-control sorting_1" tabIndex={0}>
+                            </td>
+                            <td className="dtr-control sorting_1" tabIndex={0}>
                               {product.name}
-                            </Td>
-                            <Td>{product.category.name}</Td>
-                            <Td>{product.sub_category.name}</Td>
-                            <Td>{product.amount}</Td>
-                            <Td>{product.description}</Td>
-                            <Td>
+                            </td>
+                            <td>{product.amount}</td>
+                            <td>{product.stock ? <TiTick className="green" /> : <ImCross className="red" />}</td>
+                            <td>{product.category.name}</td>
+                            <td>{product.sub_category.name}</td>
+                            <td>{product.description}</td>
+                            <td>
                               <Button
                                 onClick={() => {
                                   navigate(`/admin/view/product/${product._id}`);
@@ -217,11 +219,11 @@ export default function Products() {
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </Button>
-                            </Td>
-                          </Tr>
+                            </td>
+                          </tr>
                         ))}
-                      </Tbody>
-                    </Table>
+                      </tbody>
+                    </table>
 
                     <div className="mt-3 float-right">
                       <div className="dataTables_paginate paging_simple_numbers">
