@@ -145,7 +145,7 @@ const ViewProduct = () => {
                                     <p className="mb-0">
                                       <label>Stock</label>
                                     </p>
-                                    {!product.stock ? <TiTick className="green" /> : <ImCross className="red" />}
+                                    {product.stock ? <TiTick className="green" /> : <ImCross className="red" />}
                                   </div>
                                 </div>
 

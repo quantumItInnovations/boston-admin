@@ -27,11 +27,10 @@ const reducer = (state, action) => {
 };
 
 function getAllSubCategory(subCategories, categoryId) {
-  if (!categoryId)
-      return [];
-  
+  if (!categoryId) return [];
+
   const subCategoryList = subCategories.filter((subCat) => {
-      return subCat.category._id === categoryId;
+    return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -52,9 +51,16 @@ export default function AddProduct() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [stock, setStock] = useState("");
   const [product_images, setProductImage] = useState("");
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
+
+  const stockHandler = (e) => {
+    e.persist();
+    console.log(e.target.value);
+    setStock(e.target.value)
+  }
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -96,6 +102,7 @@ export default function AddProduct() {
           name,
           description,
           amount,
+          stock,
           product_images,
           category,
           sub_category,
@@ -224,6 +231,29 @@ export default function AddProduct() {
                       />
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="stock">
+                      <Form.Label>Stock</Form.Label>
+                      <br></br>
+                      <Form.Check
+                        inline
+                        label="In-Stock"
+                        value="true"
+                        type="radio"
+                        id="inline-radio-1"
+                        onChange={stockHandler}
+                        checked={stock === "true"}
+                      />
+                      <Form.Check
+                        inline
+                        label="Out-Of-Stock"
+                        value="false"
+                        type="radio"
+                        id="inline-radio-2"
+                        onChange={stockHandler}
+                        checked={stock === "false"}
+                      />
+                    </Form.Group>
+
                     <Form.Group className="mb-3">
                       <Form.Label className="mr-3">Category</Form.Label>
                       <Form.Select
@@ -250,11 +280,15 @@ export default function AddProduct() {
                           onChange={(e) => setSubCategory(e.target.value)}
                         >
                           <option>Select Sub Category</option>
-                          {subCategories && category && getAllSubCategory(subCategories, category).map((subCat) => (
-                              <option key={subCat._id} value={subCat._id}>
-                                {subCat.name}
-                              </option>
-                            ))}
+                          {subCategories &&
+                            category &&
+                            getAllSubCategory(subCategories, category).map(
+                              (subCat) => (
+                                <option key={subCat._id} value={subCat._id}>
+                                  {subCat.name}
+                                </option>
+                              )
+                            )}
                         </Form.Select>
                       </Form.Group>
                     )}

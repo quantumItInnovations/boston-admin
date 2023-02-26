@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -154,33 +153,32 @@ export default function Users() {
                   </div>
                 </div>
 
-                <div className="card-body" style={{overflowX: "auto"}}>
-                  <Table
+                <div className="card-body" style={{overflowX: "scroll"}}>
+                  <table
                     id="example1"
                     className="table table-bordered table-striped"
-                    style={{ overflowX: "auto" }}
                   >
-                    <Thead>
-                      <Tr>
-                        <Th>S.No</Th>
-                        {/* <Th>Image</Th> */}
-                        <Th>Firstname</Th>
-                        <Th>Lastname</Th>
-                        <Th>Email</Th>
-                        <Th>Reg. Date</Th>
-                        {/* <Th>DOB</Th> */}
-                        {/* <Th>Sex</Th> */}
-                        <Th>Telephone</Th>
-                        <Th>Fax</Th>
-                        <Th>Role</Th>
-                        <Th>Actions</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        {/* <th>Image</th> */}
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Reg. Date</th>
+                        {/* <th>DOB</th> */}
+                        {/* <th>Sex</th> */}
+                        <th>Telephone</th>
+                        <th>Fax</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                       {users.slice(a, a + 15).map((user, i) => (
-                        <Tr key={user._id} className="odd">
-                          <Td>{i + 1}</Td>
-                          {/* <Td>
+                        <tr key={user._id} className="odd">
+                          <td>{i + 1}</td>
+                          {/* <td>
                             <img
                               className="td-img"
                               src={user.profile_image}
@@ -191,16 +189,16 @@ export default function Users() {
                                 borderRadius: "50%",
                               }}
                             />
-                          </Td> */}
-                          <Td>{user.firstname}</Td>
-                          <Td>{user.lastname}</Td>
-                          <Td>{user.email}</Td>
-                          <Td>{getDateTime(user.createdAt&&user.createdAt)}</Td>
-                          {/* <Td>{user.dob}</Td> */}
-                          {/* <Td>{user.sex}</Td> */}
-                          <Td>{user.telephone}</Td>
-                          <Td>{user.fax}</Td>
-                          {/* <Td>
+                          </td> */}
+                          <td>{user.firstname}</td>
+                          <td>{user.lastname}</td>
+                          <td>{user.email}</td>
+                          <td>{getDateTime(user.createdAt&&user.createdAt)}</td>
+                          {/* <td>{user.dob}</td> */}
+                          {/* <td>{user.sex}</td> */}
+                          <td>{user.telephone}</td>
+                          <td>{user.fax}</td>
+                          {/* <td>
                             {user.payment_status == 1 ? (
                               <MdToggleOn
                                 className="on"
@@ -222,9 +220,9 @@ export default function Users() {
                                 }
                               />
                             )}
-                          </Td> */}
-                          <Td>{user.role}</Td>
-                          <Td>
+                          </td> */}
+                          <td>{user.role}</td>
+                          <td>
                             <Button
                               onClick={() => {
                                 navigate(`/admin/view/user/${user._id}`);
@@ -243,11 +241,11 @@ export default function Users() {
                             >
                               <i className="fas fa-trash-alt"></i>
                             </Button>
-                          </Td>
-                        </Tr>
+                          </td>
+                        </tr>
                       ))}
-                    </Tbody>
-                  </Table>
+                    </tbody>
+                  </table>
 
                   <div className="mt-3 float-right">
                     <div className="dataTables_paginate paging_simple_numbers">
