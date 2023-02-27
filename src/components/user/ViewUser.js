@@ -39,7 +39,7 @@ const ViewUser = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/admin/user/${id}`,
+          `http://52.91.135.217:5000/api/admin/user/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -111,75 +111,75 @@ const ViewUser = () => {
                             <div className="col-md-8">
                               // details
                               <div className="row"> */}
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Firstname</label>
-                                    </p>
-                                    <p>{user.firstname}</p>
-                                  </div>
-                                </div>
-                                
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Lastname</label>
-                                    </p>
-                                    <p>{user.lastname}</p>
-                                  </div>
-                                </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Firstname</label>
+                                </p>
+                                <p>{user.firstname}</p>
+                              </div>
+                            </div>
 
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Email</label>
-                                    </p>
-                                    <p>{user.email}</p>
-                                  </div>
-                                </div>
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Telephone</label>
-                                    </p>
-                                    <p>{user.telephone}</p>
-                                  </div>
-                                </div>
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Fax</label>
-                                    </p>
-                                    <p>{user.fax}</p>
-                                  </div>
-                                </div>
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Role</label>
-                                    </p>
-                                    <p>{user.role}</p>
-                                  </div>
-                                </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Lastname</label>
+                                </p>
+                                <p>{user.lastname}</p>
+                              </div>
+                            </div>
 
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Created At</label>
-                                    </p>
-                                    <p>{getDateTime(user.createdAt)}</p>
-                                  </div>
-                                </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Email</label>
+                                </p>
+                                <p>{user.email}</p>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Telephone</label>
+                                </p>
+                                <p>{user.telephone}</p>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Fax</label>
+                                </p>
+                                <p>{user.fax}</p>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Role</label>
+                                </p>
+                                <p>{user.role}</p>
+                              </div>
+                            </div>
 
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Last Update</label>
-                                    </p>
-                                    <p>{getDateTime(user.updatedAt)}</p>
-                                  </div>
-                                </div>
-                              {/* </div>
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Created At</label>
+                                </p>
+                                <p>{getDateTime(user.createdAt)}</p>
+                              </div>
+                            </div>
+
+                            <div className="col-md-4">
+                              <div className="form-group">
+                                <p className="mb-0">
+                                  <label>Last Update</label>
+                                </p>
+                                <p>{getDateTime(user.updatedAt)}</p>
+                              </div>
+                            </div>
+                            {/* </div>
                             </div> */}
                           </div>
                         </div>
@@ -200,10 +200,7 @@ const ViewUser = () => {
           </section>
           {/* /.content */}
 
-          <EditUserModel
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-          />
+          <EditUserModel show={modalShow} onHide={() => setModalShow(false)} />
           <ToastContainer />
         </>
       )}

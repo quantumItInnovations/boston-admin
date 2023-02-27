@@ -13,7 +13,11 @@ const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, loading: false, subCategory: action.payload.subCategory };
+      return {
+        ...state,
+        loading: false,
+        subCategory: action.payload.subCategory,
+      };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
 
@@ -39,7 +43,7 @@ const ViewSubCategory = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/subCategory/${id}`,
+          `http://52.91.135.217:5000/api/subCategory/${id}`,
           {
             headers: { Authorization: token },
           }

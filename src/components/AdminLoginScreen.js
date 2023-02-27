@@ -36,7 +36,7 @@ export default function AdminLoginScreen() {
     try {
       dispatch({ type: "FETCH_REQUEST" });
       const { data } = await axios.post(
-        "http://localhost:5000/api/admin/login",
+        "http://52.91.135.217:5000/api/admin/login",
         {
           email: username,
           password: password,
@@ -46,15 +46,11 @@ export default function AdminLoginScreen() {
       console.log("data", data);
       if (data.token) {
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
-        localStorage.setItem(
-          "userInfo",
-          JSON.stringify(data.user)
-        );
+        localStorage.setItem("userInfo", JSON.stringify(data.user));
         localStorage.setItem("token", JSON.stringify(data.token));
 
-
         navigate("/admin/dashboard");
-        dispatch({type: "FETCH_SUCCESS"});
+        dispatch({ type: "FETCH_SUCCESS" });
       } else {
         toast.error(data, { position: toast.POSITION.TOP_CENTER });
       }

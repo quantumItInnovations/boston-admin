@@ -87,7 +87,7 @@ export default function EditCategoryModel(props) {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/category/${id}`,
+          `http://52.91.135.217:5000/api/category/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -119,7 +119,7 @@ export default function EditCategoryModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/category/${id}`,
+        `http://52.91.135.217:5000/api/admin/category/${id}`,
         {
           name,
           description,
@@ -162,7 +162,9 @@ export default function EditCategoryModel(props) {
       centered
     >
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">Edit Category</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Edit Category
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container className="small-container">

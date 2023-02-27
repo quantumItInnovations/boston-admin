@@ -53,7 +53,7 @@ export default function Users() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://localhost:5000/api/admin/user/${id}`,
+          `http://52.91.135.217:5000/api/admin/user/${id}`,
 
           {
             headers: { Authorization: token },
@@ -74,24 +74,24 @@ export default function Users() {
       try {
         if (searchInput) {
           const res = await axios.get(
-            `http://localhost:5000/api/admin?search=${searchInput}&in=users`,
+            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=users`,
 
             {
               headers: { Authorization: token },
             }
           );
 
-          navigate('/admin/users?page=1')
+          navigate("/admin/users?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           const res = await axios.get(
-            "http://localhost:5000/api/admin/user/all",
+            "http://52.91.135.217:5000/api/admin/user/all",
 
             {
               headers: { Authorization: token },
             }
           );
-            console.log(res.data)
+          console.log(res.data);
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         }
       } catch (error) {
@@ -153,7 +153,7 @@ export default function Users() {
                   </div>
                 </div>
 
-                <div className="card-body" style={{overflowX: "scroll"}}>
+                <div className="card-body" style={{ overflowX: "scroll" }}>
                   <table
                     id="example1"
                     className="table table-bordered table-striped"
@@ -193,7 +193,9 @@ export default function Users() {
                           <td>{user.firstname}</td>
                           <td>{user.lastname}</td>
                           <td>{user.email}</td>
-                          <td>{getDateTime(user.createdAt&&user.createdAt)}</td>
+                          <td>
+                            {getDateTime(user.createdAt && user.createdAt)}
+                          </td>
                           {/* <td>{user.dob}</td> */}
                           {/* <td>{user.sex}</td> */}
                           <td>{user.telephone}</td>

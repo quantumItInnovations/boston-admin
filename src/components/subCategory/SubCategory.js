@@ -41,17 +41,23 @@ export default function SubCategory() {
   const [query, setQuery] = useState(false);
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, subCategories, pages }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, subCategories, pages }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      error: "",
+    }
+  );
 
   const deleteSubCategory = async (id) => {
-    if (window.confirm("Are you sure you want to delete this sub-category?") === true) {
+    if (
+      window.confirm("Are you sure you want to delete this sub-category?") ===
+      true
+    ) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://localhost:5000/api/admin/subCategory/${id}`,
+          `http://52.91.135.217:5000/api/admin/subCategory/${id}`,
 
           {
             headers: { Authorization: token },
@@ -72,17 +78,17 @@ export default function SubCategory() {
       try {
         if (searchInput) {
           const res = await axios.get(
-            `http://localhost:5000/api/admin?search=${searchInput}&in=shops`,
+            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
             {
               headers: { Authorization: token },
             }
           );
 
-          navigate('/admin/shops?page=1')
+          navigate("/admin/shops?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           const res = await axios.get(
-            "http://localhost:5000/api/subCategory/all",
+            "http://52.91.135.217:5000/api/subCategory/all",
             {
               headers: { Authorization: token },
             }
@@ -155,7 +161,7 @@ export default function SubCategory() {
                     </div>
                   </div>
 
-                  <div className="card-body" style={{overflowX: "scroll"}}>
+                  <div className="card-body" style={{ overflowX: "scroll" }}>
                     <table
                       id="example1"
                       className="table table-bordered table-striped"
@@ -175,16 +181,16 @@ export default function SubCategory() {
                           <tr key={subCategory._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
-                            <img
-                              className="td-img"
-                              src={subCategory.sub_category_image}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
+                              <img
+                                className="td-img"
+                                src={subCategory.sub_category_image}
+                                alt=""
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
+                                }}
+                              />
                             </td>
                             <td className="dtr-control sorting_1" tabIndex={0}>
                               {subCategory.name}
@@ -194,7 +200,9 @@ export default function SubCategory() {
                             <td>
                               <Button
                                 onClick={() => {
-                                  navigate(`/admin/view/sub-category/${subCategory._id}`);
+                                  navigate(
+                                    `/admin/view/sub-category/${subCategory._id}`
+                                  );
                                 }}
                                 type="success"
                                 className="btn btn-primary btn-block"
@@ -242,7 +250,7 @@ export default function SubCategory() {
               </div>
             </div>
           </div>
-            <ToastContainer />
+          <ToastContainer />
         </>
       )}
     </div>

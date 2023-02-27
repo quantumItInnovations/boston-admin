@@ -52,7 +52,7 @@ export default function EditUserModel(props) {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/admin/user/${id}`,
+          `http://52.91.135.217:5000/api/admin/user/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -88,14 +88,14 @@ export default function EditUserModel(props) {
       dispatch({ type: "UPDATE_REQUEST" });
 
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/user/${id}`,
+        `http://52.91.135.217:5000/api/admin/user/${id}`,
         {
           firstname,
           lastname,
           telephone,
           fax,
           role,
-        //   password,
+          //   password,
         },
         {
           headers: {
@@ -138,7 +138,6 @@ export default function EditUserModel(props) {
       </Modal.Header>
       <Modal.Body>
         <Container className="small-container">
-
           <Form>
             {/* <Form.Group className="mb-3" controlId="name">
               <Form.Label>Password</Form.Label>
@@ -149,7 +148,6 @@ export default function EditUserModel(props) {
               />
             </Form.Group> */}
 
-
             <Form.Group className="mb-3" controlId="firstname">
               <Form.Label>Firstname</Form.Label>
               <Form.Control
@@ -158,7 +156,7 @@ export default function EditUserModel(props) {
                 required
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-3" controlId="lastname">
               <Form.Label>Lastname</Form.Label>
               <Form.Control
@@ -176,7 +174,7 @@ export default function EditUserModel(props) {
                 required
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-3" controlId="fax">
               <Form.Label>Fax</Form.Label>
               <Form.Control

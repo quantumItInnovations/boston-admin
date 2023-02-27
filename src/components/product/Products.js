@@ -7,8 +7,8 @@ import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import {TiTick} from "react-icons/ti";
-import {ImCross} from "react-icons/im";
+import { TiTick } from "react-icons/ti";
+import { ImCross } from "react-icons/im";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,11 +50,13 @@ export default function Products() {
   });
 
   const deleteProduct = async (id) => {
-    if (window.confirm("Are you sure you want to delete this product?") === true) {
+    if (
+      window.confirm("Are you sure you want to delete this product?") === true
+    ) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://localhost:5000/api/admin/product/${id}`,
+          `http://52.91.135.217:5000/api/admin/product/${id}`,
 
           {
             headers: { Authorization: token },
@@ -75,17 +77,17 @@ export default function Products() {
       try {
         if (searchInput) {
           const res = await axios.get(
-            `http://localhost:5000/api/admin?search=${searchInput}&in=products`,
+            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=products`,
             {
               headers: { Authorization: token },
             }
           );
 
-          navigate('/admin/products?page=1')
+          navigate("/admin/products?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           const res = await axios.get(
-            "http://localhost:5000/api/product/all",
+            "http://52.91.135.217:5000/api/product/all",
             {
               headers: { Authorization: token },
             }
@@ -158,7 +160,7 @@ export default function Products() {
                     </div>
                   </div>
 
-                  <div className="card-body" style={{overflowX: "scroll"}}>
+                  <div className="card-body" style={{ overflowX: "scroll" }}>
                     <table
                       id="example1"
                       className="table table-bordered table-striped"
@@ -181,29 +183,37 @@ export default function Products() {
                           <tr key={product._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
-                            <img
-                              className="td-img"
-                              src={product.product_images[0]}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
+                              <img
+                                className="td-img"
+                                src={product.product_images[0]}
+                                alt=""
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
+                                }}
+                              />
                             </td>
                             <td className="dtr-control sorting_1" tabIndex={0}>
                               {product.name}
                             </td>
                             <td>{product.amount}</td>
-                            <td>{product.stock ? <TiTick className="green" /> : <ImCross className="red" />}</td>
+                            <td>
+                              {product.stock ? (
+                                <TiTick className="green" />
+                              ) : (
+                                <ImCross className="red" />
+                              )}
+                            </td>
                             <td>{product.category.name}</td>
                             <td>{product.sub_category.name}</td>
                             <td>{product.description}</td>
                             <td>
                               <Button
                                 onClick={() => {
-                                  navigate(`/admin/view/product/${product._id}`);
+                                  navigate(
+                                    `/admin/view/product/${product._id}`
+                                  );
                                 }}
                                 type="success"
                                 className="btn btn-primary btn-block"
@@ -251,7 +261,7 @@ export default function Products() {
               </div>
             </div>
           </div>
-            <ToastContainer />
+          <ToastContainer />
         </>
       )}
     </div>

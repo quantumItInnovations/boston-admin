@@ -86,12 +86,15 @@ export default function EditSubCategoryModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res = await axios.get("http://localhost:5000/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res = await axios.get(
+          "http://52.91.135.217:5000/api/category/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/subCategory/${id}`,
+          `http://52.91.135.217:5000/api/subCategory/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -124,7 +127,7 @@ export default function EditSubCategoryModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/subCategory/${id}`,
+        `http://52.91.135.217:5000/api/admin/subCategory/${id}`,
         {
           name,
           description,

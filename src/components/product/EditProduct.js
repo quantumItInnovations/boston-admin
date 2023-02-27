@@ -99,19 +99,22 @@ export default function EditProductModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res1 = await axios.get("http://localhost:5000/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res1 = await axios.get(
+          "http://52.91.135.217:5000/api/category/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const res2 = await axios.get(
-          "http://localhost:5000/api/subCategory/all",
+          "http://52.91.135.217:5000/api/subCategory/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/product/${id}`,
+          `http://52.91.135.217:5000/api/product/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -150,7 +153,7 @@ export default function EditProductModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://localhost:5000/api/admin/product/${id}`,
+        `http://52.91.135.217:5000/api/admin/product/${id}`,
         {
           name,
           description,

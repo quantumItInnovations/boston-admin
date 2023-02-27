@@ -75,7 +75,7 @@ export default function AddSubCategory() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/admin/subCategory/create",
+        "http://52.91.135.217:5000/api/admin/subCategory/create",
         {
           name,
           description,
@@ -120,9 +120,12 @@ export default function AddSubCategory() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get("http://localhost:5000/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res = await axios.get(
+          "http://52.91.135.217:5000/api/category/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         console.log("add subCategory data", res);
         dispatch({

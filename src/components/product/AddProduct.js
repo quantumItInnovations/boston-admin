@@ -59,8 +59,8 @@ export default function AddProduct() {
   const stockHandler = (e) => {
     e.persist();
     console.log(e.target.value);
-    setStock(e.target.value)
-  }
+    setStock(e.target.value);
+  };
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -97,7 +97,7 @@ export default function AddProduct() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/admin/product/create",
+        "http://52.91.135.217:5000/api/admin/product/create",
         {
           name,
           description,
@@ -145,12 +145,15 @@ export default function AddProduct() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axios.get("http://localhost:5000/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res1 = await axios.get(
+          "http://52.91.135.217:5000/api/category/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const res2 = await axios.get(
-          "http://localhost:5000/api/subCategory/all",
+          "http://52.91.135.217:5000/api/subCategory/all",
           {
             headers: { Authorization: token },
           }

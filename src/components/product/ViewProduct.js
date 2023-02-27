@@ -7,8 +7,8 @@ import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditProductModel from "./EditProduct.js";
-import {TiTick} from "react-icons/ti";
-import {ImCross} from "react-icons/im";
+import { TiTick } from "react-icons/ti";
+import { ImCross } from "react-icons/im";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,7 +41,7 @@ const ViewProduct = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://localhost:5000/api/product/${id}`,
+          `http://52.91.135.217:5000/api/product/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -145,7 +145,11 @@ const ViewProduct = () => {
                                     <p className="mb-0">
                                       <label>Stock</label>
                                     </p>
-                                    {product.stock ? <TiTick className="green" /> : <ImCross className="red" />}
+                                    {product.stock ? (
+                                      <TiTick className="green" />
+                                    ) : (
+                                      <ImCross className="red" />
+                                    )}
                                   </div>
                                 </div>
 

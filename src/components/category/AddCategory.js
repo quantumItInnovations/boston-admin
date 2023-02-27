@@ -52,7 +52,7 @@ export default function AddCategory() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/admin/category/create",
+        "http://52.91.135.217:5000/api/admin/category/create",
         {
           name,
           description,
