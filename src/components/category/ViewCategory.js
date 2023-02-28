@@ -7,6 +7,7 @@ import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditCategoryModel from "./EditCategory.js";
+import SubCategoryTable from "./SubCategoryTable";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -96,7 +97,7 @@ const ViewCategory = () => {
                       <div className="card card-default ">
                         {/* /.card-header */}
                         <div className="card-body">
-                          <div className="row">
+                          <div className="row mb-3">
                             <div className="col-md-4">
                               <div className="form-group">
                                 <img
@@ -148,6 +149,9 @@ const ViewCategory = () => {
                                 </div>
                               </div>
                             </div>
+                          </div>
+                          <div className="row" style={{overflowX: "auto"}}>
+                            <SubCategoryTable id={id} />
                           </div>
                         </div>
                         {/* /.card-body */}
