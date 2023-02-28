@@ -28,7 +28,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Products() {
+export default function ProductTable({id:subCategoryId}) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
@@ -86,12 +86,14 @@ export default function Products() {
           navigate("/admin/products?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
+            console.log("subCategoryId", subCategoryId)
           const res = await axios.get(
-            "http://52.91.135.217:5000/api/product/all",
+            `http://52.91.135.217:5000/api/subCategory/${subCategoryId}/products`,
             {
               headers: { Authorization: token },
             }
           );
+          console.log(res.data);
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         }
       } catch (error) {
@@ -108,7 +110,7 @@ export default function Products() {
   }, [page, token, del, query]);
 
   return (
-    <div className="wrapper">
+    <div className="wrapper p-0">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -117,7 +119,7 @@ export default function Products() {
         <>
           <div>
             {/* Content Header (Page header) */}
-            <div className="content-header">
+            <div className="content-header px-0">
               <div className="container-fluid">
                 <div className="card">
                   <div className="card-header">
@@ -173,7 +175,7 @@ export default function Products() {
                           <th>Amount</th>
                           <th>Stock</th>
                           <th>Category</th>
-                          <th>SubCategory</th>
+                          {/* <th>SubCategory</th> */}
                           <th>Description</th>
                           <th>Actions</th>
                         </tr>
@@ -206,7 +208,7 @@ export default function Products() {
                               )}
                             </td>
                             <td>{product.category.name}</td>
-                            <td>{product.sub_category.name}</td>
+                            {/* <td>{product.sub_category.name}</td> */}
                             <td>{product.description}</td>
                             <td>
                               <Button

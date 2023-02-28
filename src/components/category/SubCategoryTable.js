@@ -7,8 +7,7 @@ import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import { TiTick } from "react-icons/ti";
-import { ImCross } from "react-icons/im";
+import { IoMdOpen } from "react-icons/io";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,8 +16,8 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return {
         ...state,
-        products: action.payload.products,
-        pages: Math.ceil(action.payload.products.length / 5),
+        subCategories: action.payload.subCategories,
+        pages: Math.ceil(action.payload.subCategories.length / 5),
         loading: false,
       };
     case "FETCH_FAIL":
@@ -28,7 +27,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Products() {
+export default function SubCategoryTable({id}) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
@@ -40,23 +39,25 @@ export default function Products() {
 
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [productList, setProductList] = useState([]);
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, products, pages }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, subCategories, pages }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      error: "",
+    }
+  );
 
-  const deleteProduct = async (id) => {
+  const deleteSubCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this product?") === true
+      window.confirm("Are you sure you want to delete this sub-category?") ===
+      true
     ) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/product/${id}`,
+          `http://52.91.135.217:5000/api/admin/subCategory/${id}`,
 
           {
             headers: { Authorization: token },
@@ -77,17 +78,17 @@ export default function Products() {
       try {
         if (searchInput) {
           const res = await axios.get(
-            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=products`,
+            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
             {
               headers: { Authorization: token },
             }
           );
 
-          navigate("/admin/products?page=1");
+          navigate("/admin/shops?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           const res = await axios.get(
-            "http://52.91.135.217:5000/api/product/all",
+            `http://52.91.135.217:5000/api/category/${id}/subCategories`,
             {
               headers: { Authorization: token },
             }
@@ -108,7 +109,7 @@ export default function Products() {
   }, [page, token, del, query]);
 
   return (
-    <div className="wrapper">
+    <div className="wrapper p-0">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -117,19 +118,19 @@ export default function Products() {
         <>
           <div>
             {/* Content Header (Page header) */}
-            <div className="content-header">
+            <div className="content-header px-0">
               <div className="container-fluid">
                 <div className="card">
                   <div className="card-header">
                     <h3 className="card-title">
                       <Button
                         onClick={() => {
-                          navigate(`/admin/product/create`);
+                          navigate(`/admin/sub-category/create`);
                         }}
                         type="success"
                         className="btn btn-primary btn-block mt-1"
                       >
-                        Add Product
+                        Add Sub Category
                       </Button>
                     </h3>
                     <div className="float-right">
@@ -170,22 +171,19 @@ export default function Products() {
                           <th>S.No</th>
                           <th>Image</th>
                           <th>Name</th>
-                          <th>Amount</th>
-                          <th>Stock</th>
-                          <th>Category</th>
-                          <th>SubCategory</th>
+                          {/* <th>Category</th> */}
                           <th>Description</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {products.slice(a, a + 5).map((product, i) => (
-                          <tr key={product._id} className="odd">
+                        {subCategories.slice(a, a + 5).map((subCategory, i) => (
+                          <tr key={subCategory._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
                               <img
                                 className="td-img"
-                                src={product.product_images[0]}
+                                src={subCategory.sub_category_image}
                                 alt=""
                                 style={{
                                   width: "50px",
@@ -195,24 +193,15 @@ export default function Products() {
                               />
                             </td>
                             <td className="dtr-control sorting_1" tabIndex={0}>
-                              {product.name}
+                              {subCategory.name}
                             </td>
-                            <td>{product.amount}</td>
-                            <td>
-                              {product.stock ? (
-                                <TiTick className="green" />
-                              ) : (
-                                <ImCross className="red" />
-                              )}
-                            </td>
-                            <td>{product.category.name}</td>
-                            <td>{product.sub_category.name}</td>
-                            <td>{product.description}</td>
+                            {/* <td>{subCategory.category.name}</td> */}
+                            <td>{subCategory.description}</td>
                             <td>
                               <Button
                                 onClick={() => {
                                   navigate(
-                                    `/admin/view/product/${product._id}`
+                                    `/admin/view/sub-category/${subCategory._id}`
                                   );
                                 }}
                                 type="success"
@@ -222,7 +211,7 @@ export default function Products() {
                               </Button>
                               <Button
                                 onClick={() => {
-                                  deleteProduct(product._id);
+                                  deleteSubCategory(subCategory._id);
                                 }}
                                 type="danger"
                                 className="btn btn-danger btn-block"
@@ -247,7 +236,7 @@ export default function Products() {
                                     : "page-link paginate_button page-item"
                                 }
                                 key={x + 1}
-                                to={`/admin/products?page=${x + 1}`}
+                                to={`/admin/shops?page=${x + 1}`}
                               >
                                 {x + 1}
                               </Link>

@@ -7,6 +7,7 @@ import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditSubCategoryModel from "./EditSubCategory.js";
+import ProductTable from "./ProductTable";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -161,6 +162,9 @@ const ViewSubCategory = () => {
                                 </div>
                               </div>
                             </div>
+                          </div>
+                          <div className="row" style={{overflowX: "auto"}}>
+                            <ProductTable id={id} />
                           </div>
                         </div>
                         {/* /.card-body */}
