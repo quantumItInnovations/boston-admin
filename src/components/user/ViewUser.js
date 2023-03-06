@@ -4,6 +4,7 @@ import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditUserModel from "./EditUser.js";
@@ -66,145 +67,84 @@ const ViewUser = () => {
   };
 
   return (
-    <div className="wrapper">
+    <Container className="py-3">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          {/* Main content */}
-          <section className="content">
-            <div className="container-fluid">
-              <div className="card card-primary card-outline">
-                <div className="card-header">
-                  <h3 className="card-title">{user.name} Details</h3>
-                  <div className="card-tools">
-                    <i
-                      className="fa fa-edit"
-                      style={{ color: "blue" }}
-                      onClick={() => setModalShow(true)}
-                    ></i>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <h4></h4>
-
-                  <section className="content">
-                    <div className="container-fluid">
-                      {/* SELECT2 EXAMPLE */}
-                      <div className="card card-default ">
-                        {/* /.card-header */}
-                        <div className="card-body">
-                          <div className="row">
-                            {/* <div className="col-md-4">
-                              <div className="form-group">
-                                <img
-                                  src={user.category_image}
-                                  alt=""
-                                  width={"200px"}
-                                  height={"200px"}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-md-8">
-                              // details
-                              <div className="row"> */}
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Firstname</label>
-                                </p>
-                                <p>{user.firstname}</p>
-                              </div>
-                            </div>
-
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Lastname</label>
-                                </p>
-                                <p>{user.lastname}</p>
-                              </div>
-                            </div>
-
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Email</label>
-                                </p>
-                                <p>{user.email}</p>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Telephone</label>
-                                </p>
-                                <p>{user.telephone}</p>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Fax</label>
-                                </p>
-                                <p>{user.fax}</p>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Role</label>
-                                </p>
-                                <p>{user.role}</p>
-                              </div>
-                            </div>
-
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Created At</label>
-                                </p>
-                                <p>{getDateTime(user.createdAt)}</p>
-                              </div>
-                            </div>
-
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <p className="mb-0">
-                                  <label>Last Update</label>
-                                </p>
-                                <p>{getDateTime(user.updatedAt)}</p>
-                              </div>
-                            </div>
-                            {/* </div>
-                            </div> */}
-                          </div>
-                        </div>
-                        {/* /.card-body */}
-                      </div>
-
-                      {/* /.row */}
-                    </div>
-                  </section>
-                </div>
-                {/* /.card */}
+          <Card>
+            <Card.Header>
+              <Card.Title>{user.name} Details</Card.Title>
+              <div className="card-tools">
+                <i
+                  className="fa fa-edit"
+                  style={{ color: "blue" }}
+                  onClick={() => setModalShow(true)}
+                ></i>
               </div>
-              {/* /.card */}
-
-              {/* /.card */}
-            </div>
-            {/* /.container-fluid */}
-          </section>
-          {/* /.content */}
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Firstname</strong>
+                  </p>
+                  <p>{user.firstname}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Lastname</strong>
+                  </p>
+                  <p>{user.lastname}</p>
+                </Col>
+                <Col md={4}>
+                  {" "}
+                  <p className="mb-0">
+                    <strong>Email</strong>
+                  </p>
+                  <p>{user.email}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Telephone</strong>
+                  </p>
+                  <p>{user.telephone}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Fax</strong>
+                  </p>
+                  <p>{user.fax}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Role</strong>
+                  </p>
+                  <p>{user.role}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Created At</strong>
+                  </p>
+                  <p>{getDateTime(user.createdAt)}</p>
+                </Col>
+                <Col md={4}>
+                  <p className="mb-0">
+                    <strong>Last Update</strong>
+                  </p>
+                  <p>{getDateTime(user.updatedAt)}</p>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
 
           <EditUserModel show={modalShow} onHide={() => setModalShow(false)} />
           <ToastContainer />
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -1,17 +1,26 @@
-import React, { Component, useContext } from 'react'
-import { Store } from '../../Store';
+import React, { Component, useContext } from "react";
+import { Store } from "../../Store";
 
-export default function Footer (){
+export default function Footer() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {  userInfo } = state;
-        return (<>{userInfo?( <div id='Footer'>
-        <footer className="main-footer">
-          <strong>Copyright © 2014-2023 <a href="https://quantumitinnovation.com">Quantum It</a>. </strong>
-          All rights reserved.
-        </footer>
-      </div>):(<></>)}
-          </>
-
-        )
-    
+  const { userInfo } = state;
+  return (
+    <>
+      {userInfo ? (
+        <div className="footer-box">
+          <div className="footer-container">
+            <footer>
+              <strong>
+                Copyright © 2014-2023{" "}
+                <a href="https://quantumitinnovation.com">Quantum It</a>.{" "}
+              </strong>
+              All rights reserved.
+            </footer>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 }

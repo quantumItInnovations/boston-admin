@@ -32,7 +32,7 @@ const CustomPagination = ({ pages, pageHandler, curPage }) => {
   }, [curPage, pages]);
 
   return (
-    <div className="mt-3 float-right">
+    <div className="mt-3 float-end">
       <Pagination>
         {pages <= 5 ? (
           <>

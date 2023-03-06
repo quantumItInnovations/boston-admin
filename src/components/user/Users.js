@@ -6,7 +6,14 @@ import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Table,
+} from "react-bootstrap";
 import { MdToggleOff, MdToggleOn } from "react-icons/md";
 import CustomPagination from "../layout/CustomPagination";
 
@@ -105,72 +112,56 @@ export default function Users() {
   };
 
   return (
-    <div className="wrapper">
+    <Container fluid className="py-3">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <div>
-          {/* Content Header (Page header) */}
-          <div className="content-header">
-            <div className="container-fluid">
-              <div className="card">
-                <div className="card-header">
-                  <div className="float-right">
-                    <nav className="navbar navbar-expand navbar-white navbar-light">
-                      <form className="form-inline ml-3">
-                        <div className="input-group input-group-sm">
-                          <input
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            className="form-control form-control-navbar"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                          />
-                          <div className="input-group-append">
-                            <button className="btn btn-navbar">
-                              <i
-                                className="fas fa-search"
-                                onClick={(e) => {
-                                  setQuery(!query);
-                                }}
-                              ></i>
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </nav>
-                  </div>
-                </div>
-
-                <div className="card-body" style={{ overflowX: "scroll" }}>
-                  <table
-                    id="example1"
-                    className="table table-bordered table-striped"
-                  >
-                    <thead>
-                      <tr>
-                        <th>S.No</th>
-                        {/* <th>Image</th> */}
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Reg. Date</th>
-                        {/* <th>DOB</th> */}
-                        {/* <th>Sex</th> */}
-                        <th>Telephone</th>
-                        <th>Fax</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {users.map((user, i) => (
-                        <tr key={user._id} className="odd">
-                          <td>{i + 1}</td>
-                          {/* <td>
+        <Card>
+          <Card.Header>
+            <div className="search-box float-end">
+              <InputGroup>
+                <Form.Control
+                  aria-label="Search Input"
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setQuery(!query);
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  {/* <th>Image</th> */}
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Email</th>
+                  <th>Reg. Date</th>
+                  {/* <th>DOB</th> */}
+                  {/* <th>Sex</th> */}
+                  <th>Telephone</th>
+                  <th>Fax</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, i) => (
+                  <tr key={user._id} className="odd">
+                    <td className="text-center">{i + 1}</td>
+                    {/* <td>
                             <img
                               className="td-img"
                               src={user.profile_image}
@@ -182,17 +173,15 @@ export default function Users() {
                               }}
                             />
                           </td> */}
-                          <td>{user.firstname}</td>
-                          <td>{user.lastname}</td>
-                          <td>{user.email}</td>
-                          <td>
-                            {getDateTime(user.createdAt && user.createdAt)}
-                          </td>
-                          {/* <td>{user.dob}</td> */}
-                          {/* <td>{user.sex}</td> */}
-                          <td>{user.telephone}</td>
-                          <td>{user.fax}</td>
-                          {/* <td>
+                    <td>{user.firstname}</td>
+                    <td>{user.lastname}</td>
+                    <td>{user.email}</td>
+                    <td>{getDateTime(user.createdAt && user.createdAt)}</td>
+                    {/* <td>{user.dob}</td> */}
+                    {/* <td>{user.sex}</td> */}
+                    <td>{user.telephone}</td>
+                    <td>{user.fax}</td>
+                    {/* <td>
                             {user.payment_status == 1 ? (
                               <MdToggleOn
                                 className="on"
@@ -215,46 +204,44 @@ export default function Users() {
                               />
                             )}
                           </td> */}
-                          <td>{user.role}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(`/admin/view/user/${user._id}`);
-                              }}
-                              type="success"
-                              className="btn btn-primary btn-block"
-                            >
-                              <i className="fa fa-eye"></i>
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteUser(user._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger btn-block"
-                            >
-                              <i className="fas fa-trash-alt"></i>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-
-                  {resultPerPage < filteredUserCount && (
-                    <CustomPagination
-                      pages={numOfPages}
-                      pageHandler={curPageHandler}
-                      curPage={curPage}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                    <td>{user.role}</td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          navigate(`/admin/view/user/${user._id}`);
+                        }}
+                        type="success"
+                        className="btn btn-primary"
+                      >
+                        <i className="fa fa-eye"></i>
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          deleteUser(user._id);
+                        }}
+                        type="danger"
+                        className="btn btn-danger ms-2"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card.Body>
+          <Card.Footer>
+            {resultPerPage < filteredUserCount && (
+              <CustomPagination
+                pages={numOfPages}
+                pageHandler={curPageHandler}
+                curPage={curPage}
+              />
+            )}
+          </Card.Footer>
+        </Card>
       )}
       <ToastContainer />
-    </div>
+    </Container>
   );
 }

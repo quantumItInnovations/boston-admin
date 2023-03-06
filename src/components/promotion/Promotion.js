@@ -6,7 +6,14 @@ import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Table,
+} from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 
 const reducer = (state, action) => {
@@ -63,12 +70,9 @@ export default function Promotions() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/promotion/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axios.get("http://localhost:5000/api/promotion/all", {
+          headers: { Authorization: token },
+        });
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -84,92 +88,73 @@ export default function Promotions() {
   }, [token, del]);
 
   return (
-    <div className="wrapper">
+    <Container fluid className="py-3">
+      {" "}
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <>
-          <div>
-            {/* Content Header (Page header) */}
-            <div className="content-header">
-              <div className="container-fluid">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">
-                      <Button
-                        onClick={() => {
-                          navigate(`/admin/promotion/create`);
-                        }}
-                        type="success"
-                        className="btn btn-primary btn-block mt-1"
-                      >
-                        Add Promotion
-                      </Button>
-                    </h3>
-                  </div>
+        <Card>
+          <Card.Header>
+            <Button
+              onClick={() => {
+                navigate(`/admin/promotion/create`);
+              }}
+              type="success"
+              className="btn btn-primary btn-block mt-1"
+            >
+              Add Promotion
+            </Button>
+          </Card.Header>
 
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table
-                        id="example1"
-                        className="table table-bordered table-striped"
-                      >
-                        <thead>
-                          <tr>
-                            <th>S.No</th>
-                            <th>Product</th>
-                            <th>Updated Price</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {promotions && promotions.map((promotion, i) => (
-                            <tr key={promotion._id} className="odd">
-                              <td>{i + 1}</td>
-                              <td
-                                className="dtr-control sorting_1"
-                                tabIndex={0}
-                              >
-                                {promotion.product.name}
-                              </td>
-                              <td>{promotion.updated_price}</td>
-                              <td>
-                                <Button
-                                  onClick={() => {
-                                    navigate(
-                                      `/admin/view/promotion/${promotion._id}`
-                                    );
-                                  }}
-                                  type="success"
-                                  className="btn btn-primary btn-block"
-                                >
-                                  <i className="fa fa-eye"></i>
-                                </Button>
-                                <Button
-                                  onClick={() => {
-                                    deletePromotion(promotion._id);
-                                  }}
-                                  type="danger"
-                                  className="btn btn-danger btn-block"
-                                >
-                                  <i className="fas fa-trash-alt"></i>
-                                </Button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ToastContainer />
-        </>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Product</th>
+                  <th>Updated Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {promotions &&
+                  promotions.map((promotion, i) => (
+                    <tr key={promotion._id} className="odd">
+                      <td className="text-center">{i + 1}</td>
+                      <td className="dtr-control sorting_1" tabIndex={0}>
+                        {promotion.product.name}
+                      </td>
+                      <td>{promotion.updated_price}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            navigate(`/admin/view/promotion/${promotion._id}`);
+                          }}
+                          type="success"
+                          className="btn btn-primary"
+                        >
+                          <i className="fa fa-eye"></i>
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deletePromotion(promotion._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>
       )}
-    </div>
+      <ToastContainer />
+    </Container>
   );
 }

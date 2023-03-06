@@ -34,14 +34,8 @@ button.thumbnail {
 
 th,
 td {
+  vertical-align: middle !important;
   white-space: nowrap;
-}
-
-.b-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd)>* {
@@ -102,10 +96,6 @@ td {
 }
 
 /* --------------------- */
-.main-footer {
-  text-align: center;
-  margin-left: 0 !important;
-}
 
 .on,
 .green {
@@ -160,7 +150,11 @@ td {
   background-color: #02a97b5e;
 }
 
-.card-tools>i.fa {
+.card-title {
+  display: inline-block;
+}
+.card-tools {
+  float: right;
   cursor: pointer;
 }
 
@@ -204,6 +198,20 @@ td {
 .wrapper {
   padding: 0 1rem;
 }
+
+.footer-box {
+  position: relative;
+  padding: 0.5rem 1rem;
+}
+
+.footer-container {
+  position: relative;
+}
+
+/* footer {
+  position: absolute;
+  text-align: center;
+} */
 table.table {
   margin-bottom: 0;
 }

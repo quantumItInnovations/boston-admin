@@ -4,6 +4,7 @@ import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditCategoryModel from "./EditCategory.js";
@@ -67,110 +68,70 @@ const ViewCategory = () => {
   };
 
   return (
-    <div className="wrapper">
+    <Container className="py-3">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          {/* Main content */}
-          <section className="content">
-            <div className="container-fluid">
-              <div className="card card-primary card-outline">
-                <div className="card-header">
-                  <h3 className="card-title">{category.name} Details</h3>
-                  <div className="card-tools">
-                    <i
-                      className="fa fa-edit"
-                      style={{ color: "blue" }}
-                      onClick={() => setModalShow(true)}
-                    ></i>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <h4></h4>
+          <Card>
+            <Card.Header>
+              <Card.Title>{category.name} Details</Card.Title>
 
-                  <section className="content">
-                    <div className="container-fluid">
-                      {/* SELECT2 EXAMPLE */}
-                      <div className="card card-default ">
-                        {/* /.card-header */}
-                        <div className="card-body">
-                          <div className="row mb-3">
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <img
-                                  src={category.category_image}
-                                  alt=""
-                                  width={"200px"}
-                                  height={"200px"}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-md-8">
-                              {/* details */}
-                              <div className="row">
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Name</label>
-                                    </p>
-                                    <p>{category.name}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Description</label>
-                                    </p>
-                                    <p>{category.description}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Created At</label>
-                                    </p>
-                                    <p>{getDateTime(category.createdAt)}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Last Update</label>
-                                    </p>
-                                    <p>{getDateTime(category.updatedAt)}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row" style={{overflowX: "auto"}}>
-                            <SubCategoryTable id={id} />
-                          </div>
-                        </div>
-                        {/* /.card-body */}
-                      </div>
-
-                      {/* /.row */}
-                    </div>
-                  </section>
-                </div>
-                {/* /.card */}
+              <div className="card-tools">
+                <i
+                  className="fa fa-edit"
+                  style={{ color: "blue" }}
+                  onClick={() => setModalShow(true)}
+                ></i>
               </div>
-              {/* /.card */}
+            </Card.Header>
+            <Card.Body>
+              <Row className="mb-3">
+                <Col md={4}>
+                  <img
+                    src={category.category_image}
+                    alt=""
+                    width={"200px"}
+                    height={"200px"}
+                  />
+                </Col>
+                <Col md={8}>
+                  <Row>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Name</strong>
+                      </p>
+                      <p>{category.name}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Description</strong>
+                      </p>
+                      <p>{category.description}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Created At</strong>
+                      </p>
+                      <p>{getDateTime(category.createdAt)}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Last Update</strong>
+                      </p>
+                      <p>{getDateTime(category.updatedAt)}</p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
 
-              {/* /.card */}
-            </div>
-            {/* /.container-fluid */}
-          </section>
-          {/* /.content */}
-
+              <Row>
+                <SubCategoryTable id={id} />
+              </Row>
+            </Card.Body>
+          </Card>
           <EditCategoryModel
             show={modalShow}
             onHide={() => setModalShow(false)}
@@ -178,7 +139,7 @@ const ViewCategory = () => {
           <ToastContainer />
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

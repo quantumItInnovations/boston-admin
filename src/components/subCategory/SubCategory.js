@@ -6,7 +6,14 @@ import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Table,
+} from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 
@@ -107,136 +114,114 @@ export default function SubCategory() {
   const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
   console.log("nuofPage", numOfPages);
   return (
-    <div className="wrapper">
+    <Container fluid className="py-3">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <>
-          <div>
-            {/* Content Header (Page header) */}
-            <div className="content-header">
-              <div className="container-fluid">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">
+        <Card>
+          <Card.Header>
+            <Button
+              onClick={() => {
+                navigate(`/admin/sub-category/create`);
+              }}
+              type="success"
+              className="btn btn-primary btn-block mt-1"
+            >
+              Add Sub Category
+            </Button>
+            <div className="search-box float-end">
+              <InputGroup>
+                <Form.Control
+                  aria-label="Search Input"
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setQuery(searchInput);
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subCategories.map((subCategory, i) => (
+                  <tr key={subCategory._id} className="odd">
+                    <td className="text-center">{i + 1}</td>
+                    <td>
+                      <img
+                        className="td-img"
+                        src={subCategory.sub_category_image}
+                        alt=""
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </td>
+                    <td className="dtr-control sorting_1" tabIndex={0}>
+                      {subCategory.name}
+                    </td>
+                    <td>{subCategory.category.name}</td>
+                    <td>{subCategory.description}</td>
+                    <td>
                       <Button
                         onClick={() => {
-                          navigate(`/admin/sub-category/create`);
+                          navigate(
+                            `/admin/view/sub-category/${subCategory._id}`
+                          );
                         }}
                         type="success"
-                        className="btn btn-primary btn-block mt-1"
+                        className="btn btn-primary"
                       >
-                        Add Sub Category
+                        <i className="fa fa-eye"></i>
                       </Button>
-                    </h3>
-                    <div className="float-right">
-                      <nav className="navbar navbar-expand navbar-white navbar-light">
-                        <form className="form-inline ml-3">
-                          <div className="input-group input-group-sm">
-                            <input
-                              value={searchInput}
-                              onChange={(e) => setSearchInput(e.target.value)}
-                              className="form-control form-control-navbar"
-                              type="search"
-                              placeholder="Search"
-                              aria-label="Search"
-                            />
-                            <div className="input-group-append">
-                              <button className="btn btn-navbar">
-                                <i
-                                  className="fas fa-search"
-                                  onClick={() => {
-                                    setQuery(searchInput);
-                                  }}
-                                ></i>
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </nav>
-                    </div>
-                  </div>
-
-                  <div className="card-body" style={{ overflowX: "scroll" }}>
-                    <table
-                      id="example1"
-                      className="table table-bordered table-striped"
-                    >
-                      <thead>
-                        <tr>
-                          <th>S.No</th>
-                          <th>Image</th>
-                          <th>Name</th>
-                          <th>Category</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {subCategories.map((subCategory, i) => (
-                          <tr key={subCategory._id} className="odd">
-                            <td>{i + 1}</td>
-                            <td>
-                              <img
-                                className="td-img"
-                                src={subCategory.sub_category_image}
-                                alt=""
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  borderRadius: "50%",
-                                }}
-                              />
-                            </td>
-                            <td className="dtr-control sorting_1" tabIndex={0}>
-                              {subCategory.name}
-                            </td>
-                            <td>{subCategory.category.name}</td>
-                            <td>{subCategory.description}</td>
-                            <td>
-                              <Button
-                                onClick={() => {
-                                  navigate(
-                                    `/admin/view/sub-category/${subCategory._id}`
-                                  );
-                                }}
-                                type="success"
-                                className="btn btn-primary btn-block"
-                              >
-                                <i className="fa fa-eye"></i>
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  deleteSubCategory(subCategory._id);
-                                }}
-                                type="danger"
-                                className="btn btn-danger btn-block"
-                              >
-                                <i className="fas fa-trash-alt"></i>
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-
-                    {resultPerPage < filteredSubCategoryCount && (
-                      <CustomPagination
-                        pages={numOfPages}
-                        pageHandler={curPageHandler}
-                        curPage={curPage}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ToastContainer />
-        </>
+                      <Button
+                        onClick={() => {
+                          deleteSubCategory(subCategory._id);
+                        }}
+                        type="danger"
+                        className="btn btn-danger ms-2"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card.Body>
+          <Card.Footer>
+            {resultPerPage < filteredSubCategoryCount && (
+              <CustomPagination
+                pages={numOfPages}
+                pageHandler={curPageHandler}
+                curPage={curPage}
+              />
+            )}
+          </Card.Footer>
+        </Card>
       )}
-    </div>
+      <ToastContainer />
+    </Container>
   );
 }
