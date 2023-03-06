@@ -1,4 +1,4 @@
-/* @import 'bootstrap/dist/css/bootstrap.min.css'; */
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 body {
   margin: 0;
@@ -24,6 +24,42 @@ code {
 
 button.thumbnail {
   padding: 0;
+}
+
+.f-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+th,
+td {
+  white-space: nowrap;
+}
+
+.b-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  color: var(--bs-table-striped-color);
+  /* --a: #59c58363; */
+  --a: #83e37c8f;
+  /* --a: rgba(15, 145, 122, 0.2); */
+}
+
+.table-bordered>:not(caption)>*>* {
+  border-width: 0 1px;
+}
+
+.table>:not(caption)>*>* {
+  padding: 0.5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--a);
 }
 
 /* ----------- Map Styling ------------- */
@@ -168,16 +204,33 @@ button.thumbnail {
 .wrapper {
   padding: 0 1rem;
 }
-
-.brand-link {
-  width: auto !important;
-  color: rgba(255, 255, 255, .8)
+table.table {
+  margin-bottom: 0;
 }
-
 .table-title {
   font-size: 1.2rem;
   font-weight: 500;
 }
+.search-box {
+  width: 100%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .search-box {
+    width: 50%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .search-box {
+    width: 30%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
 /* --------- Not required ----------- */
 /*
 #small-container {
