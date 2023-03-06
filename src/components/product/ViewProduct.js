@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 const ViewProduct = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // category/:id
+  const { id } = useParams(); // product/:id
 
   const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {

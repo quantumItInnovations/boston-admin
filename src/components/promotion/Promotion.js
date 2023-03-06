@@ -7,8 +7,7 @@ import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import { TiTick } from "react-icons/ti";
-import { ImCross } from "react-icons/im";
+import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 
 const reducer = (state, action) => {
@@ -18,9 +17,9 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return {
         ...state,
-        products: action.payload.products,
-        productCount: action.payload.productCount,
-        filteredProductCount: action.payload.filteredProductCount,
+        categories: action.payload.categories,
+        categoryCount: action.payload.categoryCount,
+        filteredCategoryCount: action.payload.filteredCategoryCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -30,7 +29,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Products() {
+export default function Category() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
@@ -43,22 +42,23 @@ export default function Products() {
   const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
-  const [
-    { loading, error, products, productCount, filteredProductCount },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
 
-  const deleteProduct = async (id) => {
+  const [{ loading, error, categories, categoryCount, filteredCategoryCount }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      error: "",
+    }
+  );
+
+  const deleteCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this product?") === true
+      window.confirm("Are you sure you want to delete this category?") === true
     ) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/product/${id}`,
+          `http://52.91.135.217:5000/api/admin/category/${id}`,
 
           {
             headers: { Authorization: token },
@@ -77,14 +77,15 @@ export default function Products() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          // "http://52.91.135.217:5000/api/product/all",
-          `http://localhost:5000/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        
+          const res = await axios.get(
+            // "http://52.91.135.217:5000/api/category/all",
+            `http://localhost:5000/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+            {
+              headers: { Authorization: token },
+            }
+          );
+          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -98,8 +99,10 @@ export default function Products() {
     fetchData();
   }, [token, del, curPage, resultPerPage, query]);
 
-  const numOfPages = Math.ceil(filteredProductCount / resultPerPage);
-  
+  const numOfPages = Math.ceil(filteredCategoryCount / resultPerPage);
+  console.log("nuofPage", numOfPages);
+
+  const propmotions = [];
   return (
     <div className="wrapper">
       {loading ? (
@@ -117,12 +120,12 @@ export default function Products() {
                     <h3 className="card-title">
                       <Button
                         onClick={() => {
-                          navigate(`/admin/product/create`);
+                          navigate(`/admin/category/create`);
                         }}
                         type="success"
                         className="btn btn-primary btn-block mt-1"
                       >
-                        Add Product
+                        Add Promotion
                       </Button>
                     </h3>
                     <div className="float-right">
@@ -141,8 +144,8 @@ export default function Products() {
                               <button className="btn btn-navbar">
                                 <i
                                   className="fas fa-search"
-                                  onClick={() => {
-                                    setQuery(searchInput);
+                                  onClick={(e) => {
+                                    setQuery(!query);
                                   }}
                                 ></i>
                               </button>
@@ -153,7 +156,7 @@ export default function Products() {
                     </div>
                   </div>
 
-                  <div className="card-body" style={{ overflowX: "auto" }}>
+                  <div className="card-body" style={{ overflowX: "scroll" }}>
                     <table
                       id="example1"
                       className="table table-bordered table-striped"
@@ -163,22 +166,18 @@ export default function Products() {
                           <th>S.No</th>
                           <th>Image</th>
                           <th>Name</th>
-                          <th>Amount</th>
-                          <th>Stock</th>
-                          <th>Category</th>
-                          <th>SubCategory</th>
                           <th>Description</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {products.map((product, i) => (
-                          <tr key={product._id} className="odd">
+                        {categories.map((category, i) => (
+                          <tr key={category._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
                               <img
                                 className="td-img"
-                                src={product.product_images[0]}
+                                src={category.category_image}
                                 alt=""
                                 style={{
                                   width: "50px",
@@ -188,24 +187,14 @@ export default function Products() {
                               />
                             </td>
                             <td className="dtr-control sorting_1" tabIndex={0}>
-                              {product.name}
+                              {category.name}
                             </td>
-                            <td>{product.amount}</td>
-                            <td>
-                              {product.stock ? (
-                                <TiTick className="green" />
-                              ) : (
-                                <ImCross className="red" />
-                              )}
-                            </td>
-                            <td>{product.category.name}</td>
-                            <td>{product.sub_category.name}</td>
-                            <td>{product.description}</td>
+                            <td>{category.description}</td>
                             <td>
                               <Button
                                 onClick={() => {
                                   navigate(
-                                    `/admin/view/product/${product._id}`
+                                    `/admin/view/category/${category._id}`
                                   );
                                 }}
                                 type="success"
@@ -215,7 +204,7 @@ export default function Products() {
                               </Button>
                               <Button
                                 onClick={() => {
-                                  deleteProduct(product._id);
+                                  deleteCategory(category._id);
                                 }}
                                 type="danger"
                                 className="btn btn-danger btn-block"
@@ -228,13 +217,13 @@ export default function Products() {
                       </tbody>
                     </table>
 
-                    {resultPerPage < filteredProductCount && (
-                      <CustomPagination
-                        pages={numOfPages}
-                        pageHandler={curPageHandler}
-                        curPage={curPage}
-                      />
-                    )}
+                    {resultPerPage < filteredCategoryCount && (
+                    <CustomPagination
+                      pages={numOfPages}
+                      pageHandler={curPageHandler}
+                      curPage={curPage}
+                    />
+                  )}
                   </div>
                 </div>
               </div>

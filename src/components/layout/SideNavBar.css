@@ -5,10 +5,33 @@
 	width: 250px;
 	height: 100vh;
 	transition: width .3s ease-in-out;
+	margin-left: 0;
 }
 
 .side-nav-container-NX {
 	width: 4.6rem;
+}
+.toggle-sidebar {
+	cursor: pointer;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateX(50%);
+	font-size: 1.5rem;
+	color: #12937a;
+}
+@media (min-width: 768px) { 
+	.toggle-sidebar {
+		display: none;
+	}
+ }
+@media (max-width: 768px) {
+	.sidebar-toggle-btn {
+		display: none;
+	}
+	.side-nav-container-NX {
+		margin-left: -4.6rem;
+	}
 }
 
 .nav-heading {

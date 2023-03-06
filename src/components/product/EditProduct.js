@@ -62,7 +62,7 @@ export default function EditProductModel(props) {
   const stockHandler = (e) => {
     e.persist();
     console.log(e.target.value);
-    setStock(e.target.value);
+    setStock(e.target.value === "true" ? true : false);
   };
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -119,16 +119,15 @@ export default function EditProductModel(props) {
             headers: { Authorization: token },
           }
         );
-        console.log(data);
+        console.log("edit product data", data);
 
         const product = data.product;
-        console.log("product", product);
         setName(product.name);
         setDescription(product.description);
         setStock(product.stock);
         setAmount(product.amount);
-        setCategory(product.category);
-        setSubCategory(product.sub_category);
+        setCategory(product.category._id);
+        setSubCategory(product.sub_category._id);
         setProductImage(product.product_images);
         setPreview(category.product_images);
         setCategories(res1.data.categories);
@@ -192,11 +191,8 @@ export default function EditProductModel(props) {
     }
   };
 
-  console.log("category", category, sub_category);
-  const [openCategory, setOpenCategory] = useState(false);
-  const [openSubCategory, setOpenSubCategory] = useState(false);
-  const selectCategoryHandler = () => setOpenCategory(!openCategory);
-  const selectSubCategoryHandler = () => setOpenSubCategory(!openSubCategory);
+  // console.log("category", category, sub_category);
+
   return (
     <Modal
       {...props}
@@ -250,7 +246,7 @@ export default function EditProductModel(props) {
                 type="radio"
                 id="inline-radio-1"
                 onChange={stockHandler}
-                checked={stock}
+                checked={stock === true}
               />
               <Form.Check
                 inline
@@ -259,7 +255,7 @@ export default function EditProductModel(props) {
                 type="radio"
                 id="inline-radio-2"
                 onChange={stockHandler}
-                checked={!stock}
+                checked={stock === false}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -268,11 +264,8 @@ export default function EditProductModel(props) {
                 aria-label="Select Category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                onClick={selectCategoryHandler}
               >
-                <option>
-                  {openCategory ? "Select Category" : `${category.name}`}
-                </option>
+                <option>Select Category</option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -289,14 +282,8 @@ export default function EditProductModel(props) {
                   aria-label="Select Sub Category"
                   value={sub_category}
                   onChange={(e) => setSubCategory(e.target.value)}
-                  onClick={selectSubCategoryHandler}
                 >
-                  <option>
-                    {openSubCategory
-                      ? "Select Sub Category"
-                      : `${sub_category.name}`}
-                  </option>
-
+                  <option>Select Sub Category</option>
                   {subCategories &&
                     category &&
                     getAllSubCategory(subCategories, category).map((subCat) => (

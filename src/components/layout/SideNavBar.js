@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 // import logo from "./images/dv.svg";
+import {BsCaretRightFill} from 'react-icons/bs'
 import "./SideNavBar.css";
 
 const linkList = [
@@ -11,6 +12,7 @@ const linkList = [
   { icon: "fa fa-store", text: "Category", url: "/admin/category" },
   { icon: "fab fa-hubspot", text: "Sub Category", url: "/admin/sub-category" },
   { icon: "fa fa-gift", text: "Products", url: "/admin/products" },
+  { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" },
 ];
 export default function SideNavbar() {
   const [activeLink, setActiveLink] = useState("Dashboard");
@@ -36,6 +38,10 @@ export default function SideNavbar() {
               : "side-nav-container side-nav-container-NX"
           }
         >
+          <div className="toggle-sidebar"                 onClick={() => setExpendState(!isExpanded)}
+>
+           <BsCaretRightFill />
+          </div>
           <div className="nav-upper">
             <div
               className={`nav-heading ${

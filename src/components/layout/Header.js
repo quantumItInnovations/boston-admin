@@ -23,7 +23,7 @@ export default function Header() {
                   <i className="fas fa-bars" />
                 </a>
               </li> */}
-              <li className="nav-item d-none d-sm-inline-block">
+              <li className="nav-item d-sm-inline-block">
                 <Link to="/admin/home" className="nav-link header-link">
                   Home
                 </Link>

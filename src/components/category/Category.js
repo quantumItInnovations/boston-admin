@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
+import CustomPagination from "../layout/CustomPagination";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,7 +18,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         categories: action.payload.categories,
-        pages: Math.ceil(action.payload.categories.length / 5),
+        categoryCount: action.payload.categoryCount,
+        filteredCategoryCount: action.payload.filteredCategoryCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -31,19 +33,17 @@ export default function Category() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search);
-  const page = sp.get("page") || 1;
-  let a = (page - 1) * 5;
   console.log(token);
 
+  const [curPage, setCurPage] = useState(1);
+  const [resultPerPage, setResultPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState("");
-  const [query, setQuery] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [productList, setProductList] = useState([]);
+  const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, categories, pages }, dispatch] = useReducer(
+  const curPageHandler = (p) => setCurPage(p);
+
+  const [{ loading, error, categories, categoryCount, filteredCategoryCount }, dispatch] = useReducer(
     reducer,
     {
       loading: true,
@@ -77,25 +77,15 @@ export default function Category() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        if (searchInput) {
+        
           const res = await axios.get(
-            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-
-          navigate("/admin/shops?page=1");
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        } else {
-          const res = await axios.get(
-            "http://52.91.135.217:5000/api/category/all",
+            // "http://52.91.135.217:5000/api/category/all",
+            `http://localhost:5000/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
             {
               headers: { Authorization: token },
             }
           );
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        }
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -107,7 +97,10 @@ export default function Category() {
       }
     };
     fetchData();
-  }, [page, token, del, query]);
+  }, [token, del, curPage, resultPerPage, query]);
+
+  const numOfPages = Math.ceil(filteredCategoryCount / resultPerPage);
+  console.log("nuofPage", numOfPages);
 
   return (
     <div className="wrapper">
@@ -150,8 +143,8 @@ export default function Category() {
                               <button className="btn btn-navbar">
                                 <i
                                   className="fas fa-search"
-                                  onClick={(e) => {
-                                    setQuery(!query);
+                                  onClick={() => {
+                                    setQuery(searchInput);
                                   }}
                                 ></i>
                               </button>
@@ -177,7 +170,7 @@ export default function Category() {
                         </tr>
                       </thead>
                       <tbody>
-                        {categories.slice(a, a + 5).map((category, i) => (
+                        {categories.map((category, i) => (
                           <tr key={category._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
@@ -223,27 +216,13 @@ export default function Category() {
                       </tbody>
                     </table>
 
-                    <div className="mt-3 float-right">
-                      <div className="dataTables_paginate paging_simple_numbers">
-                        <ul className="pagination">
-                          {[...Array(pages).keys()].map((x) => (
-                            <div key={x}>
-                              <Link
-                                className={
-                                  x + 1 === Number(page)
-                                    ? "page-link paginate_button page-item active"
-                                    : "page-link paginate_button page-item"
-                                }
-                                key={x + 1}
-                                to={`/admin/shops?page=${x + 1}`}
-                              >
-                                {x + 1}
-                              </Link>
-                            </div>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                    {resultPerPage < filteredCategoryCount && (
+                    <CustomPagination
+                      pages={numOfPages}
+                      pageHandler={curPageHandler}
+                      curPage={curPage}
+                    />
+                  )}
                   </div>
                 </div>
               </div>

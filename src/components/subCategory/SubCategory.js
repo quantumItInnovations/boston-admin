@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
+import CustomPagination from "../layout/CustomPagination";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,7 +18,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         subCategories: action.payload.subCategories,
-        pages: Math.ceil(action.payload.subCategories.length / 5),
+        subCategoryCount: action.payload.subCategoryCount,
+        filteredSubCategoryCount: action.payload.filteredSubCategoryCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -31,23 +33,28 @@ export default function SubCategory() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search);
-  const page = sp.get("page") || 1;
-  let a = (page - 1) * 5;
   console.log(token);
 
+  const [curPage, setCurPage] = useState(1);
+  const [resultPerPage, setResultPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState("");
-  const [query, setQuery] = useState(false);
+  const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, subCategories, pages }, dispatch] = useReducer(
-    reducer,
+  const curPageHandler = (p) => setCurPage(p);
+  const [
     {
-      loading: true,
-      error: "",
-    }
-  );
+      loading,
+      error,
+      subCategories,
+      subCategoryCount,
+      filteredSubCategoryCount,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
   const deleteSubCategory = async (id) => {
     if (
@@ -76,25 +83,14 @@ export default function SubCategory() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        if (searchInput) {
-          const res = await axios.get(
-            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-
-          navigate("/admin/shops?page=1");
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        } else {
-          const res = await axios.get(
-            "http://52.91.135.217:5000/api/subCategory/all",
-            {
-              headers: { Authorization: token },
-            }
-          );
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        }
+        const res = await axios.get(
+          `http://localhost:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // `http://52.91.135.217:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -106,8 +102,10 @@ export default function SubCategory() {
       }
     };
     fetchData();
-  }, [page, token, del, query]);
+  }, [token, del, curPage, resultPerPage, query]);
 
+  const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
+  console.log("nuofPage", numOfPages);
   return (
     <div className="wrapper">
       {loading ? (
@@ -149,8 +147,8 @@ export default function SubCategory() {
                               <button className="btn btn-navbar">
                                 <i
                                   className="fas fa-search"
-                                  onClick={(e) => {
-                                    setQuery(!query);
+                                  onClick={() => {
+                                    setQuery(searchInput);
                                   }}
                                 ></i>
                               </button>
@@ -177,7 +175,7 @@ export default function SubCategory() {
                         </tr>
                       </thead>
                       <tbody>
-                        {subCategories.slice(a, a + 5).map((subCategory, i) => (
+                        {subCategories.map((subCategory, i) => (
                           <tr key={subCategory._id} className="odd">
                             <td>{i + 1}</td>
                             <td>
@@ -224,27 +222,13 @@ export default function SubCategory() {
                       </tbody>
                     </table>
 
-                    <div className="mt-3 float-right">
-                      <div className="dataTables_paginate paging_simple_numbers">
-                        <ul className="pagination">
-                          {[...Array(pages).keys()].map((x) => (
-                            <div key={x}>
-                              <Link
-                                className={
-                                  x + 1 === Number(page)
-                                    ? "page-link paginate_button page-item active"
-                                    : "page-link paginate_button page-item"
-                                }
-                                key={x + 1}
-                                to={`/admin/shops?page=${x + 1}`}
-                              >
-                                {x + 1}
-                              </Link>
-                            </div>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                    {resultPerPage < filteredSubCategoryCount && (
+                      <CustomPagination
+                        pages={numOfPages}
+                        pageHandler={curPageHandler}
+                        curPage={curPage}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
