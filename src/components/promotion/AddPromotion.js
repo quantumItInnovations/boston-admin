@@ -118,7 +118,7 @@ export default function AddPromotion() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/admin/promotion/create",
+        "http://52.91.135.217:5000/api/admin/promotion/create",
         {
           product,
           updated_price,

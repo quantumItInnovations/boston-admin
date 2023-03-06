@@ -86,7 +86,7 @@ export default function Products() {
       try {
         const res = await axios.get(
           // "http://52.91.135.217:5000/api/product/all",
-          `http://localhost:5000/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `http://52.91.135.217:5000/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }

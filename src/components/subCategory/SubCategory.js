@@ -91,7 +91,7 @@ export default function SubCategory() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `http://52.91.135.217:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           // `http://52.91.135.217:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
