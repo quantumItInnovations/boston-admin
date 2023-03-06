@@ -18,11 +18,12 @@ export const uploadImage = async (file, token, percentHandler) => {
       },
     }
     const { data } = await axios.post(
-      "http://54.175.187.169:5000/api/admin/image",
+      "http://localhost:5000/api/admin/image",
       bodyFormData,
       options,
-    );
+    );                                               
     if (data.data.location) {
+      console.log('location', data.data.location);
       return data.data.location;
     }
   } catch (err) {

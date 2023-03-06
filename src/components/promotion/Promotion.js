@@ -8,7 +8,6 @@ import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
-import CustomPagination from "../layout/CustomPagination";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,9 +16,7 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return {
         ...state,
-        categories: action.payload.categories,
-        categoryCount: action.payload.categoryCount,
-        filteredCategoryCount: action.payload.filteredCategoryCount,
+        promotions: action.payload.promotions,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -29,37 +26,26 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Category() {
+export default function Promotions() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
   console.log(token);
 
-  const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(5);
-  const [searchInput, setSearchInput] = useState("");
-  const [query, setQuery] = useState("");
+  const [{ loading, error, promotions }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
+
   const [del, setDel] = useState(false);
-
-  const curPageHandler = (p) => setCurPage(p);
-
-  const [{ loading, error, categories, categoryCount, filteredCategoryCount }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-    }
-  );
-
-  const deleteCategory = async (id) => {
+  const deletePromotion = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this category?") === true
+      window.confirm("Are you sure you want to delete this promotion?") === true
     ) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/category/${id}`,
-
+          `http://localhost:5000/api/admin/promotion/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -77,15 +63,13 @@ export default function Category() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        
-          const res = await axios.get(
-            // "http://52.91.135.217:5000/api/category/all",
-            `http://localhost:5000/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        const res = await axios.get(
+          "http://localhost:5000/api/promotion/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -97,12 +81,8 @@ export default function Category() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, query]);
+  }, [token, del]);
 
-  const numOfPages = Math.ceil(filteredCategoryCount / resultPerPage);
-  console.log("nuofPage", numOfPages);
-
-  const propmotions = [];
   return (
     <div className="wrapper">
       {loading ? (
@@ -120,7 +100,7 @@ export default function Category() {
                     <h3 className="card-title">
                       <Button
                         onClick={() => {
-                          navigate(`/admin/category/create`);
+                          navigate(`/admin/promotion/create`);
                         }}
                         type="success"
                         className="btn btn-primary btn-block mt-1"
@@ -128,102 +108,60 @@ export default function Category() {
                         Add Promotion
                       </Button>
                     </h3>
-                    <div className="float-right">
-                      <nav className="navbar navbar-expand navbar-white navbar-light">
-                        <form className="form-inline ml-3">
-                          <div className="input-group input-group-sm">
-                            <input
-                              value={searchInput}
-                              onChange={(e) => setSearchInput(e.target.value)}
-                              className="form-control form-control-navbar"
-                              type="search"
-                              placeholder="Search"
-                              aria-label="Search"
-                            />
-                            <div className="input-group-append">
-                              <button className="btn btn-navbar">
-                                <i
-                                  className="fas fa-search"
-                                  onClick={(e) => {
-                                    setQuery(!query);
-                                  }}
-                                ></i>
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </nav>
-                    </div>
                   </div>
 
-                  <div className="card-body" style={{ overflowX: "scroll" }}>
-                    <table
-                      id="example1"
-                      className="table table-bordered table-striped"
-                    >
-                      <thead>
-                        <tr>
-                          <th>S.No</th>
-                          <th>Image</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {categories.map((category, i) => (
-                          <tr key={category._id} className="odd">
-                            <td>{i + 1}</td>
-                            <td>
-                              <img
-                                className="td-img"
-                                src={category.category_image}
-                                alt=""
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  borderRadius: "50%",
-                                }}
-                              />
-                            </td>
-                            <td className="dtr-control sorting_1" tabIndex={0}>
-                              {category.name}
-                            </td>
-                            <td>{category.description}</td>
-                            <td>
-                              <Button
-                                onClick={() => {
-                                  navigate(
-                                    `/admin/view/category/${category._id}`
-                                  );
-                                }}
-                                type="success"
-                                className="btn btn-primary btn-block"
-                              >
-                                <i className="fa fa-eye"></i>
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  deleteCategory(category._id);
-                                }}
-                                type="danger"
-                                className="btn btn-danger btn-block"
-                              >
-                                <i className="fas fa-trash-alt"></i>
-                              </Button>
-                            </td>
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table
+                        id="example1"
+                        className="table table-bordered table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>S.No</th>
+                            <th>Product</th>
+                            <th>Updated Price</th>
+                            <th>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-
-                    {resultPerPage < filteredCategoryCount && (
-                    <CustomPagination
-                      pages={numOfPages}
-                      pageHandler={curPageHandler}
-                      curPage={curPage}
-                    />
-                  )}
+                        </thead>
+                        <tbody>
+                          {promotions && promotions.map((promotion, i) => (
+                            <tr key={promotion._id} className="odd">
+                              <td>{i + 1}</td>
+                              <td
+                                className="dtr-control sorting_1"
+                                tabIndex={0}
+                              >
+                                {promotion.product.name}
+                              </td>
+                              <td>{promotion.updated_price}</td>
+                              <td>
+                                <Button
+                                  onClick={() => {
+                                    navigate(
+                                      `/admin/view/promotion/${promotion._id}`
+                                    );
+                                  }}
+                                  type="success"
+                                  className="btn btn-primary btn-block"
+                                >
+                                  <i className="fa fa-eye"></i>
+                                </Button>
+                                <Button
+                                  onClick={() => {
+                                    deletePromotion(promotion._id);
+                                  }}
+                                  type="danger"
+                                  className="btn btn-danger btn-block"
+                                >
+                                  <i className="fas fa-trash-alt"></i>
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>

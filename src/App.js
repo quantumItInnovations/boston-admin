@@ -22,6 +22,7 @@ import AddProduct from "./components/product/AddProduct";
 import ViewProduct from "./components/product/ViewProduct";
 
 import Promotions from "./components/promotion/Promotion";
+import AddPromotion from "./components/promotion/AddPromotion";
 
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
@@ -112,6 +113,10 @@ function App() {
               <Route
                 path="/admin/promotions"
                 element={<Children child={<Promotions />} />}
+              />
+              <Route
+                path="/admin/promotion/create"
+                element={<Children child={<AddPromotion />} />}
               />
 
               <Route path="*" element={<NotFound />} />
