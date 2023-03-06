@@ -4,6 +4,7 @@ import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditSubCategoryModel from "./EditSubCategory.js";
@@ -71,119 +72,75 @@ const ViewSubCategory = () => {
   };
 
   return (
-    <div className="wrapper">
+    <Container className="py-3">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          {/* Main content */}
-          <section className="content">
-            <div className="container-fluid">
-              <div className="card card-primary card-outline">
-                <div className="card-header">
-                  <h3 className="card-title">{subCategory.name} Details</h3>
-                  <div className="card-tools">
-                    <i
-                      className="fa fa-edit"
-                      style={{ color: "blue" }}
-                      onClick={() => setModalShow(true)}
-                    ></i>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <h4></h4>
-
-                  <section className="content">
-                    <div className="container-fluid">
-                      {/* SELECT2 EXAMPLE */}
-                      <div className="card card-default ">
-                        {/* /.card-header */}
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <img
-                                  src={subCategory.sub_category_image}
-                                  alt=""
-                                  width={"200px"}
-                                  height={"200px"}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-md-8">
-                              {/* details */}
-                              <div className="row">
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Name</label>
-                                    </p>
-                                    <p>{subCategory.name}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Description</label>
-                                    </p>
-                                    <p>{subCategory.description}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Category</label>
-                                    </p>
-                                    <p>{subCategory.category.name}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Created At</label>
-                                    </p>
-                                    <p>{getDateTime(subCategory.createdAt)}</p>
-                                  </div>
-                                </div>
-
-                                <div className="col-md-4">
-                                  <div className="form-group">
-                                    <p className="mb-0">
-                                      <label>Last Update</label>
-                                    </p>
-                                    <p>{getDateTime(subCategory.updatedAt)}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row" style={{overflowX: "auto"}}>
-                            <ProductTable id={id} />
-                          </div>
-                        </div>
-                        {/* /.card-body */}
-                      </div>
-
-                      {/* /.row */}
-                    </div>
-                  </section>
-                </div>
-                {/* /.card */}
+          <Card>
+            <Card.Header>
+              <Card.Title>{subCategory.name} Details</Card.Title>
+              <div className="card-tools">
+                <i
+                  className="fa fa-edit"
+                  style={{ color: "blue" }}
+                  onClick={() => setModalShow(true)}
+                ></i>
               </div>
-              {/* /.card */}
-
-              {/* /.card */}
-            </div>
-            {/* /.container-fluid */}
-          </section>
-          {/* /.content */}
-
+            </Card.Header>
+            <Card.Body>
+              <Row className="mb-3">
+                <Col md={4}>
+                  <img
+                    src={subCategory.sub_category_image}
+                    alt=""
+                    width={"200px"}
+                    height={"200px"}
+                  />
+                </Col>
+                <Col md={8}>
+                  <Row>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Name</strong>
+                      </p>
+                      <p>{subCategory.name}</p>
+                    </Col>
+                    <Col md={4}>
+                      {" "}
+                      <p className="mb-0">
+                        <strong>Description</strong>
+                      </p>
+                      <p>{subCategory.description}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Category</strong>
+                      </p>
+                      <p>{subCategory.category.name}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Created At</strong>
+                      </p>
+                      <p>{getDateTime(subCategory.createdAt)}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Last Update</strong>
+                      </p>
+                      <p>{getDateTime(subCategory.updatedAt)}</p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <ProductTable id={id} />
+              </Row>
+            </Card.Body>
+          </Card>
           <EditSubCategoryModel
             show={modalShow}
             onHide={() => setModalShow(false)}
@@ -191,7 +148,7 @@ const ViewSubCategory = () => {
           <ToastContainer />
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

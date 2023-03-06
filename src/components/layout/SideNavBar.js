@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 // import logo from "./images/dv.svg";
+import { BsCaretRightFill } from "react-icons/bs";
 import "./SideNavBar.css";
 
 const linkList = [
@@ -11,6 +12,7 @@ const linkList = [
   { icon: "fa fa-store", text: "Category", url: "/admin/category" },
   { icon: "fab fa-hubspot", text: "Sub Category", url: "/admin/sub-category" },
   { icon: "fa fa-gift", text: "Products", url: "/admin/products" },
+  { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" },
 ];
 export default function SideNavbar() {
   const [activeLink, setActiveLink] = useState("Dashboard");
@@ -36,6 +38,12 @@ export default function SideNavbar() {
               : "side-nav-container side-nav-container-NX"
           }
         >
+          <div
+            className="toggle-sidebar"
+            onClick={() => setExpendState(!isExpanded)}
+          >
+            <BsCaretRightFill />
+          </div>
           <div className="nav-upper">
             <div
               className={`nav-heading ${
@@ -45,12 +53,12 @@ export default function SideNavbar() {
               }`}
             >
               {isExpanded && (
-                <a href="index3.html" className="brand-link">
+                <Link to="/admin/dashboard" className="brand-link">
                   {/* <img src={logo} alt="" width={"50px"} height="auto" /> */}
-                  <span className="brand-text ml-2 font-weight-light">
+                  <span className="brand-text ms-2 font-weight-light">
                     Boston George
                   </span>
-                </a>
+                </Link>
               )}
               <button
                 className="sidebar-toggle-btn"
@@ -90,21 +98,22 @@ export default function SideNavbar() {
               {/* Sidebar Menu */}
               <nav className="mt-2">
                 <ul
-                  className="nav nav-pills nav-sidebar flex-column"
+                  className="nav-pills nav-sidebar px-0 d-flex flex-column flex-wrap"
                   data-widget="treeview"
                   role="menu"
                   data-accordion="false"
                 >
                   {linkList.map(({ icon, text, url }) => (
-                    <li key={url}
+                    <li
+                      key={url}
                       className={`nav-item has-treeview ${
                         isExpanded ? "menu-item" : "menu-item menu-item-NX"
-                      } ${activeLink === text && 'active-item'}`}
+                      } ${activeLink === text && "active-item"}`}
                       onClick={() => setActiveLink(text)}
                     >
                       <Link to={url} className="nav-link">
                         <i className={icon}></i>
-                        {isExpanded && <p className="ml-2">{text}</p>}
+                        {isExpanded && <p className="ms-2">{text}</p>}
                       </Link>
                     </li>
                   ))}
@@ -116,7 +125,7 @@ export default function SideNavbar() {
                   >
                     <Link onClick={signoutHandler} to="/" className="nav-link">
                       <i className="fas fa-sign-out-alt"></i>
-                      {isExpanded && <p className="ml-2">Log Out</p>}
+                      {isExpanded && <p className="ms-2">Log Out</p>}
                     </Link>
                   </li>
                 </ul>

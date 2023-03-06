@@ -1,13 +1,21 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Table,
+} from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
+import CustomPagination from "../layout/CustomPagination";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,7 +25,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         categories: action.payload.categories,
-        pages: Math.ceil(action.payload.categories.length / 5),
+        categoryCount: action.payload.categoryCount,
+        filteredCategoryCount: action.payload.filteredCategoryCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -31,25 +40,23 @@ export default function Category() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search);
-  const page = sp.get("page") || 1;
-  let a = (page - 1) * 5;
   console.log(token);
 
+  const [curPage, setCurPage] = useState(1);
+  const [resultPerPage, setResultPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState("");
-  const [query, setQuery] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [productList, setProductList] = useState([]);
+  const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
-  const [{ loading, error, categories, pages }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-    }
-  );
+  const curPageHandler = (p) => setCurPage(p);
+
+  const [
+    { loading, error, categories, categoryCount, filteredCategoryCount },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
   const deleteCategory = async (id) => {
     if (
@@ -77,25 +84,14 @@ export default function Category() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        if (searchInput) {
-          const res = await axios.get(
-            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-
-          navigate("/admin/shops?page=1");
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        } else {
-          const res = await axios.get(
-            "http://52.91.135.217:5000/api/category/all",
-            {
-              headers: { Authorization: token },
-            }
-          );
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        }
+        const res = await axios.get(
+          // "http://52.91.135.217:5000/api/category/all",
+          `http://52.91.135.217:5000/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -107,151 +103,117 @@ export default function Category() {
       }
     };
     fetchData();
-  }, [page, token, del, query]);
+  }, [token, del, curPage, resultPerPage, query]);
+
+  const numOfPages = Math.ceil(filteredCategoryCount / resultPerPage);
+  console.log("nuofPage", numOfPages);
 
   return (
-    <div className="wrapper">
+    <Container fluid className="py-3">
+      {" "}
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <>
-          <div>
-            {/* Content Header (Page header) */}
-            <div className="content-header">
-              <div className="container-fluid">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">
+        <Card>
+          <Card.Header>
+            <Button
+              onClick={() => {
+                navigate(`/admin/category/create`);
+              }}
+              type="success"
+              className="btn btn-primary btn-block mt-1"
+            >
+              Add Category
+            </Button>
+            <div className="search-box float-end">
+              <InputGroup>
+                <Form.Control
+                  aria-label="Search Input"
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setQuery(searchInput);
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.map((category, i) => (
+                  <tr key={category._id} className="odd">
+                    <td className="text-center">{i + 1}</td>
+                    <td>
+                      <img
+                        className="td-img"
+                        src={category.category_image}
+                        alt=""
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </td>
+                    <td className="dtr-control sorting_1" tabIndex={0}>
+                      {category.name}
+                    </td>
+                    <td>{category.description}</td>
+                    <td>
                       <Button
                         onClick={() => {
-                          navigate(`/admin/category/create`);
+                          navigate(`/admin/view/category/${category._id}`);
                         }}
                         type="success"
-                        className="btn btn-primary btn-block mt-1"
+                        className="btn btn-primary"
                       >
-                        Add Category
+                        <i className="fa fa-eye"></i>
                       </Button>
-                    </h3>
-                    <div className="float-right">
-                      <nav className="navbar navbar-expand navbar-white navbar-light">
-                        <form className="form-inline ml-3">
-                          <div className="input-group input-group-sm">
-                            <input
-                              value={searchInput}
-                              onChange={(e) => setSearchInput(e.target.value)}
-                              className="form-control form-control-navbar"
-                              type="search"
-                              placeholder="Search"
-                              aria-label="Search"
-                            />
-                            <div className="input-group-append">
-                              <button className="btn btn-navbar">
-                                <i
-                                  className="fas fa-search"
-                                  onClick={(e) => {
-                                    setQuery(!query);
-                                  }}
-                                ></i>
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </nav>
-                    </div>
-                  </div>
-
-                  <div className="card-body" style={{ overflowX: "scroll" }}>
-                    <table
-                      id="example1"
-                      className="table table-bordered table-striped"
-                    >
-                      <thead>
-                        <tr>
-                          <th>S.No</th>
-                          <th>Image</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {categories.slice(a, a + 5).map((category, i) => (
-                          <tr key={category._id} className="odd">
-                            <td>{i + 1}</td>
-                            <td>
-                              <img
-                                className="td-img"
-                                src={category.category_image}
-                                alt=""
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  borderRadius: "50%",
-                                }}
-                              />
-                            </td>
-                            <td className="dtr-control sorting_1" tabIndex={0}>
-                              {category.name}
-                            </td>
-                            <td>{category.description}</td>
-                            <td>
-                              <Button
-                                onClick={() => {
-                                  navigate(
-                                    `/admin/view/category/${category._id}`
-                                  );
-                                }}
-                                type="success"
-                                className="btn btn-primary btn-block"
-                              >
-                                <i className="fa fa-eye"></i>
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  deleteCategory(category._id);
-                                }}
-                                type="danger"
-                                className="btn btn-danger btn-block"
-                              >
-                                <i className="fas fa-trash-alt"></i>
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-
-                    <div className="mt-3 float-right">
-                      <div className="dataTables_paginate paging_simple_numbers">
-                        <ul className="pagination">
-                          {[...Array(pages).keys()].map((x) => (
-                            <div key={x}>
-                              <Link
-                                className={
-                                  x + 1 === Number(page)
-                                    ? "page-link paginate_button page-item active"
-                                    : "page-link paginate_button page-item"
-                                }
-                                key={x + 1}
-                                to={`/admin/shops?page=${x + 1}`}
-                              >
-                                {x + 1}
-                              </Link>
-                            </div>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ToastContainer />
-        </>
+                      <Button
+                        onClick={() => {
+                          deleteCategory(category._id);
+                        }}
+                        type="danger"
+                        className="btn btn-danger ms-2"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card.Body>
+          <Card.Footer>
+            {resultPerPage < filteredCategoryCount && (
+              <CustomPagination
+                pages={numOfPages}
+                pageHandler={curPageHandler}
+                curPage={curPage}
+              />
+            )}
+          </Card.Footer>
+        </Card>
       )}
-    </div>
+      <ToastContainer />
+    </Container>
   );
 }

@@ -1,4 +1,4 @@
-/* @import 'bootstrap/dist/css/bootstrap.min.css'; */
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 body {
   margin: 0;
@@ -24,6 +24,36 @@ code {
 
 button.thumbnail {
   padding: 0;
+}
+
+.f-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+th,
+td {
+  vertical-align: middle !important;
+  white-space: nowrap;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  color: var(--bs-table-striped-color);
+  /* --a: #59c58363; */
+  --a: #83e37c8f;
+  /* --a: rgba(15, 145, 122, 0.2); */
+}
+
+.table-bordered>:not(caption)>*>* {
+  border-width: 0 1px;
+}
+
+.table>:not(caption)>*>* {
+  padding: 0.5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--a);
 }
 
 /* ----------- Map Styling ------------- */
@@ -66,10 +96,6 @@ button.thumbnail {
 }
 
 /* --------------------- */
-.main-footer {
-  text-align: center;
-  margin-left: 0 !important;
-}
 
 .on,
 .green {
@@ -124,7 +150,11 @@ button.thumbnail {
   background-color: #02a97b5e;
 }
 
-.card-tools>i.fa {
+.card-title {
+  display: inline-block;
+}
+.card-tools {
+  float: right;
   cursor: pointer;
 }
 
@@ -169,15 +199,46 @@ button.thumbnail {
   padding: 0 1rem;
 }
 
-.brand-link {
-  width: auto !important;
-  color: rgba(255, 255, 255, .8)
+.footer-box {
+  position: relative;
+  padding: 0.5rem 1rem;
 }
 
+.footer-container {
+  position: relative;
+}
+
+/* footer {
+  position: absolute;
+  text-align: center;
+} */
+table.table {
+  margin-bottom: 0;
+}
 .table-title {
   font-size: 1.2rem;
   font-weight: 500;
 }
+.search-box {
+  width: 100%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .search-box {
+    width: 50%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .search-box {
+    width: 30%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
 /* --------- Not required ----------- */
 /*
 #small-container {

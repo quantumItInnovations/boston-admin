@@ -200,9 +200,10 @@ export default function EditSubCategoryModel(props) {
               <Form.Label className="mr-3">Category</Form.Label>
               <Form.Select
                 aria-label="Select Category"
+                value={category._id}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option value={category._id}>{category.name}</option>
+                <option>Select Category</option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat.name} value={cat._id}>

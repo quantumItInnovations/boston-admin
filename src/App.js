@@ -9,20 +9,23 @@ import Footer from "./components/layout/Footer";
 import SideNavbar from "./components/layout/SideNavBar";
 import NotFound from "./components/layout/NotFound";
 
-import Category from "./components/category/Category.js";
-import AddCategory from "./components/category/AddCategory.js";
+import Category from "./components/category/Category";
+import AddCategory from "./components/category/AddCategory";
 import ViewCategory from "./components/category/ViewCategory";
 
-import SubCategory from "./components/subCategory/SubCategory.js";
-import AddSubCategory from "./components/subCategory/AddSubCategory.js";
-import ViewSubCategory from "./components/subCategory/ViewSubCategory.js";
+import SubCategory from "./components/subCategory/SubCategory";
+import AddSubCategory from "./components/subCategory/AddSubCategory";
+import ViewSubCategory from "./components/subCategory/ViewSubCategory";
 
-import Products from "./components/product/Products.js";
-import AddProduct from "./components/product/AddProduct.js";
-import ViewProduct from "./components/product/ViewProduct.js";
+import Products from "./components/product/Products";
+import AddProduct from "./components/product/AddProduct";
+import ViewProduct from "./components/product/ViewProduct";
 
-import Users from "./components/user/Users.js";
-import ViewUser from "./components/user/ViewUser.js";
+import Promotions from "./components/promotion/Promotion";
+import AddPromotion from "./components/promotion/AddPromotion";
+
+import Users from "./components/user/Users";
+import ViewUser from "./components/user/ViewUser";
 
 import AdminLoginScreen from "./components/AdminLoginScreen";
 import Dashboard from "./components/layout/Dashboard";
@@ -105,6 +108,15 @@ function App() {
               <Route
                 path="/admin/product/create"
                 element={<Children child={<AddProduct />} />}
+              />
+
+              <Route
+                path="/admin/promotions"
+                element={<Children child={<Promotions />} />}
+              />
+              <Route
+                path="/admin/promotion/create"
+                element={<Children child={<AddPromotion />} />}
               />
 
               <Route path="*" element={<NotFound />} />

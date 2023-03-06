@@ -1,14 +1,47 @@
 /* NX = not expanded */
 
+.sidebar {
+	height: calc(100% - (3.5rem + 1px));
+	overflow-x: hidden;
+	overflow-y: initial;
+	padding-bottom: 0;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-top: 0;
+}
+
 .side-nav-container {
 	position: relative;
 	width: 250px;
 	height: 100vh;
 	transition: width .3s ease-in-out;
+	margin-left: 0;
 }
 
 .side-nav-container-NX {
 	width: 4.6rem;
+}
+.toggle-sidebar {
+	cursor: pointer;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateX(50%);
+	font-size: 1.5rem;
+	color: #12937a;
+}
+@media (min-width: 768px) { 
+	.toggle-sidebar {
+		display: none;
+	}
+ }
+@media (max-width: 768px) {
+	.sidebar-toggle-btn {
+		display: none;
+	}
+	.side-nav-container-NX {
+		margin-left: -4.6rem;
+	}
 }
 
 .nav-heading {
@@ -18,8 +51,33 @@
 	height: 77px;
 }
 
+.brand-link {
+	text-decoration: none;
+	width: auto !important;
+	color: rgba(255, 255, 255, .8);
+	display: block;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	padding: 0.8125rem 0.5rem;
+	white-space: nowrap;
+}
+
+.brand-link:hover {
+	color: #fff;
+}
+
 .user-panel {
+	position: relative;
 	border-bottom: 1px solid #4f5962;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.user-panel .info {
+	overflow: hidden;
+	white-space: nowrap;
+    display: inline-block;
+    padding: 5px 5px 5px 10px;
 }
 
 .sidebar-toggle-btn {
@@ -71,4 +129,44 @@
 .menu-item:hover .nav-link:hover,
 .info-text:hover {
 	color: #fff;
+}
+
+.nav-sidebar .nav-item>.nav-link {
+    position: relative;
+}
+.nav-sidebar .nav-item>.nav-link {
+    margin-bottom: 0.2rem;
+}
+.nav-sidebar .nav-item>.nav-link {
+    position: relative;
+}
+.nav-sidebar .nav-item>.nav-link {
+    margin-bottom: 0.2rem;
+}
+.menu-item .nav-link, .info-text {
+    color: #001c4e;
+}
+.menu-item .nav-link {
+    width: 100%;
+}
+
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+}
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+.nav-sidebar .nav-link p {
+    display: inline;
+    margin: 0;
+    white-space: normal;
 }
