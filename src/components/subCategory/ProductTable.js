@@ -56,7 +56,7 @@ export default function ProductTable({ id: subCategoryId }) {
   ] = useReducer(reducer, {
     loading: true,
     error: "",
-  });;
+  });
 
   const deleteProduct = async (id) => {
     if (
@@ -122,121 +122,121 @@ export default function ProductTable({ id: subCategoryId }) {
 
   return (
     <Container fluid className="py-3">
-    {loading ? (
-      <LoadingBox></LoadingBox>
-    ) : error ? (
-      <MessageBox variant="danger">{error}</MessageBox>
-    ) : (
-      <Card>
-        <Card.Header>
-          <Button
-            onClick={() => {
-              navigate(`/admin/product/create`);
-            }}
-            type="success"
-            className="btn btn-primary btn-block mt-1"
-          >
-            Add Product
-          </Button>
-          <div className="search-box float-end">
-            <InputGroup>
-              <Form.Control
-                aria-label="Search Input"
-                placeholder="Search"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              <InputGroup.Text
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  setQuery(searchInput);
-                }}
-              >
-                <i className="fas fa-search"></i>
-              </InputGroup.Text>
-            </InputGroup>
-          </div>
-        </Card.Header>
-        <Card.Body>
-          <Table responsive striped bordered hover>
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Stock</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product, i) => (
-                <tr key={product._id} className="odd">
-                  <td className="text-center">{i + 1}</td>
-                  <td>
-                    <img
-                      className="td-img"
-                      src={product.product_images[0]}
-                      alt=""
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </td>
-                  <td className="dtr-control sorting_1" tabIndex={0}>
-                    {product.name}
-                  </td>
-                  <td>{product.amount}</td>
-                  <td>
-                    {product.stock ? (
-                      <TiTick className="green" />
-                    ) : (
-                      <ImCross className="red" />
-                    )}
-                  </td>
-                  <td>{product.category.name}</td>
-                  <td>{product.description}</td>
-                  <td>
-                    <Button
-                      onClick={() => {
-                        navigate(`/admin/view/product/${product._id}`);
-                      }}
-                      type="success"
-                      className="btn btn-primary"
-                    >
-                      <i className="fa fa-eye"></i>
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        deleteProduct(product._id);
-                      }}
-                      type="danger"
-                      className="btn btn-danger ms-2"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                    </Button>
-                  </td>
+      {loading ? (
+        <LoadingBox></LoadingBox>
+      ) : error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : (
+        <Card>
+          <Card.Header>
+            <Button
+              onClick={() => {
+                navigate(`/admin/product/create`);
+              }}
+              type="success"
+              className="btn btn-primary btn-block mt-1"
+            >
+              Add Product
+            </Button>
+            <div className="search-box float-end">
+              <InputGroup>
+                <Form.Control
+                  aria-label="Search Input"
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setQuery(searchInput);
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Amount</th>
+                  <th>Stock</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Card.Body>
-        <Card.Footer>
+              </thead>
+              <tbody>
+                {products && products.map((product, i) => (
+                  <tr key={product._id} className="odd">
+                    <td className="text-center">{i + 1}</td>
+                    <td>
+                      <img
+                        className="td-img"
+                        src={product.product_images[0]}
+                        alt=""
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </td>
+                    <td className="dtr-control sorting_1" tabIndex={0}>
+                      {product.name}
+                    </td>
+                    <td>{product.amount}</td>
+                    <td>
+                      {product.stock ? (
+                        <TiTick className="green" />
+                      ) : (
+                        <ImCross className="red" />
+                      )}
+                    </td>
+                    <td>{product.category.name}</td>
+                    <td>{product.description}</td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          navigate(`/admin/view/product/${product._id}`);
+                        }}
+                        type="success"
+                        className="btn btn-primary"
+                      >
+                        <i className="fa fa-eye"></i>
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          deleteProduct(product._id);
+                        }}
+                        type="danger"
+                        className="btn btn-danger ms-2"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card.Body>
           {resultPerPage < filteredProductCount && (
-            <CustomPagination
-              pages={numOfPages}
-              pageHandler={curPageHandler}
-              curPage={curPage}
-            />
+            <Card.Footer>
+              <CustomPagination
+                pages={numOfPages}
+                pageHandler={curPageHandler}
+                curPage={curPage}
+              />
+            </Card.Footer>
           )}
-        </Card.Footer>
-      </Card>
-    )}
-    <ToastContainer />
-  </Container>
+        </Card>
+      )}
+      <ToastContainer />
+    </Container>
   );
 }

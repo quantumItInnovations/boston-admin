@@ -61,13 +61,13 @@ const ViewProduct = () => {
       }
     };
     fetchData();
+    return ()=>{}
   }, [id]);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };
-
   return (
     <Container className="py-3">
       {loading ? (
@@ -91,7 +91,7 @@ const ViewProduct = () => {
               <Row className="mb-3">
                 <Col md={4}>
                   <img
-                    src={product.product_image}
+                    src={product.product_images}
                     alt=""
                     width={"200px"}
                     height={"200px"}
@@ -131,13 +131,13 @@ const ViewProduct = () => {
                       <p className="mb-0">
                         <strong>Category</strong>
                       </p>
-                      <p>{product.category.name}</p>
+                      <p>{product.category ? product.category.name : <b>Category not set</b>}</p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">
                         <strong>Sub Category</strong>
                       </p>
-                      <p>{product.sub_category.name}</p>
+                      <p>{product.sub_category ? product.sub_category.name : <b>Sub category not set</b>}</p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">

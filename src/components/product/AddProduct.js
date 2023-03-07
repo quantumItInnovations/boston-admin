@@ -30,7 +30,8 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    return subCat.category._id === categoryId;
+    if(subCat.category)
+      return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }

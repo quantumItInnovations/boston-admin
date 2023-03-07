@@ -158,7 +158,7 @@ export default function Category() {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((category, i) => (
+                {categories && categories.map((category, i) => (
                   <tr key={category._id} className="odd">
                     <td className="text-center">{i + 1}</td>
                     <td>
@@ -202,15 +202,15 @@ export default function Category() {
               </tbody>
             </Table>
           </Card.Body>
-          <Card.Footer>
-            {resultPerPage < filteredCategoryCount && (
+          {resultPerPage < filteredCategoryCount && (
+            <Card.Footer>
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            )}
-          </Card.Footer>
+            </Card.Footer>
+          )}
         </Card>
       )}
       <ToastContainer />

@@ -32,7 +32,8 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    return subCat.category._id === categoryId;
+    if(subCat.category)
+      return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -82,7 +83,7 @@ export default function EditProductModel(props) {
           throw location.error;
         }
 
-        setProductImage("location");
+        setProductImage(location);
         setTimeout(() => {
           setUploadPercentage(0);
         }, 1000);
@@ -119,26 +120,28 @@ export default function EditProductModel(props) {
             headers: { Authorization: token },
           }
         );
-        console.log("edit product data", data);
+        // console.log("edit product data", res1.data, res2.data, data);
 
         const product = data.product;
         setName(product.name);
         setDescription(product.description);
         setStock(product.stock);
         setAmount(product.amount);
-        setCategory(product.category._id);
-        setSubCategory(product.sub_category._id);
+        if(product.category) setCategory(product.category._id);
+        if(product.sub_category) setSubCategory(product.sub_category._id);
         setProductImage(product.product_images);
-        setPreview(category.product_images);
-        setCategories(res1.data.categories);
-        setSubCategories(res2.data.subCategories);
+        setPreview(product.product_images);
+
+        console.log(res1.data.categories, res2.data.subCategories);
+        setCategories([...res1.data.categories]);
+        setSubCategories([...res2.data.subCategories]);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
           payload: getError(err),
         });
-        toast.error(getError(error), {
+        toast.error(getError(err), {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       }
@@ -191,8 +194,6 @@ export default function EditProductModel(props) {
     }
   };
 
-  // console.log("category", category, sub_category);
-
   return (
     <Modal
       {...props}
@@ -207,8 +208,7 @@ export default function EditProductModel(props) {
       </Modal.Header>
       <Modal.Body>
         <Container className="small-container">
-          <img src={preview} width={200} height={200}></img>
-
+          <img src={preview} alt="" width={"200px"} height={"200px"} />
           <Form>
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
@@ -307,7 +307,7 @@ export default function EditProductModel(props) {
               {uploadPercentage > 0 && (
                 <ProgressBar
                   now={uploadPercentage}
-                  active
+                  active="true"
                   label={`${uploadPercentage}%`}
                 />
               )}

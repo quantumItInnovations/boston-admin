@@ -69,7 +69,7 @@ export default function EditCategoryModel(props) {
           throw location.error;
         }
 
-        setCategoryImage("location");
+        setCategoryImage(location);
         setTimeout(() => {
           setUploadPercentage(0);
         }, 1000);

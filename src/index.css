@@ -18,6 +18,10 @@ code {
     monospace;
 }
 
+a {
+  text-decoration: none;
+}
+
 #msg-container {
   text-align: center;
 }
@@ -89,6 +93,7 @@ td {
   border: 1px solid rgba(0, 0, 0, 0.8);
   border-left: 0;
 }
+
 .p-bold {
   margin: 1rem;
   color: rgba(0, 0, 0, 0.8);
@@ -153,6 +158,7 @@ td {
 .card-title {
   display: inline-block;
 }
+
 .card-tools {
   float: right;
   cursor: pointer;
@@ -215,16 +221,42 @@ td {
 table.table {
   margin-bottom: 0;
 }
+
 .table-title {
   font-size: 1.2rem;
   font-weight: 500;
 }
+
 .search-box {
   width: 100%;
 }
 
+.login-page {
+  background-color: #e9ecef;
+}
+
+.login-box {
+  width: 90%;
+}
+
+.login-logo,
+.register-logo {
+  font-size: 2.1rem;
+  font-weight: 300;
+  margin-bottom: 0.9rem;
+  text-align: center;
+}
+
+.login-logo a {
+  color: #495057;
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
+  .login-box {
+    width: 360px;
+  }
+
   .search-box {
     width: 50%;
   }
@@ -239,6 +271,7 @@ table.table {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {}
+
 /* --------- Not required ----------- */
 /*
 #small-container {

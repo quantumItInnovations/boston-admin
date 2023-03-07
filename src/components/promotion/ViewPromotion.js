@@ -7,19 +7,14 @@ import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
-import EditSubCategoryModel from "./EditSubCategory.js";
-import ProductTable from "./ProductTable";
+import EditPromotionModel from "./EditPromotion";
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        subCategory: action.payload.subCategory,
-      };
+      return { ...state, loading: false, promotion: action.payload.promotion };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
 
@@ -28,13 +23,13 @@ const reducer = (state, action) => {
   }
 };
 
-const ViewSubCategory = () => {
+const ViewPromotion = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // subCategory/:id
+  const { id } = useParams(); // promotion/:id
 
   const [modalShow, setModalShow] = useState(false);
-  const [{ loading, error, subCategory }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, promotion }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -45,12 +40,12 @@ const ViewSubCategory = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/subCategory/${id}`,
+          `http://52.91.135.217:5000/api/promotion/${id}`,
           {
             headers: { Authorization: token },
           }
         );
-        console.log(data);
+        console.log("promotion", data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -81,7 +76,8 @@ const ViewSubCategory = () => {
         <>
           <Card>
             <Card.Header>
-              <Card.Title>{subCategory.name} Details</Card.Title>
+              <Card.Title>Promotion Details</Card.Title>
+
               <div className="card-tools">
                 <i
                   className="fa fa-edit"
@@ -92,55 +88,40 @@ const ViewSubCategory = () => {
             </Card.Header>
             <Card.Body>
               <Row className="mb-3">
-                <Col md={4}>
-                  <img
-                    src={subCategory.sub_category_image}
-                    alt=""
-                    width={"200px"}
-                    height={"200px"}
-                  />
+                <Col md={6}>
+                  <p className="mb-0">
+                    <strong>Product</strong>
+                  </p>
+                  <p>
+                    {promotion.product ? (
+                      promotion.product.name
+                    ) : (
+                      <b>Promotion product not found</b>
+                    )}
+                  </p>
                 </Col>
-                <Col md={8}>
-                  <Row>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Name</strong>
-                      </p>
-                      <p>{subCategory.name}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Description</strong>
-                      </p>
-                      <p>{subCategory.description}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Category</strong>
-                      </p>
-                      <p>{subCategory.category ? subCategory.category.name : <b>Category not set</b>}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Created At</strong>
-                      </p>
-                      <p>{getDateTime(subCategory.createdAt)}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Last Update</strong>
-                      </p>
-                      <p>{getDateTime(subCategory.updatedAt)}</p>
-                    </Col>
-                  </Row>
+                <Col md={6}>
+                  <p className="mb-0">
+                    <strong>Updated Price</strong>
+                  </p>
+                  <p>{promotion.updated_price}</p>
                 </Col>
-              </Row>
-              <Row>
-                <ProductTable id={id} />
+                <Col md={6}>
+                  <p className="mb-0">
+                    <strong>Created At</strong>
+                  </p>
+                  <p>{getDateTime(promotion.createdAt)}</p>
+                </Col>
+                <Col md={6}>
+                  <p className="mb-0">
+                    <strong>Last Update</strong>
+                  </p>
+                  <p>{getDateTime(promotion.updatedAt)}</p>
+                </Col>
               </Row>
             </Card.Body>
           </Card>
-          <EditSubCategoryModel
+          <EditPromotionModel
             show={modalShow}
             onHide={() => setModalShow(false)}
           />
@@ -151,4 +132,4 @@ const ViewSubCategory = () => {
   );
 };
 
-export default ViewSubCategory;
+export default ViewPromotion;
