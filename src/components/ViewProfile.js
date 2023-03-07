@@ -1,13 +1,12 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
-import { Store } from "../../Store";
-import { getError } from "../../utils";
-import { useParams } from "react-router-dom";
+import { Store } from "../Store";
+import { getError } from "../utils";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
-import MessageBox from "../layout/MessageBox";
-import EditUserModel from "./EditUser.js";
+import LoadingBox from "./layout/LoadingBox";
+import MessageBox from "./layout/MessageBox";
+// import EditUserModel from "./EditUser.js";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -23,12 +22,11 @@ const reducer = (state, action) => {
   }
 };
 
-const ViewUser = () => {
+const ViewProfile = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // user/:id
 
-  const [modalShow, setModalShow] = useState(false);
+//   const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, user }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -40,7 +38,7 @@ const ViewUser = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/admin/user/${id}`,
+          `http://52.91.135.217:5000/api/user/user-profile`,
           {
             headers: { Authorization: token },
           }
@@ -59,7 +57,7 @@ const ViewUser = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [token]);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -76,14 +74,14 @@ const ViewUser = () => {
         <>
           <Card>
             <Card.Header>
-              <Card.Title>{`${user.firstname} ${user.lastname}`} Details</Card.Title>
-              <div className="card-tools">
+              <Card.Title>{`${user.firstname} ${user.lastname}`}</Card.Title>
+              {/* <div className="card-tools">
                 <i
                   className="fa fa-edit"
                   style={{ color: "blue" }}
                   onClick={() => setModalShow(true)}
                 ></i>
-              </div>
+              </div> */}
             </Card.Header>
             <Card.Body>
               <Row>
@@ -100,7 +98,6 @@ const ViewUser = () => {
                   <p>{user.lastname}</p>
                 </Col>
                 <Col md={4}>
-                  {" "}
                   <p className="mb-0">
                     <strong>Email</strong>
                   </p>
@@ -139,8 +136,6 @@ const ViewUser = () => {
               </Row>
             </Card.Body>
           </Card>
-
-          <EditUserModel show={modalShow} onHide={() => setModalShow(false)} />
           <ToastContainer />
         </>
       )}
@@ -148,4 +143,4 @@ const ViewUser = () => {
   );
 };
 
-export default ViewUser;
+export default ViewProfile;

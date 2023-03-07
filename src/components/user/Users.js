@@ -158,7 +158,7 @@ export default function Users() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, i) => (
+                {users && users.map((user, i) => (
                   <tr key={user._id} className="odd">
                     <td className="text-center">{i + 1}</td>
                     {/* <td>
@@ -230,15 +230,15 @@ export default function Users() {
               </tbody>
             </Table>
           </Card.Body>
-          <Card.Footer>
-            {resultPerPage < filteredUserCount && (
+          {resultPerPage < filteredUserCount && (
+            <Card.Footer>
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            )}
-          </Card.Footer>
+            </Card.Footer>
+          )}
         </Card>
       )}
       <ToastContainer />

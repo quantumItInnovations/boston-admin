@@ -13,7 +13,7 @@ export default function Header() {
         <Navbar className="header">
           <Container>
             <Nav className="me-auto">
-              <Link to="/admin/home" className="nav-link header-link">
+              <Link to="/admin/dashboard" className="nav-link header-link">
                 Home
               </Link>
             </Nav>

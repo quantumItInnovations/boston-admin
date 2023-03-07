@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 // import logo from "./images/dv.svg";
-import { BsCaretRightFill } from "react-icons/bs";
 import "./SideNavBar.css";
 
 const linkList = [
@@ -41,9 +40,7 @@ export default function SideNavbar() {
           <div
             className="toggle-sidebar"
             onClick={() => setExpendState(!isExpanded)}
-          >
-            <BsCaretRightFill />
-          </div>
+          ></div>
           <div className="nav-upper">
             <div
               className={`nav-heading ${

@@ -9,6 +9,8 @@ import Footer from "./components/layout/Footer";
 import SideNavbar from "./components/layout/SideNavBar";
 import NotFound from "./components/layout/NotFound";
 
+import ViewProfile from "./components/ViewProfile";
+
 import Category from "./components/category/Category";
 import AddCategory from "./components/category/AddCategory";
 import ViewCategory from "./components/category/ViewCategory";
@@ -23,12 +25,14 @@ import ViewProduct from "./components/product/ViewProduct";
 
 import Promotions from "./components/promotion/Promotion";
 import AddPromotion from "./components/promotion/AddPromotion";
+import ViewPromotion from "./components/promotion/ViewPromotion";
 
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
 
 import AdminLoginScreen from "./components/AdminLoginScreen";
 import Dashboard from "./components/layout/Dashboard";
+import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
 
 const Children = ({ child }) => (
   <AdminProtectedRoute>{child}</AdminProtectedRoute>
@@ -51,10 +55,22 @@ function App() {
           <div style={{ width: "100%" }}>
             <Header />
             <Routes>
-              <Route path="/" element={<AdminLoginScreen />} />
+              <Route
+                path="/"
+                element={
+                  <UnprotectedRoute>
+                    <AdminLoginScreen />
+                  </UnprotectedRoute>
+                }
+              />
               <Route
                 path="/admin/dashboard"
                 element={<Children child={<Dashboard />} />}
+              />
+
+              <Route
+                path="/view-profile"
+                element={<Children child={<ViewProfile />} />}
               />
 
               <Route
@@ -117,6 +133,10 @@ function App() {
               <Route
                 path="/admin/promotion/create"
                 element={<Children child={<AddPromotion />} />}
+              />
+              <Route
+                path="/admin/view/promotion/:id"
+                element={<Children child={<ViewPromotion />} />}
               />
 
               <Route path="*" element={<NotFound />} />

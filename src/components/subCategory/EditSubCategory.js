@@ -69,7 +69,7 @@ export default function EditSubCategoryModel(props) {
           throw location.error;
         }
 
-        setSubCategoryImage("location");
+        setSubCategoryImage(location);
         setTimeout(() => {
           setUploadPercentage(0);
         }, 1000);
@@ -104,7 +104,7 @@ export default function EditSubCategoryModel(props) {
         const subCategory = data.subCategory;
         setName(subCategory.name);
         setDescription(subCategory.description);
-        setCategory(subCategory.category);
+        if(subCategory.category) setCategory(subCategory.category._id);
         setSubCategoryImage(subCategory.sub_category_image);
         setPreview(subCategory.sub_category_image);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
@@ -200,7 +200,7 @@ export default function EditSubCategoryModel(props) {
               <Form.Label className="mr-3">Category</Form.Label>
               <Form.Select
                 aria-label="Select Category"
-                value={category._id}
+                value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option>Select Category</option>

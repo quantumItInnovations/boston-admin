@@ -124,7 +124,7 @@ export default function Promotions() {
                     <tr key={promotion._id} className="odd">
                       <td className="text-center">{i + 1}</td>
                       <td className="dtr-control sorting_1" tabIndex={0}>
-                        {promotion.product.name}
+                        {promotion.product ? promotion.product.name : <b>Promotion product not found</b>}
                       </td>
                       <td>{promotion.updated_price}</td>
                       <td>

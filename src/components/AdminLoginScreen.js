@@ -1,6 +1,14 @@
 import React, { useReducer, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
@@ -65,61 +73,59 @@ export default function AdminLoginScreen() {
   };
 
   return (
-    <div className="hold-transition login-page">
-      <div className="login-box">
-        <div className="login-logo">
-          <Link to="/">
-            <b>Boston George</b>
-          </Link>
-        </div>
-        <div className="card">
-          <div className="card-body login-card-body">
-            <p className="login-box-msg">Sign in to start your session</p>
-            <Form onSubmit={submitHandler}>
-              <Form.Group controlId="text" className="input-group mb-3">
-                <Form.Control
-                  placeholder="Username"
-                  type="text"
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-envelope" />
-                  </div>
-                </div>
-              </Form.Group>
-              <Form.Group controlId="password" className="input-group mb-3">
-                <Form.Control
-                  placeholder="Password"
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-lock" />
-                  </div>
-                </div>
-              </Form.Group>
-              <div className="row">
-                <div className="col-8">
-                  <div className="icheck-primary">
-                    <input type="checkbox" id="remember" />
-                    <label htmlFor="remember">Remember Me</label>
-                  </div>
-                </div>
-                <div className="col-4">
-                  <Button type="submit" className="btn btn-primary btn-block">
-                    {loading ? <LoadingBox></LoadingBox> : "Sign In"}
-                  </Button>
-                </div>
-              </div>
-            </Form>
-            <ToastContainer />
-          </div>
-        </div>
+    <Container fluid className="p-0 vh-100 f-center flex-column login-page">
+      <div className="login-logo">
+        <Link to="/" className="text-center">
+          <b>Boston George</b>
+        </Link>
       </div>
-    </div>
+
+      <Card className="login-box">
+        <Card.Body>
+          <p className="text-center">Sign in to start your session</p>
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="text" className="input-group mb-3">
+              <Form.Control
+                placeholder="Username"
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <InputGroup.Text>
+                <span className="fas fa-envelope" />
+              </InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="password" className="input-group mb-3">
+              <Form.Control
+                placeholder="Password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <InputGroup.Text>
+                <span className="fas fa-lock" />
+              </InputGroup.Text>
+            </Form.Group>
+            <Row>
+              <Col sm={7} className="mb-sm-0 mb-3">
+                <Form.Group controlId="remember">
+                  <Form.Check
+                    type="checkbox"
+                    id="default-checkbox"
+                    label="Remember Me"
+                  />
+                </Form.Group>
+              </Col>
+              <Col sm={5}>
+                <Button type="submit" className="float-sm-end">
+                  {loading ? <LoadingBox></LoadingBox> : "Sign In"}
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+          <ToastContainer />
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }

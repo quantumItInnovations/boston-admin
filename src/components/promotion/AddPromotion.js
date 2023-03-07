@@ -31,7 +31,8 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    return subCat.category._id === categoryId;
+    if(subCat.category)
+      return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -40,10 +41,11 @@ function getAllProduct(products, subCategoryId, categoryId) {
   if (!categoryId || !subCategoryId) return [];
 
   const productList = products.filter((prod) => {
-    return (
-      prod.sub_category._id === subCategoryId &&
-      prod.category._id === categoryId
-    );
+    if(prod.sub_category && prod.category)
+      return (
+        prod.sub_category._id === subCategoryId &&
+        prod.category._id === categoryId
+      );
   });
   return productList;
 }
@@ -111,7 +113,7 @@ export default function AddPromotion() {
       }
     };
     fetchData();
-  }, [token, category, subCategory]);
+  }, [token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -210,7 +212,6 @@ export default function AddPromotion() {
                         >
                           <option>Select Sub Category</option>
                           {subCategories &&
-                            category &&
                             getAllSubCategory(subCategories, category).map(
                               (subCat) => (
                                 <option key={subCat._id} value={subCat._id}>

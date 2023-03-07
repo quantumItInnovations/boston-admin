@@ -91,6 +91,7 @@ export default function Products() {
             headers: { Authorization: token },
           }
         );
+        console.log("res", curPage, res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -160,7 +161,7 @@ export default function Products() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product, i) => (
+                {products && products.map((product, i) => (
                   <tr key={product._id} className="odd">
                     <td className="text-center">{i + 1}</td>
                     <td>
@@ -186,8 +187,8 @@ export default function Products() {
                         <ImCross className="red" />
                       )}
                     </td>
-                    <td>{product.category.name}</td>
-                    <td>{product.sub_category.name}</td>
+                    <td>{product.category ? product.category.name : <b>Category not set</b>}</td>
+                    <td>{product.sub_category ? product.sub_category.name : <b>Sub category not set</b>}</td>
                     <td>{product.description}</td>
                     <td>
                       <Button
@@ -214,15 +215,15 @@ export default function Products() {
               </tbody>
             </Table>
           </Card.Body>
-          <Card.Footer>
-            {resultPerPage < filteredProductCount && (
+          {resultPerPage < filteredProductCount && (
+            <Card.Footer>
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            )}
-          </Card.Footer>
+            </Card.Footer>
+          )}
         </Card>
       )}
       <ToastContainer />

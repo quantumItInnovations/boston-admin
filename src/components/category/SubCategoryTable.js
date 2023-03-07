@@ -175,7 +175,7 @@ export default function SubCategoryTable({ id }) {
                 </tr>
               </thead>
               <tbody>
-                {subCategories.map((subCategory, i) => (
+                {subCategories && subCategories.map((subCategory, i) => (
                   <tr key={subCategory._id} className="odd">
                     <td className="text-center">{i + 1}</td>
                     <td>
@@ -222,15 +222,15 @@ export default function SubCategoryTable({ id }) {
               </tbody>
             </Table>
           </Card.Body>
-          <Card.Footer>
-            {resultPerPage < filteredSubCategoryCount && (
+          {resultPerPage < filteredSubCategoryCount && (
+            <Card.Footer>
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            )}
-          </Card.Footer>
+            </Card.Footer>
+          )}
         </Card>
       )}
       <ToastContainer />
