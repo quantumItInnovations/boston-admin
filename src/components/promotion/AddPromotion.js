@@ -31,8 +31,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if(subCat.category)
-      return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -41,7 +40,7 @@ function getAllProduct(products, subCategoryId, categoryId) {
   if (!categoryId || !subCategoryId) return [];
 
   const productList = products.filter((prod) => {
-    if(prod.sub_category && prod.category)
+    if (prod.sub_category && prod.category)
       return (
         prod.sub_category._id === subCategoryId &&
         prod.category._id === categoryId
@@ -119,6 +118,8 @@ export default function AddPromotion() {
     e.preventDefault();
 
     try {
+      setLoadingUpdate(true);
+
       const { data } = await axios.post(
         "http://52.91.135.217:5000/api/admin/promotion/create",
         {
@@ -183,7 +184,7 @@ export default function AddPromotion() {
                 </div>
                 {/* /.card-header */}
                 {/* form start */}
-                <Form>
+                <Form onSubmit={submitHandler}>
                   <div className="card-body">
                     {categories && (
                       <Form.Group className="mb-3">
@@ -257,9 +258,7 @@ export default function AddPromotion() {
                   <div className="card-footer">
                     <Button
                       type="submit"
-                      onClick={(e) => {
-                        submitHandler(e);
-                      }}
+                      disabled={loadingUpdate ? true : false}
                     >
                       Submit
                     </Button>

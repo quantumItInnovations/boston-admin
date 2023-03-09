@@ -40,6 +40,12 @@ export default function AddSubCategory() {
   const [category, setCategory] = useState("");
   const [sub_category_image, setSubCategoryImage] = useState("");
 
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setCategory("");
+    setSubCategoryImage("");  
+  }
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const uploadPercentageHandler = (per) => {
@@ -72,8 +78,15 @@ export default function AddSubCategory() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (!category) {
+      toast.warning("Please select a category", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
+      setLoadingUpdate(true);
+
       const { data } = await axios.post(
         "http://52.91.135.217:5000/api/admin/subCategory/create",
         {
@@ -94,10 +107,11 @@ export default function AddSubCategory() {
         toast.success("Sub Category Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/sub-category");
         }, 3000);
-
+        
         setLoadingUpdate(false);
       } else {
         toast.error(data.error.message, {
@@ -172,7 +186,7 @@ export default function AddSubCategory() {
                 </div>
                 {/* /.card-header */}
                 {/* form start */}
-                <Form>
+                <Form onSubmit={submitHandler}>
                   <div className="card-body">
                     <Form.Group className="mb-3" controlId="name">
                       <Form.Label>Name</Form.Label>
@@ -211,10 +225,11 @@ export default function AddSubCategory() {
                       <Form.Label>Upload Image</Form.Label>
                       <Form.Control
                         type="file"
-                        accept="image/png, image/jpeg image/jpg"
+                        accept="image/png image/jpeg image/jpg"
                         onChange={(e) => {
                           uploadFileHandler(e);
                         }}
+                        required
                       />
                       {uploadPercentage > 0 && (
                         <ProgressBar
@@ -229,9 +244,7 @@ export default function AddSubCategory() {
                   <div className="card-footer">
                     <Button
                       type="submit"
-                      onClick={(e) => {
-                        submitHandler(e);
-                      }}
+                      disabled={loadingUpdate ? true : false}
                     >
                       Submit
                     </Button>
