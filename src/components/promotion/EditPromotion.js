@@ -87,9 +87,12 @@ export default function EditPromotionModel(props) {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axios.get("http://52.91.135.217:5000/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res1 = await axios.get(
+          "http://52.91.135.217:5000/api/category/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const res2 = await axios.get(
           "http://52.91.135.217:5000/api/subCategory/all",
@@ -98,9 +101,12 @@ export default function EditPromotionModel(props) {
           }
         );
 
-        const res3 = await axios.get("http://52.91.135.217:5000/api/product/all", {
-          headers: { Authorization: token },
-        });
+        const res3 = await axios.get(
+          "http://52.91.135.217:5000/api/product/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const { data } = await axios.get(
           `http://52.91.135.217:5000/api/promotion/${id}`,
@@ -188,93 +194,11 @@ export default function EditPromotionModel(props) {
           Edit Promotion
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container className="small-container">
-          {/* <img src={preview} width={200} height={200}></img> */}
+      <Form onSubmit={submitHandler}>
+        <Modal.Body>
+          <Container className="small-container">
+            {/* <img src={preview} width={200} height={200}></img> */}
 
-          <Form>
-            {categories && (
-              <Form.Group className="mb-3">
-                <Form.Label className="mr-3">Category</Form.Label>
-                <Form.Select
-                  aria-label="Select Category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <option>Select Category</option>
-                  {categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            )}
-            {category && (
-              <Form.Group className="mb-3">
-                <Form.Label className="mr-3">Sub Category</Form.Label>
-                <Form.Select
-                  aria-label="Select Sub Category"
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
-                >
-                  <option>Select Sub Category</option>
-                  {subCategories &&
-                    getAllSubCategory(subCategories, category).map((subCat) => (
-                      <option key={subCat._id} value={subCat._id}>
-                        {subCat.name}
-                      </option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
-            )}
-            {subCategory && (
-              <Form.Group className="mb-3">
-                <Form.Label className="mr-3">Product</Form.Label>
-                <Form.Select
-                  aria-label="Select Product"
-                  value={product}
-                  onChange={(e) => setProduct(e.target.value)}
-                >
-                  <option>Select Product</option>
-                  {products &&
-                    subCategory &&
-                    getAllProduct(products, subCategory, category).map(
-                      (prod) => (
-                        <option key={prod._id} value={prod._id}>
-                          {prod.name}
-                        </option>
-                      )
-                    )}
-                </Form.Select>
-              </Form.Group>
-            )}
-            {products && (
-              <Form.Group className="mb-3">
-                <Form.Label className="mr-3">Product</Form.Label>
-                <Form.Select
-                  aria-label="Select Product"
-                  value={product._id}
-                  onChange={(e) => setProduct(e.target.value)}
-                >
-                  <option>Select Product</option>
-                  {/* {products &&
-                    subCategory &&
-                    getAllProduct(products, subCategory, category).map(
-                      (prod) => (
-                        <option key={prod._id} value={prod._id}>
-                          {prod.name}
-                        </option>
-                      )
-                    )} */}
-                    {products.map(prod => (
-                        <option key={prod._id} value={prod}>
-                        {prod.name}
-                      </option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
-            )}
             <Form.Group className="mb-3" controlId="updated_price">
               <Form.Label>Updated Price</Form.Label>
               <Form.Control
@@ -283,25 +207,23 @@ export default function EditPromotionModel(props) {
                 required
               />
             </Form.Group>
-          </Form>
-          <ToastContainer />
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          type="submit"
-          onClick={(e) => {
-            submitHandler(e);
-          }}
-        >
-          Submit
-        </Button>
-        {loadingUpdate && <LoadingBox></LoadingBox>}
-      </Modal.Footer>
+            <ToastContainer />
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            disabled={loadingUpdate ? true : false}
+          >
+            Submit
+          </Button>
+          {loadingUpdate && <LoadingBox></LoadingBox>}
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

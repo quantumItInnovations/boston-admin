@@ -136,9 +136,9 @@ export default function EditUserModel(props) {
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">Edit User</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container className="small-container">
-          <Form>
+      <Form onSubmit={submitHandler}>
+        <Modal.Body>
+          <Container className="small-container">
             {/* <Form.Group className="mb-3" controlId="name">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -192,25 +192,23 @@ export default function EditUserModel(props) {
                 required
               />
             </Form.Group>
-          </Form>
-          <ToastContainer />
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          type="submit"
-          onClick={(e) => {
-            submitHandler(e);
-          }}
-        >
-          Submit
-        </Button>
-        {loadingUpdate && <LoadingBox></LoadingBox>}
-      </Modal.Footer>
+            <ToastContainer />
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            disabled={loadingUpdate ? true : false}
+          >
+            Submit
+          </Button>
+          {loadingUpdate && <LoadingBox></LoadingBox>}
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

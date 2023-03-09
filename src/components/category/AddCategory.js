@@ -24,6 +24,10 @@ export default function AddCategory() {
   };
 
   const uploadFileHandler = async (e, type) => {
+    if(!e.target.files[0]) {
+      setCategoryImage(null);
+      return;
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadImage(
@@ -47,10 +51,16 @@ export default function AddCategory() {
     }
   };
 
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setCategoryImage("");
+  }
   const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
+      setLoadingUpdate(true);
       const { data } = await axios.post(
         "http://52.91.135.217:5000/api/admin/category/create",
         {
@@ -70,6 +80,7 @@ export default function AddCategory() {
         toast.success("Category Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/category");
         }, 3000);
@@ -116,7 +127,7 @@ export default function AddCategory() {
                 </div>
                 {/* /.card-header */}
                 {/* form start */}
-                <Form>
+                <Form onSubmit={submitHandler}>
                   <div className="card-body">
                     <Form.Group className="mb-3" controlId="name">
                       <Form.Label>Name</Form.Label>
@@ -140,10 +151,11 @@ export default function AddCategory() {
                       <Form.Label>Upload Image</Form.Label>
                       <Form.Control
                         type="file"
-                        accept="image/png, image/jpeg image/jpg"
+                        accept="image/png image/jpeg image/jpg"
                         onChange={(e) => {
                           uploadFileHandler(e);
                         }}
+                        required
                       />
                       {uploadPercentage > 0 && (
                         <ProgressBar
@@ -158,9 +170,7 @@ export default function AddCategory() {
                   <div className="card-footer">
                     <Button
                       type="submit"
-                      onClick={(e) => {
-                        submitHandler(e);
-                      }}
+                      disabled={loadingUpdate ? true : false}
                     >
                       Submit
                     </Button>

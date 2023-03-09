@@ -30,8 +30,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if(subCat.category)
-      return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -57,6 +56,15 @@ export default function AddProduct() {
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
 
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setAmount("");
+    setStock("");
+    setProductImage("");
+    setCategory("");
+    setSubCategory("");
+  };
   const stockHandler = (e) => {
     e.persist();
     console.log(e.target.value);
@@ -70,6 +78,10 @@ export default function AddProduct() {
   };
 
   const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      setProductImage(null);
+      return;
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadImage(
@@ -95,8 +107,21 @@ export default function AddProduct() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if(!category) {
+      toast.warning("Please select a category.", {
+        position: toast.POSITION.TOP_CENTER
+      })
+      return;
+    } 
+    if(!sub_category) {
+      toast.warning("Please select a sub category.", {
+        position: toast.POSITION.TOP_CENTER
+      })
+      return;
+    }
     try {
+      setLoadingUpdate(true);
+
       const { data } = await axios.post(
         "http://52.91.135.217:5000/api/admin/product/create",
         {
@@ -120,6 +145,7 @@ export default function AddProduct() {
         toast.success("Product Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/products");
         }, 3000);
@@ -179,7 +205,7 @@ export default function AddProduct() {
       }
     };
     fetchData();
-  }, [token, category]);
+  }, [token]);
 
   return (
     <div className="wrapper">
@@ -208,125 +234,131 @@ export default function AddProduct() {
                 </div>
                 {/* /.card-header */}
                 {/* form start */}
-                <Form>
-                  <div className="card-body">
-                    <Form.Group className="mb-3" controlId="name">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="description">
-                      <Form.Label>Description</Form.Label>
-                      <Form.Control
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="amount">
-                      <Form.Label>Amount</Form.Label>
-                      <Form.Control
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
+                {loading ? (
+                  <div className="d-flex">
+                    <LoadingBox />
+                  </div>
+                ) : (
+                  <Form onSubmit={submitHandler}>
+                    <div className="card-body">
+                      <Form.Group className="mb-3" controlId="name">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="amount">
+                        <Form.Label>Amount</Form.Label>
+                        <Form.Control
+                          type="number"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="stock">
-                      <Form.Label>Stock</Form.Label>
-                      <br></br>
-                      <Form.Check
-                        inline
-                        label="In-Stock"
-                        value="true"
-                        type="radio"
-                        id="inline-radio-1"
-                        onChange={stockHandler}
-                        checked={stock === "true"}
-                      />
-                      <Form.Check
-                        inline
-                        label="Out-Of-Stock"
-                        value="false"
-                        type="radio"
-                        id="inline-radio-2"
-                        onChange={stockHandler}
-                        checked={stock === "false"}
-                      />
-                    </Form.Group>
+                      <Form.Group className="mb-3" controlId="stock">
+                        <Form.Label>Stock</Form.Label>
+                        <br></br>
+                        <Form.Check
+                          inline
+                          label="In-Stock"
+                          value="true"
+                          type="radio"
+                          id="inline-radio-1"
+                          onChange={stockHandler}
+                          checked={stock === "true"}
+                        />
+                        <Form.Check
+                          inline
+                          label="Out-Of-Stock"
+                          value="false"
+                          type="radio"
+                          id="inline-radio-2"
+                          onChange={stockHandler}
+                          checked={stock === "false"}
+                        />
+                      </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label className="mr-3">Category</Form.Label>
-                      <Form.Select
-                        aria-label="Select Category"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                      >
-                        <option>Select Category</option>
-                        {categories &&
-                          categories.map((cat) => (
-                            <option key={cat._id} value={cat._id}>
-                              {cat.name}
-                            </option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
-
-                    {category && (
                       <Form.Group className="mb-3">
-                        <Form.Label className="mr-3">Sub Category</Form.Label>
+                        <Form.Label className="mr-3">Category</Form.Label>
                         <Form.Select
-                          aria-label="Select Sub Category"
-                          value={sub_category}
-                          onChange={(e) => setSubCategory(e.target.value)}
+                          aria-label="Select Category"
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
                         >
-                          <option>Select Sub Category</option>
-                          {subCategories &&
-                            category &&
-                            getAllSubCategory(subCategories, category).map(
-                              (subCat) => (
-                                <option key={subCat._id} value={subCat._id}>
-                                  {subCat.name}
-                                </option>
-                              )
-                            )}
+                          <option>Select Category</option>
+                          {categories &&
+                            categories.map((cat) => (
+                              <option key={cat._id} value={cat._id}>
+                                {cat.name}
+                              </option>
+                            ))}
                         </Form.Select>
                       </Form.Group>
-                    )}
-                    <Form.Group className="mb-3" controlId="product_image">
-                      <Form.Label>Upload Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/png, image/jpeg image/jpg"
-                        onChange={(e) => {
-                          uploadFileHandler(e);
-                        }}
-                      />
-                      {uploadPercentage > 0 && (
-                        <ProgressBar
-                          now={uploadPercentage}
-                          active
-                          label={`${uploadPercentage}%`}
-                        />
+
+                      {category && (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mr-3">Sub Category</Form.Label>
+                          <Form.Select
+                            aria-label="Select Sub Category"
+                            value={sub_category}
+                            onChange={(e) => setSubCategory(e.target.value)}
+                          >
+                            <option>Select Sub Category</option>
+                            {subCategories &&
+                              category &&
+                              getAllSubCategory(subCategories, category).map(
+                                (subCat) => (
+                                  <option key={subCat._id} value={subCat._id}>
+                                    {subCat.name}
+                                  </option>
+                                )
+                              )}
+                          </Form.Select>
+                        </Form.Group>
                       )}
-                    </Form.Group>
-                  </div>
-                  {/* /.card-body */}
-                  <div className="card-footer">
-                    <Button
-                      type="submit"
-                      onClick={(e) => {
-                        submitHandler(e);
-                      }}
-                    >
-                      Submit
-                    </Button>
-                    {loadingUpdate && <LoadingBox></LoadingBox>}
-                  </div>
-                </Form>
+                      <Form.Group className="mb-3" controlId="product_image">
+                        <Form.Label>Upload Image</Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept="image/png image/jpeg image/jpg"
+                          onChange={(e) => {
+                            uploadFileHandler(e);
+                          }}
+                          required
+                        />
+                        {uploadPercentage > 0 && (
+                          <ProgressBar
+                            now={uploadPercentage}
+                            active
+                            label={`${uploadPercentage}%`}
+                          />
+                        )}
+                      </Form.Group>
+                    </div>
+                    {/* /.card-body */}
+                    <div className="card-footer">
+                      <Button
+                        type="submit"
+                        disabled={loadingUpdate ? true : false}
+                      >
+                        Submit
+                      </Button>
+                      {loadingUpdate && <LoadingBox></LoadingBox>}
+                    </div>
+                  </Form>
+                )}
                 <ToastContainer />
               </div>
               {/* /.card */}

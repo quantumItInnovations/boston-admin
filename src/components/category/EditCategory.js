@@ -58,6 +58,10 @@ export default function EditCategoryModel(props) {
   };
 
   const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      setCategoryImage(null);
+      return;
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadImage(
@@ -79,6 +83,12 @@ export default function EditCategoryModel(props) {
         position: toast.POSITION.BOTTOM_CENTER,
       });
     }
+  };
+
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setCategoryImage("");
   };
 
   useEffect(() => {
@@ -115,7 +125,12 @@ export default function EditCategoryModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (!category_image) {
+      toast.warning("Please choose a file.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
@@ -166,11 +181,11 @@ export default function EditCategoryModel(props) {
           Edit Category
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container className="small-container">
-          <img src={preview} width={200} height={200}></img>
+      <Form onSubmit={submitHandler}>
+        <Modal.Body>
+          <Container className="small-container">
+            <img src={preview} width={200} height={200}></img>
 
-          <Form>
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -206,25 +221,23 @@ export default function EditCategoryModel(props) {
                 />
               )}
             </Form.Group>
-          </Form>
-          <ToastContainer />
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          type="submit"
-          onClick={(e) => {
-            submitHandler(e);
-          }}
-        >
-          Submit
-        </Button>
-        {loadingUpdate && <LoadingBox></LoadingBox>}
-      </Modal.Footer>
+            <ToastContainer />
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            disabled={loadingUpdate ? true : false}
+          >
+            Submit
+          </Button>
+          {loadingUpdate && <LoadingBox></LoadingBox>}
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

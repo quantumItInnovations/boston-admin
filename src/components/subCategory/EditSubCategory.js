@@ -58,6 +58,10 @@ export default function EditSubCategoryModel(props) {
   };
 
   const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      setSubCategoryImage(null);
+      return;
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadImage(
@@ -104,7 +108,7 @@ export default function EditSubCategoryModel(props) {
         const subCategory = data.subCategory;
         setName(subCategory.name);
         setDescription(subCategory.description);
-        if(subCategory.category) setCategory(subCategory.category._id);
+        if (subCategory.category) setCategory(subCategory.category._id);
         setSubCategoryImage(subCategory.sub_category_image);
         setPreview(subCategory.sub_category_image);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
@@ -123,7 +127,12 @@ export default function EditSubCategoryModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (!sub_category_image) {
+      toast.warning("Please choose a file.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
@@ -143,12 +152,12 @@ export default function EditSubCategoryModel(props) {
 
       console.log("category update data", data);
       if (data.subCategory) {
-        dispatch({ type: "UPDATE_SUCCESS" });
         toast.success("Sub Category Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
           navigate("/admin/sub-category");
+          dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -175,11 +184,11 @@ export default function EditSubCategoryModel(props) {
           Edit Sub Category
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container className="small-container">
-          <img src={preview} width={200} height={200}></img>
+      <Form onSubmit={submitHandler}>
+        <Modal.Body>
+          <Container className="small-container">
+            <img src={preview} width={200} height={200}></img>
 
-          <Form>
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -203,7 +212,7 @@ export default function EditSubCategoryModel(props) {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option>Select Category</option>
+                <option disabled>Select Category</option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat.name} value={cat._id}>
@@ -216,7 +225,7 @@ export default function EditSubCategoryModel(props) {
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 type="file"
-                accept="image/png, image/jpeg image/jpg"
+                accept="image/png image/jpeg image/jpg"
                 onChange={(e) => {
                   uploadFileHandler(e);
                 }}
@@ -229,25 +238,23 @@ export default function EditSubCategoryModel(props) {
                 />
               )}
             </Form.Group>
-          </Form>
-          <ToastContainer />
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          type="submit"
-          onClick={(e) => {
-            submitHandler(e);
-          }}
-        >
-          Submit
-        </Button>
-        {loadingUpdate && <LoadingBox></LoadingBox>}
-      </Modal.Footer>
+            <ToastContainer />
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            disabled={loadingUpdate ? true : false}
+          >
+            Submit
+          </Button>
+          {loadingUpdate && <LoadingBox></LoadingBox>}
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

@@ -32,8 +32,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if(subCat.category)
-      return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category._id === categoryId;
   });
   return subCategoryList;
 }
@@ -127,8 +126,8 @@ export default function EditProductModel(props) {
         setDescription(product.description);
         setStock(product.stock);
         setAmount(product.amount);
-        if(product.category) setCategory(product.category._id);
-        if(product.sub_category) setSubCategory(product.sub_category._id);
+        if (product.category) setCategory(product.category._id);
+        if (product.sub_category) setSubCategory(product.sub_category._id);
         setProductImage(product.product_images);
         setPreview(product.product_images);
 
@@ -151,7 +150,12 @@ export default function EditProductModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (!product_images) {
+      toast.warning("Please choose a file.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
@@ -206,10 +210,10 @@ export default function EditProductModel(props) {
           Edit Product
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container className="small-container">
-          <img src={preview} alt="" width={"200px"} height={"200px"} />
-          <Form>
+      <Form onSubmit={submitHandler}>
+        <Modal.Body>
+          <Container className="small-container">
+            <img src={preview} alt="" width={"200px"} height={"200px"} />
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -299,7 +303,7 @@ export default function EditProductModel(props) {
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 type="file"
-                accept="image/png, image/jpeg image/jpg"
+                accept="image/png image/jpeg image/jpg"
                 onChange={(e) => {
                   uploadFileHandler(e);
                 }}
@@ -312,25 +316,23 @@ export default function EditProductModel(props) {
                 />
               )}
             </Form.Group>
-          </Form>
-          <ToastContainer />
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button
-          variant="success"
-          type="submit"
-          onClick={(e) => {
-            submitHandler(e);
-          }}
-        >
-          Submit
-        </Button>
-        {loadingUpdate && <LoadingBox></LoadingBox>}
-      </Modal.Footer>
+            <ToastContainer />
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>
+            Close
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            disabled={loadingUpdate ? true : false}
+          >
+            Submit
+          </Button>
+          {loadingUpdate && <LoadingBox></LoadingBox>}
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 }

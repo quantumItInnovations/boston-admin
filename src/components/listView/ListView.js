@@ -118,7 +118,7 @@ export default function ListView(props) {
           className="small-container"
           style={{ backgroundColor: "#f4f6f9" }}
         >
-          <Form>
+          <Form onSubmit={submitHandler}>
             <Form.Group className="mb-3" controlId="temp">
               <Form.Label>Temp</Form.Label>
               <Form.Control
