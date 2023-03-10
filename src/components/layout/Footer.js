@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <>
       {userInfo ? (
-        <Container fluid className="footer-container">
+        <Container fluid className="footer-container mt-auto">
           <footer className="text-center">
             <strong>
               Copyright © 2014-2023{" "}

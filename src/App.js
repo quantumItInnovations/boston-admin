@@ -55,26 +55,40 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    // Add event listener to the document object
-    document.addEventListener("mousedown", handleClickOutside);
+  const mediaQueryHandler = (mediaQuery) => {
+    
+    if (mediaQuery.matches)
+      document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+  };
+  window.matchMedia("(max-width: 768px)").addEventListener("change", mediaQueryHandler);
 
-    // Remove event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   // Add event listener to the document object
+  //   console.log(w)
+  //   if(w.matches) document.addEventListener("mousedown", handleClickOutside);
+
+  //   // Remove event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [w]);
 
   const pathname = window.location.pathname;
   console.log(pathname);
   return (
     <BrowserRouter>
       <div className="main-wrapper">
+        {isExpanded && token && <div className="sidebar-overlay"></div>}
         <div className="sidebar-wrapper" ref={sibebarRef}>
           {/* <Menu/> */}
           <SideNavbar sidebarHandler={sidebarHandler} isExpanded={isExpanded} />
         </div>
-        <div className={`body-wrapper ${isExpanded ? 'mini-body' : 'full-body'} d-flex justify-content-between flex-column`} >
+        <div
+          className={`body-wrapper ${isExpanded ? "mini-body" : "full-body"} ${
+            token ? "" : "m-0"
+          } d-flex flex-column`}
+        >
           <Header sidebarHandler={sidebarHandler} />
           <Routes>
             <Route

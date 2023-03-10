@@ -22,30 +22,46 @@
 	width: 4.6rem;
 }
 
+.sidebar-overlay {
+	background-color: rgba(0, 0, 0, .2);
+	bottom: 0;
+	display: none;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1030;
+}
 @media (max-width: 768px) {
 	.side-nav-container-NX {
 		margin-left: -4.6rem;
 	}
-	.body-wrapper.full-body, .body-wrapper.mini-body {
+
+	.body-wrapper.full-body,
+	.body-wrapper.mini-body {
 		margin-left: 0;
 	}
+	.sidebar-overlay {
+		display: block;
+	}
 }
-
 .brand-link {
 	border-bottom: 1px solid #4b545c;
 	text-decoration: none;
 	width: 250px;
 	color: rgba(255, 255, 255, .8);
 	display: block;
-    font-size: 1.25rem;
-    line-height: 1.5;
-    padding: 0.8125rem 0.5rem;
-    transition: width .3s ease-in-out;
-    white-space: nowrap;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	padding: 0.8125rem 0.5rem;
+	transition: width .3s ease-in-out;
+	white-space: nowrap;
 }
+
 .side-nav-container-NX .brand-link {
 	width: 4.6rem;
 }
+
 .brand-link:hover {
 	color: #fff;
 }
@@ -74,29 +90,36 @@
 .nav-sidebar .menu-item .nav-link {
 	white-space: nowrap;
 }
+
 .nav-sidebar .menu-item .nav-link p {
 	display: inline;
 	margin: 0;
 	white-space: nowrap;
 }
-.nav-sidebar .menu-item.menu-item-NX .nav-link p, .side-nav-container-NX .user-panel .info, .side-nav-container-NX .brand-link .brand-text {
+
+.nav-sidebar .menu-item.menu-item-NX .nav-link p,
+.side-nav-container-NX .user-panel .info,
+.side-nav-container-NX .brand-link .brand-text {
 	animation: fadeOut 0.3s both;
-    /* -webkit-animation-name: fadeOut;
+	/* -webkit-animation-name: fadeOut;
     animation-name: fadeOut;
     -webkit-animation-duration: .3s;
     animation-duration: .3s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both; */
-    visibility: hidden;
+	visibility: hidden;
 }
+
 @keyframes fadeOut {
 	0% {
 		opacity: 1;
 	}
+
 	100% {
 		opacity: 0;
 	}
 }
+
 .menu-item .nav-link,
 .info-text {
 	color: #001c4e;
@@ -110,9 +133,11 @@
 .menu-item .nav-link {
 	width: 100%;
 }
+
 .menu-item.menu-item-NX .nav-link {
 	width: 3.2rem;
 }
+
 .menu-item.active-item .nav-link {
 	background-color: rgba(255, 255, 255, .3);
 }
@@ -168,4 +193,3 @@
 	display: block;
 	padding: 0.5rem 1rem;
 }
-
