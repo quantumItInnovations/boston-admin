@@ -149,12 +149,12 @@ export default function EditCategoryModel(props) {
 
       console.log("category update data", data);
       if (data.category) {
-        dispatch({ type: "UPDATE_SUCCESS" });
         toast.success("Category Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
           navigate("/admin/category");
+          dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
         toast.error(data.error.message, {

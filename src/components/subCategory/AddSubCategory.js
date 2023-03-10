@@ -110,9 +110,9 @@ export default function AddSubCategory() {
         resetForm();
         setTimeout(() => {
           navigate("/admin/sub-category");
+          setLoadingUpdate(false);
         }, 3000);
         
-        setLoadingUpdate(false);
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -210,7 +210,7 @@ export default function AddSubCategory() {
                         aria-label="Select Category"
                         onChange={(e) => setCategory(e.target.value)}
                       >
-                        <option>Select Category</option>
+                        <option key="blankChoice" hidden value>Select Category</option>
                         {/* {console.log("dfsdf", categories)} */}
 
                         {categories &&

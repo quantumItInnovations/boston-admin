@@ -116,7 +116,24 @@ export default function AddPromotion() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if(!category) {
+      toast.warning("Please select a category.", {
+        position: toast.POSITION.TOP_CENTER
+      })
+      return;
+    }
+    if(!subCategory) {
+      toast.warning("Please select a sub category.", {
+        position: toast.POSITION.TOP_CENTER
+      })
+      return;
+    }
+    if(!product) {
+      toast.warning("Please select a product.", {
+        position: toast.POSITION.TOP_CENTER
+      })
+      return;
+    }
     try {
       setLoadingUpdate(true);
 
@@ -140,9 +157,8 @@ export default function AddPromotion() {
         });
         setTimeout(() => {
           navigate("/admin/promotions");
+          setLoadingUpdate(false);
         }, 3000);
-
-        setLoadingUpdate(false);
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -197,7 +213,9 @@ export default function AddPromotion() {
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                           >
-                            <option>Select Category</option>
+                            <option key="blankChoice" hidden value>
+                              Select Category
+                            </option>
                             {categories.map((cat) => (
                               <option key={cat._id} value={cat._id}>
                                 {cat.name}
@@ -214,7 +232,9 @@ export default function AddPromotion() {
                             value={subCategory}
                             onChange={(e) => setSubCategory(e.target.value)}
                           >
-                            <option>Select Sub Category</option>
+                            <option key="blankChoice" hidden value>
+                              Select Sub Category
+                            </option>
                             {subCategories &&
                               getAllSubCategory(subCategories, category).map(
                                 (subCat) => (
@@ -234,7 +254,9 @@ export default function AddPromotion() {
                             value={product}
                             onChange={(e) => setProduct(e.target.value)}
                           >
-                            <option>Select Product</option>
+                            <option key="blankChoice" hidden value>
+                              Select Product
+                            </option>
                             {products &&
                               subCategory &&
                               getAllProduct(

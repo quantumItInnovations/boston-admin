@@ -54,7 +54,7 @@ export default function EditProductModel(props) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [stock, setStock] = useState("");
-  const [product_images, setProductImage] = useState("");
+  const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
   const [preview, setPreview] = useState("");
@@ -71,6 +71,10 @@ export default function EditProductModel(props) {
   };
 
   const uploadFileHandler = async (e, type) => {
+    if(!e.target.files[0]) {
+      setProductImage(null);
+      return;
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadImage(
@@ -119,7 +123,7 @@ export default function EditProductModel(props) {
             headers: { Authorization: token },
           }
         );
-        // console.log("edit product data", res1.data, res2.data, data);
+        console.log("edit product data", res1.data, res2.data, data);
 
         const product = data.product;
         setName(product.name);
@@ -128,8 +132,8 @@ export default function EditProductModel(props) {
         setAmount(product.amount);
         if (product.category) setCategory(product.category._id);
         if (product.sub_category) setSubCategory(product.sub_category._id);
-        setProductImage(product.product_images);
-        setPreview(product.product_images);
+        setProductImage(product.product_images[0]);
+        setPreview(product.product_images[0]);
 
         console.log(res1.data.categories, res2.data.subCategories);
         setCategories([...res1.data.categories]);
@@ -178,12 +182,12 @@ export default function EditProductModel(props) {
 
       console.log("product update data", data);
       if (data.product) {
-        dispatch({ type: "UPDATE_SUCCESS" });
         toast.success("Product Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
           navigate("/admin/products");
+          dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -269,7 +273,7 @@ export default function EditProductModel(props) {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option>Select Category</option>
+                <option disabled>Select Category</option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -287,7 +291,7 @@ export default function EditProductModel(props) {
                   value={sub_category}
                   onChange={(e) => setSubCategory(e.target.value)}
                 >
-                  <option>Select Sub Category</option>
+                  <option disabled>Select Sub Category</option>
                   {subCategories &&
                     category &&
                     getAllSubCategory(subCategories, category).map((subCat) => (

@@ -148,9 +148,9 @@ export default function AddProduct() {
         resetForm();
         setTimeout(() => {
           navigate("/admin/products");
+          setLoadingUpdate(false);
         }, 3000);
 
-        setLoadingUpdate(false);
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -297,7 +297,7 @@ export default function AddProduct() {
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                         >
-                          <option>Select Category</option>
+                          <option key="blankChoice" hidden value>Select Category</option>
                           {categories &&
                             categories.map((cat) => (
                               <option key={cat._id} value={cat._id}>
@@ -315,7 +315,7 @@ export default function AddProduct() {
                             value={sub_category}
                             onChange={(e) => setSubCategory(e.target.value)}
                           >
-                            <option>Select Sub Category</option>
+                            <option key="blankChoice" hidden value>Select Sub Category</option>
                             {subCategories &&
                               category &&
                               getAllSubCategory(subCategories, category).map(
