@@ -83,9 +83,9 @@ export default function AddCategory() {
         resetForm();
         setTimeout(() => {
           navigate("/admin/category");
+          setLoadingUpdate(false);
         }, 3000);
 
-        setLoadingUpdate(false);
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,

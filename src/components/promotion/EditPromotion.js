@@ -80,8 +80,6 @@ export default function EditPromotionModel(props) {
 
   const [updated_price, setUpdatedPrice] = useState("");
   const [product, setProduct] = useState(null);
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -160,14 +158,14 @@ export default function EditPromotionModel(props) {
         }
       );
 
-      console.log("category update data", data);
-      if (data.category) {
-        dispatch({ type: "UPDATE_SUCCESS" });
-        toast.success("Category Updated Succesfully.  Redirecting...", {
+      console.log("promotion update data", data);
+      if (data.promotion) {
+        toast.success("Promotion Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
-          navigate("/admin/category");
+          navigate("/admin/promotions");
+          dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -197,8 +195,6 @@ export default function EditPromotionModel(props) {
       <Form onSubmit={submitHandler}>
         <Modal.Body>
           <Container className="small-container">
-            {/* <img src={preview} width={200} height={200}></img> */}
-
             <Form.Group className="mb-3" controlId="updated_price">
               <Form.Label>Updated Price</Form.Label>
               <Form.Control

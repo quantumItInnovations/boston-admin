@@ -63,17 +63,6 @@ function App() {
   };
   window.matchMedia("(max-width: 768px)").addEventListener("change", mediaQueryHandler);
 
-  // useEffect(() => {
-  //   // Add event listener to the document object
-  //   console.log(w)
-  //   if(w.matches) document.addEventListener("mousedown", handleClickOutside);
-
-  //   // Remove event listener when the component unmounts
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [w]);
-
   const pathname = window.location.pathname;
   console.log(pathname);
   return (

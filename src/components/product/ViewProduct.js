@@ -91,7 +91,7 @@ const ViewProduct = () => {
               <Row className="mb-3">
                 <Col md={4}>
                   <img
-                    src={product.product_images}
+                    src={product.product_images[0]}
                     alt=""
                     width={"200px"}
                     height={"200px"}
