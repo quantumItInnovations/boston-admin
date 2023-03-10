@@ -72,27 +72,27 @@ export default function AddPromotion() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res1 = await axios.get(
-          "http://52.91.135.217:5000/api/category/all",
+          "https://boston-api.adaptable.app/api/category/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res2 = await axios.get(
-          "http://52.91.135.217:5000/api/subCategory/all",
+          "https://boston-api.adaptable.app/api/subCategory/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res3 = await axios.get(
-          "http://52.91.135.217:5000/api/product/all",
+          "https://boston-api.adaptable.app/api/product/all",
           {
             headers: { Authorization: token },
           }
         );
 
-        console.log("add product data", res1.data, res2.data, res3.data);
+        console.log("add promotion data", res1.data, res2.data, res3.data);
         dispatch({
           type: "FETCH_SUCCESS",
           payload: {
@@ -121,7 +121,7 @@ export default function AddPromotion() {
       setLoadingUpdate(true);
 
       const { data } = await axios.post(
-        "http://52.91.135.217:5000/api/admin/promotion/create",
+        "https://boston-api.adaptable.app/api/admin/promotion/create",
         {
           product,
           updated_price,
@@ -184,87 +184,93 @@ export default function AddPromotion() {
                 </div>
                 {/* /.card-header */}
                 {/* form start */}
-                <Form onSubmit={submitHandler}>
-                  <div className="card-body">
-                    {categories && (
-                      <Form.Group className="mb-3">
-                        <Form.Label className="mr-3">Category</Form.Label>
-                        <Form.Select
-                          aria-label="Select Category"
-                          value={category}
-                          onChange={(e) => setCategory(e.target.value)}
-                        >
-                          <option>Select Category</option>
-                          {categories.map((cat) => (
-                            <option key={cat._id} value={cat._id}>
-                              {cat.name}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    )}
-                    {category && (
-                      <Form.Group className="mb-3">
-                        <Form.Label className="mr-3">Sub Category</Form.Label>
-                        <Form.Select
-                          aria-label="Select Sub Category"
-                          value={subCategory}
-                          onChange={(e) => setSubCategory(e.target.value)}
-                        >
-                          <option>Select Sub Category</option>
-                          {subCategories &&
-                            getAllSubCategory(subCategories, category).map(
-                              (subCat) => (
-                                <option key={subCat._id} value={subCat._id}>
-                                  {subCat.name}
-                                </option>
-                              )
-                            )}
-                        </Form.Select>
-                      </Form.Group>
-                    )}
-                    {subCategory && (
-                      <Form.Group className="mb-3">
-                        <Form.Label className="mr-3">Product</Form.Label>
-                        <Form.Select
-                          aria-label="Select Product"
-                          value={product}
-                          onChange={(e) => setProduct(e.target.value)}
-                        >
-                          <option>Select Product</option>
-                          {products &&
-                            subCategory &&
-                            getAllProduct(products, subCategory, category).map(
-                              (prod) => (
+                {loading ? (
+                  <LoadingBox />
+                ) : (
+                  <Form onSubmit={submitHandler}>
+                    <div className="card-body">
+                      {categories && (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mr-3">Category</Form.Label>
+                          <Form.Select
+                            aria-label="Select Category"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                          >
+                            <option>Select Category</option>
+                            {categories.map((cat) => (
+                              <option key={cat._id} value={cat._id}>
+                                {cat.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                      )}
+                      {category && (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mr-3">Sub Category</Form.Label>
+                          <Form.Select
+                            aria-label="Select Sub Category"
+                            value={subCategory}
+                            onChange={(e) => setSubCategory(e.target.value)}
+                          >
+                            <option>Select Sub Category</option>
+                            {subCategories &&
+                              getAllSubCategory(subCategories, category).map(
+                                (subCat) => (
+                                  <option key={subCat._id} value={subCat._id}>
+                                    {subCat.name}
+                                  </option>
+                                )
+                              )}
+                          </Form.Select>
+                        </Form.Group>
+                      )}
+                      {subCategory && (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mr-3">Product</Form.Label>
+                          <Form.Select
+                            aria-label="Select Product"
+                            value={product}
+                            onChange={(e) => setProduct(e.target.value)}
+                          >
+                            <option>Select Product</option>
+                            {products &&
+                              subCategory &&
+                              getAllProduct(
+                                products,
+                                subCategory,
+                                category
+                              ).map((prod) => (
                                 <option key={prod._id} value={prod._id}>
                                   {prod.name}
                                 </option>
-                              )
-                            )}
-                        </Form.Select>
-                      </Form.Group>
-                    )}
+                              ))}
+                          </Form.Select>
+                        </Form.Group>
+                      )}
 
-                    <Form.Group className="mb-3" controlId="updated_price">
-                      <Form.Label>Updated Price</Form.Label>
-                      <Form.Control
-                        value={updated_price}
-                        onChange={(e) => setUpdatedPrice(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                  </div>
-                  {/* /.card-body */}
-                  <div className="card-footer">
-                    <Button
-                      type="submit"
-                      disabled={loadingUpdate ? true : false}
-                    >
-                      Submit
-                    </Button>
-                    {loadingUpdate && <LoadingBox></LoadingBox>}
-                  </div>
-                </Form>
+                      <Form.Group className="mb-3" controlId="updated_price">
+                        <Form.Label>Updated Price</Form.Label>
+                        <Form.Control
+                          value={updated_price}
+                          onChange={(e) => setUpdatedPrice(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+                    </div>
+                    {/* /.card-body */}
+                    <div className="card-footer">
+                      <Button
+                        type="submit"
+                        disabled={loadingUpdate ? true : false}
+                      >
+                        Submit
+                      </Button>
+                      {loadingUpdate && <LoadingBox></LoadingBox>}
+                    </div>
+                  </Form>
+                )}
                 <ToastContainer />
               </div>
               {/* /.card */}

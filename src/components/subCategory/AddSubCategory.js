@@ -88,7 +88,7 @@ export default function AddSubCategory() {
       setLoadingUpdate(true);
 
       const { data } = await axios.post(
-        "http://52.91.135.217:5000/api/admin/subCategory/create",
+        "https://boston-api.adaptable.app/api/admin/subCategory/create",
         {
           name,
           description,
@@ -135,7 +135,7 @@ export default function AddSubCategory() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          "http://52.91.135.217:5000/api/category/all",
+          "https://boston-api.adaptable.app/api/category/all",
           {
             headers: { Authorization: token },
           }

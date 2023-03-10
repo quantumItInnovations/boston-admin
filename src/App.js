@@ -1,5 +1,5 @@
 import { Store } from "./Store";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -41,109 +41,130 @@ function App() {
   const { state } = useContext(Store);
   const { token } = state;
 
+  const sibebarRef = useRef(null);
+  const [isExpanded, setExpandState] = useState(true);
+
+  const sidebarHandler = () => setExpandState((prev) => !prev);
+
+  const handleClickOutside = (e) => {
+    if (sibebarRef.current && !sibebarRef.current.contains(e.target)) {
+      // Clicked outside the side navigation bar, close it
+      // Implement your close side navigation bar logic here
+      setExpandState(false);
+      // sidebarHandler();
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener to the document object
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const pathname = window.location.pathname;
   console.log(pathname);
-
   return (
     <BrowserRouter>
       <div className="main-wrapper">
-        <div className="sidebar-wrapper">
+        <div className="sidebar-wrapper" ref={sibebarRef}>
           {/* <Menu/> */}
-          <SideNavbar />
+          <SideNavbar sidebarHandler={sidebarHandler} isExpanded={isExpanded} />
         </div>
-        <div className="body-wrapper">
-          <div style={{ width: "100%" }}>
-            <Header />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <UnprotectedRoute>
-                    <AdminLoginScreen />
-                  </UnprotectedRoute>
-                }
-              />
-              <Route
-                path="/admin/dashboard"
-                element={<Children child={<Dashboard />} />}
-              />
+        <div className={`body-wrapper ${isExpanded ? 'mini-body' : 'full-body'} d-flex justify-content-between flex-column`} >
+          <Header sidebarHandler={sidebarHandler} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <UnprotectedRoute>
+                  <AdminLoginScreen />
+                </UnprotectedRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard"
+              element={<Children child={<Dashboard />} />}
+            />
 
-              <Route
-                path="/view-profile"
-                element={<Children child={<ViewProfile />} />}
-              />
+            <Route
+              path="/view-profile"
+              element={<Children child={<ViewProfile />} />}
+            />
 
-              <Route
-                path="/admin/users"
-                element={<Children child={<Users />} />}
-              />
-              <Route
-                path="/admin/view/user/:id"
-                element={<Children child={<ViewUser />} />}
-              />
+            <Route
+              path="/admin/users"
+              element={<Children child={<Users />} />}
+            />
+            <Route
+              path="/admin/view/user/:id"
+              element={<Children child={<ViewUser />} />}
+            />
 
-              <Route
-                path="/admin/category"
-                element={<Children child={<Category />} />}
-              />
-              <Route
-                path="/admin/category/create"
-                element={<Children child={<AddCategory />} />}
-              />
-              <Route
-                path="/admin/view/category/:id"
-                element={<Children child={<ViewCategory />} />}
-              />
+            <Route
+              path="/admin/category"
+              element={<Children child={<Category />} />}
+            />
+            <Route
+              path="/admin/category/create"
+              element={<Children child={<AddCategory />} />}
+            />
+            <Route
+              path="/admin/view/category/:id"
+              element={<Children child={<ViewCategory />} />}
+            />
 
-              <Route
-                path="/admin/sub-category"
-                element={<Children child={<SubCategory />} />}
-              />
-              <Route
-                path="/admin/sub-category/create"
-                element={<Children child={<AddSubCategory />} />}
-              />
-              <Route
-                path="/admin/view/sub-category/:id"
-                element={<Children child={<ViewSubCategory />} />}
-              />
+            <Route
+              path="/admin/sub-category"
+              element={<Children child={<SubCategory />} />}
+            />
+            <Route
+              path="/admin/sub-category/create"
+              element={<Children child={<AddSubCategory />} />}
+            />
+            <Route
+              path="/admin/view/sub-category/:id"
+              element={<Children child={<ViewSubCategory />} />}
+            />
 
-              <Route
-                path="/admin/products"
-                element={<Children child={<Products />} />}
-              />
-              <Route
-                path="/admin/product/create"
-                element={<Children child={<AddProduct />} />}
-              />
-              <Route
-                path="/admin/view/product/:id"
-                element={<Children child={<ViewProduct />} />}
-              />
+            <Route
+              path="/admin/products"
+              element={<Children child={<Products />} />}
+            />
+            <Route
+              path="/admin/product/create"
+              element={<Children child={<AddProduct />} />}
+            />
+            <Route
+              path="/admin/view/product/:id"
+              element={<Children child={<ViewProduct />} />}
+            />
 
-              <Route
-                path="/admin/product/create"
-                element={<Children child={<AddProduct />} />}
-              />
+            <Route
+              path="/admin/product/create"
+              element={<Children child={<AddProduct />} />}
+            />
 
-              <Route
-                path="/admin/promotions"
-                element={<Children child={<Promotions />} />}
-              />
-              <Route
-                path="/admin/promotion/create"
-                element={<Children child={<AddPromotion />} />}
-              />
-              <Route
-                path="/admin/view/promotion/:id"
-                element={<Children child={<ViewPromotion />} />}
-              />
+            <Route
+              path="/admin/promotions"
+              element={<Children child={<Promotions />} />}
+            />
+            <Route
+              path="/admin/promotion/create"
+              element={<Children child={<AddPromotion />} />}
+            />
+            <Route
+              path="/admin/view/promotion/:id"
+              element={<Children child={<ViewPromotion />} />}
+            />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
 
-            <Footer />
-          </div>
+          <Footer />
         </div>
       </div>
     </BrowserRouter>

@@ -44,7 +44,7 @@ export default function Products() {
   console.log(token);
 
   const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(5);
+  const [resultPerPage, setResultPerPage] = useState(50);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
@@ -65,7 +65,7 @@ export default function Products() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/product/${id}`,
+          `https://boston-api.adaptable.app/api/admin/product/${id}`,
 
           {
             headers: { Authorization: token },
@@ -85,8 +85,8 @@ export default function Products() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          // "http://52.91.135.217:5000/api/product/all",
-          `http://52.91.135.217:5000/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // "https://boston-api.adaptable.app/api/product/all",
+          `https://boston-api.adaptable.app/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }

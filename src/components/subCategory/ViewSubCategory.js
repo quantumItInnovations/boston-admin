@@ -45,7 +45,7 @@ const ViewSubCategory = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/subCategory/${id}`,
+          `https://boston-api.adaptable.app/api/subCategory/${id}`,
           {
             headers: { Authorization: token },
           }

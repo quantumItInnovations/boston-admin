@@ -38,7 +38,7 @@ const ViewProfile = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/user/user-profile`,
+          `https://boston-api.adaptable.app/api/user/user-profile`,
           {
             headers: { Authorization: token },
           }

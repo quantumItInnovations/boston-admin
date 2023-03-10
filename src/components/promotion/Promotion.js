@@ -52,7 +52,7 @@ export default function Promotions() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/promotion/${id}`,
+          `https://boston-api.adaptable.app/api/admin/promotion/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -70,7 +70,7 @@ export default function Promotions() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get("http://52.91.135.217:5000/api/promotion/all", {
+        const res = await axios.get("https://boston-api.adaptable.app/api/promotion/all", {
           headers: { Authorization: token },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
