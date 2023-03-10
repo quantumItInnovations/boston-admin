@@ -122,7 +122,7 @@ td {
 
 .header {
   border-bottom: 1px solid #dee2e6;
-  z-index: 1034;
+  z-index: 1020;
   background: rgb(15, 145, 122);
   background: linear-gradient(120deg, rgba(15, 145, 122, 1) 0%, rgba(131, 227, 124, 1) 75%);
 }

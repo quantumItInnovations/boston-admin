@@ -36,7 +36,7 @@ export default function SideNavbar({ sidebarHandler, isExpanded }) {
           }
         >
           <Link to="/admin/dashboard" className="brand-link">
-            <img src="../logo192.png" alt="" width={"50px"} height="auto" />
+            <img src="/logo192.png" alt="" width={"50px"} height="auto" />
             <span className="brand-text ms-2 font-weight-light">
               Boston George
             </span>
