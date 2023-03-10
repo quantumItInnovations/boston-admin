@@ -62,7 +62,7 @@ export default function AddCategory() {
     try {
       setLoadingUpdate(true);
       const { data } = await axios.post(
-        "http://52.91.135.217:5000/api/admin/category/create",
+        "https://boston-api.adaptable.app/api/admin/category/create",
         {
           name,
           description,

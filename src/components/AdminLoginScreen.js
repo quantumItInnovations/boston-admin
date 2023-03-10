@@ -44,7 +44,7 @@ export default function AdminLoginScreen() {
     try {
       dispatch({ type: "FETCH_REQUEST" });
       const { data } = await axios.post(
-        "http://52.91.135.217:5000/api/admin/login",
+        "https://boston-api.adaptable.app/api/admin/login",
         {
           email: username,
           password: password,

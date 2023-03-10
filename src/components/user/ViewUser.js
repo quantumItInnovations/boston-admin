@@ -40,7 +40,7 @@ const ViewUser = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/admin/user/${id}`,
+          `https://boston-api.adaptable.app/api/admin/user/${id}`,
           {
             headers: { Authorization: token },
           }

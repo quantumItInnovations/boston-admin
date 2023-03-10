@@ -40,7 +40,7 @@ const ViewPromotion = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/promotion/${id}`,
+          `https://boston-api.adaptable.app/api/promotion/${id}`,
           {
             headers: { Authorization: token },
           }

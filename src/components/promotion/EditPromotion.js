@@ -88,28 +88,28 @@ export default function EditPromotionModel(props) {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res1 = await axios.get(
-          "http://52.91.135.217:5000/api/category/all",
+          "https://boston-api.adaptable.app/api/category/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res2 = await axios.get(
-          "http://52.91.135.217:5000/api/subCategory/all",
+          "https://boston-api.adaptable.app/api/subCategory/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res3 = await axios.get(
-          "http://52.91.135.217:5000/api/product/all",
+          "https://boston-api.adaptable.app/api/product/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/promotion/${id}`,
+          `https://boston-api.adaptable.app/api/promotion/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -148,7 +148,7 @@ export default function EditPromotionModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://52.91.135.217:5000/api/admin/promotion/${id}`,
+        `https://boston-api.adaptable.app/api/admin/promotion/${id}`,
         {
           product,
           updated_price,

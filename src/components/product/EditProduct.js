@@ -100,21 +100,21 @@ export default function EditProductModel(props) {
         dispatch({ type: "FETCH_REQUEST" });
 
         const res1 = await axios.get(
-          "http://52.91.135.217:5000/api/category/all",
+          "https://boston-api.adaptable.app/api/category/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res2 = await axios.get(
-          "http://52.91.135.217:5000/api/subCategory/all",
+          "https://boston-api.adaptable.app/api/subCategory/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/product/${id}`,
+          `https://boston-api.adaptable.app/api/product/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -159,7 +159,7 @@ export default function EditProductModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://52.91.135.217:5000/api/admin/product/${id}`,
+        `https://boston-api.adaptable.app/api/admin/product/${id}`,
         {
           name,
           description,

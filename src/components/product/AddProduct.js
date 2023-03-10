@@ -123,7 +123,7 @@ export default function AddProduct() {
       setLoadingUpdate(true);
 
       const { data } = await axios.post(
-        "http://52.91.135.217:5000/api/admin/product/create",
+        "https://boston-api.adaptable.app/api/admin/product/create",
         {
           name,
           description,
@@ -173,14 +173,14 @@ export default function AddProduct() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res1 = await axios.get(
-          "http://52.91.135.217:5000/api/category/all",
+          "https://boston-api.adaptable.app/api/category/all",
           {
             headers: { Authorization: token },
           }
         );
 
         const res2 = await axios.get(
-          "http://52.91.135.217:5000/api/subCategory/all",
+          "https://boston-api.adaptable.app/api/subCategory/all",
           {
             headers: { Authorization: token },
           }

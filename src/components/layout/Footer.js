@@ -1,4 +1,5 @@
 import React, { Component, useContext } from "react";
+import { Container } from "react-bootstrap";
 import { Store } from "../../Store";
 
 export default function Footer() {
@@ -7,17 +8,15 @@ export default function Footer() {
   return (
     <>
       {userInfo ? (
-        <div className="footer-box">
-          <div className="footer-container">
-            <footer>
-              <strong>
-                Copyright © 2014-2023{" "}
-                <a href="https://quantumitinnovation.com">Quantum It</a>.{" "}
-              </strong>
-              All rights reserved.
-            </footer>
-          </div>
-        </div>
+        <Container fluid className="footer-container">
+          <footer className="text-center">
+            <strong>
+              Copyright © 2014-2023{" "}
+              <a href="https://quantumitinnovation.com">Quantum It</a>.{" "}
+            </strong>
+            All rights reserved.
+          </footer>
+        </Container>
       ) : (
         <></>
       )}

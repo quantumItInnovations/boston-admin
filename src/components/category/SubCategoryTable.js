@@ -71,7 +71,7 @@ export default function SubCategoryTable({ id }) {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/subCategory/${id}`,
+          `https://boston-api.adaptable.app/api/admin/subCategory/${id}`,
 
           {
             headers: { Authorization: token },
@@ -92,7 +92,7 @@ export default function SubCategoryTable({ id }) {
       try {
         if (searchInput) {
           const res = await axios.get(
-            `http://52.91.135.217:5000/api/admin?search=${searchInput}&in=shops`,
+            `https://boston-api.adaptable.app/api/admin?search=${searchInput}&in=shops`,
             {
               headers: { Authorization: token },
             }
@@ -102,7 +102,7 @@ export default function SubCategoryTable({ id }) {
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           const res = await axios.get(
-            `http://52.91.135.217:5000/api/category/${id}/subCategories`,
+            `https://boston-api.adaptable.app/api/category/${id}/subCategories`,
             {
               headers: { Authorization: token },
             }

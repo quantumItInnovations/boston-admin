@@ -97,7 +97,7 @@ export default function EditCategoryModel(props) {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/category/${id}`,
+          `https://boston-api.adaptable.app/api/category/${id}`,
           {
             headers: { Authorization: token },
           }
@@ -134,7 +134,7 @@ export default function EditCategoryModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `http://52.91.135.217:5000/api/admin/category/${id}`,
+        `https://boston-api.adaptable.app/api/admin/category/${id}`,
         {
           name,
           description,

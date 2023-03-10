@@ -42,7 +42,7 @@ const ViewProduct = () => {
         dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axios.get(
-          `http://52.91.135.217:5000/api/product/${id}`,
+          `https://boston-api.adaptable.app/api/product/${id}`,
           {
             headers: { Authorization: token },
           }

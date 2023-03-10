@@ -62,7 +62,7 @@ export default function Users() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/user/${id}`,
+          `https://boston-api.adaptable.app/api/admin/user/${id}`,
 
           {
             headers: { Authorization: token },
@@ -82,8 +82,8 @@ export default function Users() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          // "http://52.91.135.217:5000/api/admin/user/all",
-          `http://52.91.135.217:5000/api/admin/user/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // "https://boston-api.adaptable.app/api/admin/user/all",
+          `https://boston-api.adaptable.app/api/admin/user/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }

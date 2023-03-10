@@ -65,7 +65,7 @@ export default function Category() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/category/${id}`,
+          `https://boston-api.adaptable.app/api/admin/category/${id}`,
 
           {
             headers: { Authorization: token },
@@ -85,8 +85,8 @@ export default function Category() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          // "http://52.91.135.217:5000/api/category/all",
-          `http://52.91.135.217:5000/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // "https://boston-api.adaptable.app/api/category/all",
+          `https://boston-api.adaptable.app/api/category/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }

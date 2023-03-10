@@ -18,7 +18,7 @@ export const uploadImage = async (file, token, percentHandler) => {
       },
     }
     const { data } = await axios.post(
-      "http://52.91.135.217:5000/api/admin/image",
+      "https://boston-api.adaptable.app/api/admin/image",
       bodyFormData,
       options,
     );                                               

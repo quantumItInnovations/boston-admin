@@ -71,7 +71,7 @@ export default function SubCategory() {
       try {
         setDel(true);
         const res = await axios.delete(
-          `http://52.91.135.217:5000/api/admin/subCategory/${id}`,
+          `https://boston-api.adaptable.app/api/admin/subCategory/${id}`,
 
           {
             headers: { Authorization: token },
@@ -91,8 +91,8 @@ export default function SubCategory() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axios.get(
-          `http://52.91.135.217:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
-          // `http://52.91.135.217:5000/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `https://boston-api.adaptable.app/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // `https://boston-api.adaptable.app/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
