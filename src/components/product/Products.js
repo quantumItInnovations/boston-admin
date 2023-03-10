@@ -44,7 +44,7 @@ export default function Products() {
   console.log(token);
 
   const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(50);
+  const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
