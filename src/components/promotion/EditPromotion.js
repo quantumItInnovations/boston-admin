@@ -78,8 +78,49 @@ export default function EditPromotionModel(props) {
     error: "",
   });
 
+  const [promo_image, setPromoImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [updated_price, setUpdatedPrice] = useState("");
   const [product, setProduct] = useState(null);
+
+  const [uploadPercentage, setUploadPercentage] = useState(0);
+  const uploadPercentageHandler = (per) => {
+    setUploadPercentage(per);
+  };
+
+  const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      setPromoImage(null);
+      return;
+    }
+    try {
+      if (e.target.files[0]) {
+        const location = await uploadImage(
+          e.target.files[0],
+          token,
+          uploadPercentageHandler
+        );
+        if (location.error) {
+          throw location.error;
+        }
+
+        setPromoImage(location);
+        setTimeout(() => {
+          setUploadPercentage(0);
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+  };
+
+  const resetForm = () => {
+    setPreview(null);
+    setUpdatedPrice(null);
+    setPromoImage(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +159,8 @@ export default function EditPromotionModel(props) {
         const promotion = data.promotion;
         setProduct(promotion.product);
         setUpdatedPrice(promotion.updated_price);
+        setPreview(promotion.promo_image);
+        setPromoImage(promotion.promo_image);
 
         dispatch({
           type: "FETCH_SUCCESS",
@@ -142,6 +185,12 @@ export default function EditPromotionModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!promo_image) {
+      toast.warning("Please choose a file.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
 
     try {
       dispatch({ type: "UPDATE_REQUEST" });
@@ -150,6 +199,7 @@ export default function EditPromotionModel(props) {
         {
           product,
           updated_price,
+          promo_image,
         },
         {
           headers: {
@@ -163,6 +213,7 @@ export default function EditPromotionModel(props) {
         toast.success("Promotion Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/promotions");
           dispatch({ type: "UPDATE_SUCCESS" });
@@ -192,34 +243,56 @@ export default function EditPromotionModel(props) {
           Edit Promotion
         </Modal.Title>
       </Modal.Header>
-      <Form onSubmit={submitHandler}>
-        <Modal.Body>
-          <Container className="small-container">
-            <Form.Group className="mb-3" controlId="updated_price">
-              <Form.Label>Updated Price</Form.Label>
-              <Form.Control
-                value={updated_price}
-                onChange={(e) => setUpdatedPrice(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <ToastContainer />
-          </Container>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={props.onHide}>
-            Close
-          </Button>
-          <Button
-            variant="success"
-            type="submit"
-            disabled={loadingUpdate ? true : false}
-          >
-            Submit
-          </Button>
-          {loadingUpdate && <LoadingBox></LoadingBox>}
-        </Modal.Footer>
-      </Form>
+      {loading ? (
+        <LoadingBox />
+      ) : (
+        <Form onSubmit={submitHandler}>
+          <Modal.Body>
+            <Container className="small-container">
+              <img src={preview} width={200} height={200}></img>
+              <Form.Group className="mb-3" controlId="updated_price">
+                <Form.Label>Updated Price</Form.Label>
+                <Form.Control
+                  value={updated_price}
+                  onChange={(e) => setUpdatedPrice(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="promotion_image">
+                <Form.Label>Upload Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/png, image/jpeg image/jpg"
+                  onChange={(e) => {
+                    uploadFileHandler(e);
+                  }}
+                />
+                {uploadPercentage > 0 && (
+                  <ProgressBar
+                    now={uploadPercentage}
+                    active
+                    label={`${uploadPercentage}%`}
+                  />
+                )}
+              </Form.Group>
+              <ToastContainer />
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={props.onHide}>
+              Close
+            </Button>
+            <Button
+              variant="success"
+              type="submit"
+              disabled={loadingUpdate ? true : false}
+            >
+              Submit
+            </Button>
+            {loadingUpdate && <LoadingBox></LoadingBox>}
+          </Modal.Footer>
+        </Form>
+      )}
     </Modal>
   );
 }

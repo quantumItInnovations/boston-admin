@@ -24,7 +24,7 @@ export default function AddCategory() {
   };
 
   const uploadFileHandler = async (e, type) => {
-    if(!e.target.files[0]) {
+    if (!e.target.files[0]) {
       setCategoryImage(null);
       return;
     }
@@ -55,7 +55,7 @@ export default function AddCategory() {
     setName("");
     setDescription("");
     setCategoryImage("");
-  }
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -85,7 +85,6 @@ export default function AddCategory() {
           navigate("/admin/category");
           setLoadingUpdate(false);
         }, 3000);
-
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -165,7 +164,6 @@ export default function AddCategory() {
                         />
                       )}
                     </Form.Group>
-                    
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">

@@ -131,6 +131,7 @@ export default function Category() {
                 <Form.Control
                   aria-label="Search Input"
                   placeholder="Search"
+                  type="search"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                 />
@@ -138,6 +139,7 @@ export default function Category() {
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     setQuery(searchInput);
+                    setCurPage(1);
                   }}
                 >
                   <i className="fas fa-search"></i>
@@ -157,59 +159,77 @@ export default function Category() {
                 </tr>
               </thead>
               <tbody>
-                {categories && categories.map((category, i) => (
-                  <tr key={category._id} className="odd">
-                    <td className="text-center">{i + 1}</td>
-                    <td>
-                      <img
-                        className="td-img"
-                        src={category.category_image}
-                        alt=""
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    </td>
-                    <td className="dtr-control sorting_1" tabIndex={0}>
-                      {category.name}
-                    </td>
-                    <td>{category.description}</td>
-                    <td>
-                      <Button
-                        onClick={() => {
-                          navigate(`/admin/view/category/${category._id}`);
-                        }}
-                        type="success"
-                        className="btn btn-primary"
-                      >
-                        <i className="fa fa-eye"></i>
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          deleteCategory(category._id);
-                        }}
-                        type="danger"
-                        className="btn btn-danger ms-2"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                {categories &&
+                  categories.map((category, i) => (
+                    <tr key={category._id} className="odd">
+                      <td className="text-center">{i + 1}</td>
+                      <td>
+                        <img
+                          className="td-img"
+                          src={category.category_image}
+                          alt=""
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </td>
+                      <td className="dtr-control sorting_1" tabIndex={0}>
+                        {category.name}
+                      </td>
+                      <td>{category.description}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            navigate(`/admin/view/category/${category._id}`);
+                          }}
+                          type="success"
+                          className="btn btn-primary"
+                        >
+                          <i className="fa fa-eye"></i>
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deleteCategory(category._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Card.Body>
-          {resultPerPage < filteredCategoryCount && (
-            <Card.Footer>
+          <Card.Footer>
+            <div className="float-start d-flex align-items-center mt-3">
+              <p className="p-bold m-0 me-3">Row No.</p>
+              <Form.Group controlId="resultPerPage">
+                <Form.Select
+                  value={resultPerPage}
+                  onChange={(e) => {
+                    setResultPerPage(e.target.value);
+                    setCurPage(1);
+                  }}
+                  aria-label="Default select example"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </Form.Select>
+              </Form.Group>
+            </div>
+            {resultPerPage < filteredCategoryCount && (
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            </Card.Footer>
-          )}
+            )}
+          </Card.Footer>
         </Card>
       )}
       <ToastContainer />

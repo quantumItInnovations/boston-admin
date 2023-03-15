@@ -131,6 +131,7 @@ export default function Products() {
                 <Form.Control
                   aria-label="Search Input"
                   placeholder="Search"
+                  type="search"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                 />
@@ -138,6 +139,7 @@ export default function Products() {
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     setQuery(searchInput);
+                    setCurPage(1);
                   }}
                 >
                   <i className="fas fa-search"></i>
@@ -161,69 +163,99 @@ export default function Products() {
                 </tr>
               </thead>
               <tbody>
-                {products && products.map((product, i) => (
-                  <tr key={product._id} className="odd">
-                    <td className="text-center">{i + 1}</td>
-                    <td>
-                      <img
-                        className="td-img"
-                        src={product.product_images[0]}
-                        alt=""
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    </td>
-                    <td className="dtr-control sorting_1" tabIndex={0}>
-                      {product.name}
-                    </td>
-                    <td>{product.amount}</td>
-                    <td>
-                      {product.stock ? (
-                        <TiTick className="green" />
-                      ) : (
-                        <ImCross className="red" />
-                      )}
-                    </td>
-                    <td>{product.category ? product.category.name : <b>Category not set</b>}</td>
-                    <td>{product.sub_category ? product.sub_category.name : <b>Sub category not set</b>}</td>
-                    <td>{product.description}</td>
-                    <td>
-                      <Button
-                        onClick={() => {
-                          navigate(`/admin/view/product/${product._id}`);
-                        }}
-                        type="success"
-                        className="btn btn-primary"
-                      >
-                        <i className="fa fa-eye"></i>
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          deleteProduct(product._id);
-                        }}
-                        type="danger"
-                        className="btn btn-danger ms-2"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                {products &&
+                  products.map((product, i) => (
+                    <tr key={product._id} className="odd">
+                      <td className="text-center">{i + 1}</td>
+                      <td>
+                        <img
+                          className="td-img"
+                          src={product.product_images[0]}
+                          alt=""
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </td>
+                      <td className="dtr-control sorting_1" tabIndex={0}>
+                        {product.name}
+                      </td>
+                      <td>{product.amount}</td>
+                      <td>
+                        {product.stock ? (
+                          <TiTick className="green" />
+                        ) : (
+                          <ImCross className="red" />
+                        )}
+                      </td>
+                      <td>
+                        {product.category ? (
+                          product.category.name
+                        ) : (
+                          <b>Category not set</b>
+                        )}
+                      </td>
+                      <td>
+                        {product.sub_category ? (
+                          product.sub_category.name
+                        ) : (
+                          <b>Sub category not set</b>
+                        )}
+                      </td>
+                      <td>{product.description}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            navigate(`/admin/view/product/${product._id}`);
+                          }}
+                          type="success"
+                          className="btn btn-primary"
+                        >
+                          <i className="fa fa-eye"></i>
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deleteProduct(product._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Card.Body>
-          {resultPerPage < filteredProductCount && (
-            <Card.Footer>
+          <Card.Footer>
+            <div className="float-start d-flex align-items-center mt-3">
+              <p className="p-bold m-0 me-3">Row No.</p>
+              <Form.Group controlId="resultPerPage">
+                <Form.Select
+                  value={resultPerPage}
+                  onChange={(e) => {
+                    setResultPerPage(e.target.value);
+                    setCurPage(1);
+                  }}
+                  aria-label="Default select example"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </Form.Select>
+              </Form.Group>
+            </div>
+            {resultPerPage < filteredProductCount && (
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            </Card.Footer>
-          )}
+            )}
+          </Card.Footer>
         </Card>
       )}
       <ToastContainer />
