@@ -52,7 +52,7 @@ export const uploadMultiImage = async (files, token, percentHandler) => {
       },
     }
     const { data } = await axios.post(
-      "https://api.support-dv.com/api/admin/multi-image",
+      "https://boston-api.adaptable.app/api/admin/multi-image",
       bodyFormData,
       options,
     );
