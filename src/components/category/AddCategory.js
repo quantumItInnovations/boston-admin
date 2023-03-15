@@ -160,11 +160,12 @@ export default function AddCategory() {
                       {uploadPercentage > 0 && (
                         <ProgressBar
                           now={uploadPercentage}
-                          active
+                          active="true"
                           label={`${uploadPercentage}%`}
                         />
                       )}
                     </Form.Group>
+                    
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">

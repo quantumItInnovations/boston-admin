@@ -185,7 +185,6 @@ td {
 }
 
 .body-wrapper {
-  
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -217,17 +216,12 @@ td {
 }
 
 footer {
-  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  color: #869099;
+  padding: 1rem;
 }
 
-.footer-container {
-  border-top: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-/* footer {
-  position: absolute;
-  text-align: center;
-} */
 table.table {
   margin-bottom: 0;
 }
@@ -281,27 +275,3 @@ table.table {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {}
-
-/* --------- Not required ----------- */
-/*
-#small-container {
-  width: 800px;
-}
-
-.full-box header,
-.full-box footer {
-  display: none;
-}
-
-.full-box .container {
-  height: 100vh;
-  max-width: initial;
-  margin: 0;
-  padding: 0;
-}
-
-.full-box .mt-3 {
-  margin-top: 0 !important;
-}
-
-*/

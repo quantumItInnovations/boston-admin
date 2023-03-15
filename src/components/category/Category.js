@@ -110,7 +110,6 @@ export default function Category() {
 
   return (
     <Container fluid className="py-3">
-      {" "}
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

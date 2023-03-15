@@ -131,7 +131,7 @@ export default function Users() {
                 <InputGroup.Text
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    setQuery(!query);
+                    setQuery(searchInput);
                   }}
                 >
                   <i className="fas fa-search"></i>
