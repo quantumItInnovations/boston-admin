@@ -41,37 +41,16 @@ function App() {
   const { state } = useContext(Store);
   const { token } = state;
 
-  const sibebarRef = useRef(null);
-  const [isExpanded, setExpandState] = useState(true);
-
+  const [isExpanded, setExpandState] = useState(window.innerWidth > 768);
   const sidebarHandler = () => setExpandState((prev) => !prev);
 
-  const handleClickOutside = (e) => {
-    if (sibebarRef.current && !sibebarRef.current.contains(e.target)) {
-      // Clicked outside the side navigation bar, close it
-      // Implement your close side navigation bar logic here
-      setExpandState(false);
-      // sidebarHandler();
-    }
-  };
-
-  const mediaQueryHandler = (mediaQuery) => {
-    
-    if (mediaQuery.matches)
-      document.addEventListener("mousedown", handleClickOutside);
-    else document.removeEventListener("mousedown", handleClickOutside);
-  };
-  window.matchMedia("(max-width: 768px)").addEventListener("change", mediaQueryHandler);
-
-  const pathname = window.location.pathname;
-  console.log(pathname);
   return (
     <BrowserRouter>
       <div className="main-wrapper">
-        {isExpanded && token && <div className="sidebar-overlay"></div>}
-        <div className="sidebar-wrapper" ref={sibebarRef}>
+        {isExpanded && token && <div className="sidebar-overlay" onClick={sidebarHandler}></div>}
+        <div className="sidebar-wrapper">
           {/* <Menu/> */}
-          <SideNavbar sidebarHandler={sidebarHandler} isExpanded={isExpanded} />
+          <SideNavbar isExpanded={isExpanded} />
         </div>
         <div
           className={`body-wrapper ${isExpanded ? "mini-body" : "full-body"} ${

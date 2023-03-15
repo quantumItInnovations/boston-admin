@@ -12,8 +12,19 @@ const linkList = [
   { icon: "fa fa-gift", text: "Products", url: "/admin/products" },
   { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" },
 ];
-export default function SideNavbar({ sidebarHandler, isExpanded }) {
-  const [activeLink, setActiveLink] = useState("Dashboard");
+
+const active_text = {
+  "Dashboard": "dashboard",
+  "Users": "user",
+  "Category": "category",
+  "Sub Category": "sub-category",
+  "Products": "product",
+  "Promotions": "promotion",
+};
+
+export default function SideNavbar({ isExpanded }) {
+  const pathname = window.location.pathname;
+  const [activeLink, setActiveLink] = useState('Dashboard');
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();
@@ -23,6 +34,12 @@ export default function SideNavbar({ sidebarHandler, isExpanded }) {
     localStorage.removeItem("token");
 
     navigate("/");
+  };
+
+  const activeLinkHandler = (text) => {
+    // console.log("text", active_text[text]);
+    // console.log(pathname.includes(active_text[text]));
+    return pathname.includes(active_text[text]);
   };
 
   return (
@@ -81,15 +98,12 @@ export default function SideNavbar({ sidebarHandler, isExpanded }) {
                     key={url}
                     className={`nav-item has-treeview ${
                       isExpanded ? "menu-item" : "menu-item menu-item-NX"
-                    } ${activeLink === text && "active-item"}`}
+                    } ${activeLinkHandler(text) && "active-item"}`}
                     onClick={() => setActiveLink(text)}
                   >
                     <Link to={url} className="nav-link">
                       <i className={icon}></i>
-                      {/* {isExpanded && <p className={`ms-2 ${isExpanded ? "show" : "hide"}`}>{text}</p>} */}
-                      <p className={`ms-2 ${isExpanded ? "show" : "hide"}`}>
-                        {text}
-                      </p>
+                      <p className="ms-2">{text}</p>
                     </Link>
                   </li>
                 ))}
@@ -101,7 +115,7 @@ export default function SideNavbar({ sidebarHandler, isExpanded }) {
                 >
                   <Link onClick={signoutHandler} to="/" className="nav-link">
                     <i className="fas fa-sign-out-alt"></i>
-                    {isExpanded && <p className="ms-2">Log Out</p>}
+                    <p className="ms-2">Log Out</p>
                   </Link>
                 </li>
               </ul>

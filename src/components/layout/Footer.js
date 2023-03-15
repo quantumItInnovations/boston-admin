@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import { Container } from "react-bootstrap";
 import { Store } from "../../Store";
 
@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <>
       {userInfo ? (
-        <Container fluid className="footer-container mt-auto">
+        <Container fluid className="p-0 mt-auto">
           <footer className="text-center">
             <strong>
               Copyright © 2014-2023{" "}

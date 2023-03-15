@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
-import { uploadImage } from "../../uploadImage";
+import { uploadMultiImage } from "../../uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
 import axios from "axios";
@@ -84,8 +84,8 @@ export default function AddProduct() {
     }
     try {
       if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
+        const location = await uploadMultiImage(
+          e.target.files,
           token,
           uploadPercentageHandler
         );
@@ -93,7 +93,7 @@ export default function AddProduct() {
           throw location.error;
         }
 
-        setProductImage(location);
+        setProductImage([...location]);
         setTimeout(() => {
           setUploadPercentage(0);
         }, 1000);
@@ -337,6 +337,7 @@ export default function AddProduct() {
                             uploadFileHandler(e);
                           }}
                           required
+                          multiple
                         />
                         {uploadPercentage > 0 && (
                           <ProgressBar
