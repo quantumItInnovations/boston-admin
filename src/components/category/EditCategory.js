@@ -152,6 +152,7 @@ export default function EditCategoryModel(props) {
         toast.success("Category Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/category");
           dispatch({ type: "UPDATE_SUCCESS" });
@@ -204,7 +205,7 @@ export default function EditCategoryModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="product_image">
+            <Form.Group className="mb-3" controlId="category_image">
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 type="file"

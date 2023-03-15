@@ -125,6 +125,7 @@ export default function Users() {
                 <Form.Control
                   aria-label="Search Input"
                   placeholder="Search"
+                  type="search"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                 />
@@ -132,6 +133,7 @@ export default function Users() {
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     setQuery(searchInput);
+                    setCurPage(1);
                   }}
                 >
                   <i className="fas fa-search"></i>
@@ -158,10 +160,11 @@ export default function Users() {
                 </tr>
               </thead>
               <tbody>
-                {users && users.map((user, i) => (
-                  <tr key={user._id} className="odd">
-                    <td className="text-center">{i + 1}</td>
-                    {/* <td>
+                {users &&
+                  users.map((user, i) => (
+                    <tr key={user._id} className="odd">
+                      <td className="text-center">{i + 1}</td>
+                      {/* <td>
                             <img
                               className="td-img"
                               src={user.profile_image}
@@ -173,15 +176,15 @@ export default function Users() {
                               }}
                             />
                           </td> */}
-                    <td>{user.firstname}</td>
-                    <td>{user.lastname}</td>
-                    <td>{user.email}</td>
-                    <td>{getDateTime(user.createdAt && user.createdAt)}</td>
-                    {/* <td>{user.dob}</td> */}
-                    {/* <td>{user.sex}</td> */}
-                    <td>{user.telephone}</td>
-                    <td>{user.fax}</td>
-                    {/* <td>
+                      <td>{user.firstname}</td>
+                      <td>{user.lastname}</td>
+                      <td>{user.email}</td>
+                      <td>{getDateTime(user.createdAt && user.createdAt)}</td>
+                      {/* <td>{user.dob}</td> */}
+                      {/* <td>{user.sex}</td> */}
+                      <td>{user.telephone}</td>
+                      <td>{user.fax}</td>
+                      {/* <td>
                             {user.payment_status == 1 ? (
                               <MdToggleOn
                                 className="on"
@@ -204,41 +207,58 @@ export default function Users() {
                               />
                             )}
                           </td> */}
-                    <td>{user.role}</td>
-                    <td>
-                      <Button
-                        onClick={() => {
-                          navigate(`/admin/view/user/${user._id}`);
-                        }}
-                        type="success"
-                        className="btn btn-primary"
-                      >
-                        <i className="fa fa-eye"></i>
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          deleteUser(user._id);
-                        }}
-                        type="danger"
-                        className="btn btn-danger ms-2"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                      <td>{user.role}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            navigate(`/admin/view/user/${user._id}`);
+                          }}
+                          type="success"
+                          className="btn btn-primary"
+                        >
+                          <i className="fa fa-eye"></i>
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deleteUser(user._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Card.Body>
-          {resultPerPage < filteredUserCount && (
-            <Card.Footer>
+          <Card.Footer>
+            <div className="float-start d-flex align-items-center mt-3">
+              <p className="p-bold m-0 me-3">Row No.</p>
+              <Form.Group controlId="resultPerPage">
+                <Form.Select
+                  value={resultPerPage}
+                  onChange={(e) => {
+                    setResultPerPage(e.target.value);
+                    setCurPage(1);
+                  }}
+                  aria-label="Default select example"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </Form.Select>
+              </Form.Group>
+            </div>
+            {resultPerPage < filteredUserCount && (
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
-            </Card.Footer>
-          )}
+            )}
+          </Card.Footer>
         </Card>
       )}
       <ToastContainer />

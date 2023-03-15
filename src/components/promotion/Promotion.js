@@ -70,9 +70,12 @@ export default function Promotions() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get("https://boston-api.adaptable.app/api/promotion/all", {
-          headers: { Authorization: token },
-        });
+        const res = await axios.get(
+          "https://boston-api.adaptable.app/api/promotion/all",
+          {
+            headers: { Authorization: token },
+          }
+        );
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -113,6 +116,7 @@ export default function Promotions() {
               <thead>
                 <tr>
                   <th>S.No</th>
+                  <th>Image</th>
                   <th>Product</th>
                   <th>Updated Price</th>
                   <th>Actions</th>
@@ -123,8 +127,24 @@ export default function Promotions() {
                   promotions.map((promotion, i) => (
                     <tr key={promotion._id} className="odd">
                       <td className="text-center">{i + 1}</td>
+                      <td>
+                        <img
+                          className="td-img"
+                          src={promotion.promo_image}
+                          alt=""
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </td>
                       <td className="dtr-control sorting_1" tabIndex={0}>
-                        {promotion.product ? promotion.product.name : <b>Promotion product not found</b>}
+                        {promotion.product ? (
+                          promotion.product.name
+                        ) : (
+                          <b>Promotion product not found</b>
+                        )}
                       </td>
                       <td>{promotion.updated_price}</td>
                       <td>

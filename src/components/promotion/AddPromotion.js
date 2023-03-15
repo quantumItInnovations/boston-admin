@@ -60,13 +60,45 @@ export default function AddPromotion() {
       error: "",
     });
 
+  const [promo_image, setPromoImage] = useState(null);
   const [updated_price, setUpdatedPrice] = useState("");
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [uploadPercentage, setUploadPercentage] = useState(0);
+  const uploadPercentageHandler = (per) => {
+    setUploadPercentage(per);
+  };
 
+  const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      setPromoImage(null);
+      return;
+    }
+    try {
+      if (e.target.files[0]) {
+        const location = await uploadImage(
+          e.target.files[0],
+          token,
+          uploadPercentageHandler
+        );
+        if (location.error) {
+          throw location.error;
+        }
+
+        setPromoImage(location);
+        setTimeout(() => {
+          setUploadPercentage(0);
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error(error, {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -116,22 +148,22 @@ export default function AddPromotion() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if(!category) {
+    if (!category) {
       toast.warning("Please select a category.", {
-        position: toast.POSITION.TOP_CENTER
-      })
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
     }
-    if(!subCategory) {
+    if (!subCategory) {
       toast.warning("Please select a sub category.", {
-        position: toast.POSITION.TOP_CENTER
-      })
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
     }
-    if(!product) {
+    if (!product) {
       toast.warning("Please select a product.", {
-        position: toast.POSITION.TOP_CENTER
-      })
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
     }
     try {
@@ -142,6 +174,7 @@ export default function AddPromotion() {
         {
           product,
           updated_price,
+          promo_image,
         },
         {
           headers: {
@@ -279,6 +312,25 @@ export default function AddPromotion() {
                           onChange={(e) => setUpdatedPrice(e.target.value)}
                           required
                         />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="promotion_image">
+                        <Form.Label>Upload Image</Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept="image/png image/jpeg image/jpg"
+                          onChange={(e) => {
+                            uploadFileHandler(e);
+                          }}
+                          required
+                        />
+                        {uploadPercentage > 0 && (
+                          <ProgressBar
+                            now={uploadPercentage}
+                            active="true"
+                            label={`${uploadPercentage}%`}
+                          />
+                        )}
                       </Form.Group>
                     </div>
                     {/* /.card-body */}

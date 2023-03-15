@@ -88,35 +88,47 @@ const ViewPromotion = () => {
             </Card.Header>
             <Card.Body>
               <Row className="mb-3">
-                <Col md={6}>
-                  <p className="mb-0">
-                    <strong>Product</strong>
-                  </p>
-                  <p>
-                    {promotion.product ? (
-                      promotion.product.name
-                    ) : (
-                      <b>Promotion product not found</b>
-                    )}
-                  </p>
+                <Col md={4}>
+                  <img
+                    src={promotion.promo_image}
+                    alt=""
+                    width={"200px"}
+                    height={"200px"}
+                  />
                 </Col>
-                <Col md={6}>
-                  <p className="mb-0">
-                    <strong>Updated Price</strong>
-                  </p>
-                  <p>{promotion.updated_price}</p>
-                </Col>
-                <Col md={6}>
-                  <p className="mb-0">
-                    <strong>Created At</strong>
-                  </p>
-                  <p>{getDateTime(promotion.createdAt)}</p>
-                </Col>
-                <Col md={6}>
-                  <p className="mb-0">
-                    <strong>Last Update</strong>
-                  </p>
-                  <p>{getDateTime(promotion.updatedAt)}</p>
+                <Col md={8}>
+                  <Row>
+                    <Col md={6}>
+                      <p className="mb-0">
+                        <strong>Product</strong>
+                      </p>
+                      <p>
+                        {promotion.product ? (
+                          promotion.product.name
+                        ) : (
+                          <b>Promotion product not found</b>
+                        )}
+                      </p>
+                    </Col>
+                    <Col md={6}>
+                      <p className="mb-0">
+                        <strong>Updated Price</strong>
+                      </p>
+                      <p>{promotion.updated_price}</p>
+                    </Col>
+                    <Col md={6}>
+                      <p className="mb-0">
+                        <strong>Created At</strong>
+                      </p>
+                      <p>{getDateTime(promotion.createdAt)}</p>
+                    </Col>
+                    <Col md={6}>
+                      <p className="mb-0">
+                        <strong>Last Update</strong>
+                      </p>
+                      <p>{getDateTime(promotion.updatedAt)}</p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Card.Body>
