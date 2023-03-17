@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
 import { Button, Card, Container, Form, Table } from "react-bootstrap";
+import { IoMdOpen } from "react-icons/io";
+import ArrayView from "../listView/ArrayView";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../axiosUtil";
 
@@ -33,9 +35,11 @@ export default function Order() {
   const { token } = state;
   console.log(token);
 
+  const [status, setStatus] = useState("all");
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(15);
-  const [status, setStatus] = useState("all");
+  const [modalShow, setModalShow] = useState(false);
+  const [productList, setProductList] = useState([]);
   const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
@@ -47,6 +51,12 @@ export default function Order() {
       error: "",
     }
   );
+
+  const showModelHandler = (ls) => {
+    // console.log("product_list", ls);
+    setProductList([...ls]);
+    setModalShow(true);
+  };
 
   const deleteOrder = async (id) => {
     if (
@@ -150,14 +160,17 @@ export default function Order() {
                   orders.map((order, i) => (
                     <tr key={order._id} className="odd">
                       <td className="text-center">{i + 1}</td>
-                      <td className="dtr-control sorting_1" tabIndex={0}>
-                        {order.orderId && order.orderId}
-                      </td>
+                      <td>{order.orderId && order.orderId}</td>
                       <td>
                         {order.userId &&
                           `${order.userId.firstname} ${order.userId.lastname}`}
                       </td>
-                      <td>View Product Details</td>
+                      <td className="text-center">
+                        <IoMdOpen
+                          className="open-model"
+                          onClick={() => showModelHandler(order.products)}
+                        />
+                      </td>
                       <td>{order.amount}</td>
                       <td>{order.status}</td>
                       <td>{order.address.town}</td>
@@ -213,6 +226,15 @@ export default function Order() {
             )}
           </Card.Footer>
         </Card>
+      )}
+      {productList && modalShow ? (
+        <ArrayView
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          arr={productList}
+        />
+      ) : (
+        <></>
       )}
       <ToastContainer />
     </Container>

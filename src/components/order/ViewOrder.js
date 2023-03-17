@@ -74,8 +74,7 @@ const ViewOrder = () => {
     try {
       setLoadingUpdate(true);
       const { data } = await axiosInstance.put(
-        // "/api/admin/category/create",
-        `http://localhost:5000/api/admin/order/${id}/update/status`,
+        `/api/admin/order/${id}/update/status`,
         {
           status,
         },
