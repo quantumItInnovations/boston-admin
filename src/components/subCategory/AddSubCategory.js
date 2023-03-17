@@ -54,16 +54,18 @@ export default function AddSubCategory() {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (file) => {
-    if (!file) {
+  // const uploadFileHandler = async (file) => {
+  const uploadFileHandler = async (e) => {
+    // if (!file) {
+    if (!e.target.files[0]) {
       setSubCategoryImage(null);
       return;
     }
     try {
       // if (e.target.files[0]) {
       const location = await uploadImage(
-        // e.target.files[0],
-        file,
+        e.target.files[0],
+        // file,
         token,
         uploadPercentageHandler
       );
@@ -233,7 +235,7 @@ export default function AddSubCategory() {
                           ))}
                       </Form.Select>
                     </Form.Group>
-                    <Cropper
+                    {/* <Cropper
                       uploadHandler={uploadFileHandler}
                       w={5}
                       h={6}
@@ -245,7 +247,25 @@ export default function AddSubCategory() {
                         active
                         label={`${uploadPercentage}%`}
                       />
-                    )}
+                    )} */}
+                    <Form.Group className="mb-3" controlId="sub_category_image">
+                      <Form.Label>Upload Image</Form.Label>
+                      <Form.Control
+                        type="file"
+                        accept="image/png image/jpeg image/jpg"
+                        onChange={(e) => {
+                          uploadFileHandler(e);
+                        }}
+                        required
+                      />
+                      {uploadPercentage > 0 && (
+                        <ProgressBar
+                          now={uploadPercentage}
+                          active="true"
+                          label={`${uploadPercentage}%`}
+                        />
+                      )}
+                    </Form.Group>
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">
