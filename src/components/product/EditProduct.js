@@ -5,8 +5,8 @@ import { uploadMultiImage } from "../../uploadImage";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -71,7 +71,7 @@ export default function EditProductModel(props) {
   };
 
   const uploadFileHandler = async (e, type) => {
-    if(!e.target.files[0]) {
+    if (!e.target.files[0]) {
       setProductImage(null);
       return;
     }
@@ -103,26 +103,17 @@ export default function EditProductModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res1 = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res1 = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
-        const res2 = await axios.get(
-          "https://boston-api.adaptable.app/api/subCategory/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res2 = await axiosInstance.get("/api/subCategory/all", {
+          headers: { Authorization: token },
+        });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/product/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/product/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log("edit product data", res1.data, res2.data, data);
 
         const product = data.product;
@@ -162,8 +153,8 @@ export default function EditProductModel(props) {
     }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `https://boston-api.adaptable.app/api/admin/product/${id}`,
+      const { data } = await axiosInstance.put(
+        `/api/admin/product/${id}`,
         {
           name,
           description,

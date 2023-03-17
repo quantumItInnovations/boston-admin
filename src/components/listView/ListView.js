@@ -60,7 +60,7 @@ export default function ListView(props) {
         swell: swell,
       };
 
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `http://54.175.187.169:5000/api/diveSpots/editDiveConditions`,
         {
           dive_spot_id: spot_id,

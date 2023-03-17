@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "./axiosUtil";
 import { getError } from "./utils";
 
 export const uploadImage = async (file, token, percentHandler) => {
@@ -7,7 +7,7 @@ export const uploadImage = async (file, token, percentHandler) => {
     bodyFormData.append("image", file);
     const options = {
       onUploadProgress: (progressEvent) => {
-        const {loaded, total} = progressEvent;
+        const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
         percentHandler(percent);
         console.log(`${loaded}kb of ${total}kb | ${percent}`);
@@ -16,14 +16,14 @@ export const uploadImage = async (file, token, percentHandler) => {
         "Content-Type": "multipart/form-data",
         Authorization: token,
       },
-    }
-    const { data } = await axios.post(
-      "https://boston-api.adaptable.app/api/admin/image",
+    };
+    const { data } = await axiosInstance.post(
+      "/api/admin/image",
       bodyFormData,
-      options,
-    );                                               
+      options
+    );
     if (data.data.location) {
-      console.log('location', data.data.location);
+      console.log("location", data.data.location);
       return data.data.location;
     }
   } catch (err) {
@@ -35,13 +35,13 @@ export const uploadMultiImage = async (files, token, percentHandler) => {
   try {
     // console.log('files1', typeof files)
     const bodyFormData = new FormData();
-    [...files].forEach((file)=>{
+    [...files].forEach((file) => {
       bodyFormData.append("image", file);
-    })
-    
+    });
+
     const options = {
       onUploadProgress: (progressEvent) => {
-        const {loaded, total} = progressEvent;
+        const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
         percentHandler(percent);
         console.log(`${loaded}kb of ${total}kb | ${percent}`);
@@ -50,11 +50,11 @@ export const uploadMultiImage = async (files, token, percentHandler) => {
         "Content-Type": "multipart/form-data",
         Authorization: token,
       },
-    }
-    const { data } = await axios.post(
-      "https://boston-api.adaptable.app/api/admin/multi-image",
+    };
+    const { data } = await axiosInstance.post(
+      "/api/admin/multi-image",
       bodyFormData,
-      options,
+      options
     );
     if (data.data.location) {
       return data.data.location;

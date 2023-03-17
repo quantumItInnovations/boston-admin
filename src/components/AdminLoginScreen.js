@@ -12,8 +12,8 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import axios from "axios";
 import LoadingBox from "../components/layout/LoadingBox";
+import axiosInstance from "../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,13 +43,10 @@ export default function AdminLoginScreen() {
     e.preventDefault();
     try {
       dispatch({ type: "FETCH_REQUEST" });
-      const { data } = await axios.post(
-        "https://boston-api.adaptable.app/api/admin/login",
-        {
-          email: username,
-          password: password,
-        }
-      );
+      const { data } = await axiosInstance.post("/api/admin/login", {
+        email: username,
+        password: password,
+      });
 
       console.log("data", data);
       if (data.token) {

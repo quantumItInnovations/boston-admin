@@ -5,8 +5,8 @@ import { uploadImage } from "../../uploadImage";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,12 +51,9 @@ export default function EditUserModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/admin/user/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/admin/user/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         const user = data.user;
@@ -87,8 +84,8 @@ export default function EditUserModel(props) {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
 
-      const { data } = await axios.put(
-        `https://boston-api.adaptable.app/api/admin/user/${id}`,
+      const { data } = await axiosInstance.put(
+        `/api/admin/user/${id}`,
         {
           firstname,
           lastname,

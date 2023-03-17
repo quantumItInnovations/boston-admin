@@ -8,17 +8,19 @@ const linkList = [
   { icon: "fa fa-id-card", text: "Dashboard", url: "/admin/dashboard" },
   { icon: "fa fa-user-friends", text: "Users", url: "/admin/users" },
   { icon: "fa fa-store", text: "Category", url: "/admin/category" },
-  { icon: "fab fa-hubspot", text: "Sub Category", url: "/admin/sub-category" },
+  { icon: "fab fa-hubspot", text: "Sub Category", url: "/admin/subCategory" },
   { icon: "fa fa-gift", text: "Products", url: "/admin/products" },
-  { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" },
+  { icon: "fas fa-shopping-basket", text: "Orders", url: "/admin/orders"},
+  { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" }
 ];
 
 const active_text = {
   "Dashboard": "dashboard",
   "Users": "user",
   "Category": "category",
-  "Sub Category": "sub-category",
+  "Sub Category": "subCategory",
   "Products": "product",
+  "Orders": "order",
   "Promotions": "promotion",
 };
 

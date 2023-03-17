@@ -3,13 +3,13 @@ import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditProductModel from "./EditProduct.js";
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,12 +41,9 @@ const ViewProduct = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/product/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/product/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -61,7 +58,7 @@ const ViewProduct = () => {
       }
     };
     fetchData();
-    return ()=>{}
+    return () => {};
   }, [id]);
 
   const getDateTime = (dt) => {
@@ -93,8 +90,9 @@ const ViewProduct = () => {
                   <img
                     src={product.product_images[0]}
                     alt=""
+                    className="img-fluid"
                     width={"200px"}
-                    height={"200px"}
+                    // height={"200px"}
                   />
                 </Col>
                 <Col md={8}>
@@ -131,13 +129,25 @@ const ViewProduct = () => {
                       <p className="mb-0">
                         <strong>Category</strong>
                       </p>
-                      <p>{product.category ? product.category.name : <b>Category not set</b>}</p>
+                      <p>
+                        {product.category ? (
+                          product.category.name
+                        ) : (
+                          <b>Category not set</b>
+                        )}
+                      </p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">
                         <strong>Sub Category</strong>
                       </p>
-                      <p>{product.sub_category ? product.sub_category.name : <b>Sub category not set</b>}</p>
+                      <p>
+                        {product.sub_category ? (
+                          product.sub_category.name
+                        ) : (
+                          <b>Sub category not set</b>
+                        )}
+                      </p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">

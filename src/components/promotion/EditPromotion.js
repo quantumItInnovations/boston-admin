@@ -13,8 +13,9 @@ import {
   Row,
   ProgressBar,
 } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -84,31 +85,34 @@ export default function EditPromotionModel(props) {
   const [product, setProduct] = useState(null);
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
+  const uploadFileHandler = async (file, type) => {
+    console.log("file", file);
+    // if (!e.target.files[0]) {
+    if (!file) {
       setPromoImage(null);
       return;
     }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setPromoImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setPromoImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -126,33 +130,21 @@ export default function EditPromotionModel(props) {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res1 = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
-        const res2 = await axios.get(
-          "https://boston-api.adaptable.app/api/subCategory/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res2 = await axiosInstance.get("/api/subCategory/all", {
+          headers: { Authorization: token },
+        });
 
-        const res3 = await axios.get(
-          "https://boston-api.adaptable.app/api/product/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res3 = await axiosInstance.get("/api/product/all", {
+          headers: { Authorization: token },
+        });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/promotion/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/promotion/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log("edit promotion", data);
         console.log("add promotion data", res1.data, res2.data, res3.data);
 
@@ -194,8 +186,8 @@ export default function EditPromotionModel(props) {
 
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `https://boston-api.adaptable.app/api/admin/promotion/${id}`,
+      const { data } = await axiosInstance.put(
+        `/api/admin/promotion/${id}`,
         {
           product,
           updated_price,
@@ -249,7 +241,7 @@ export default function EditPromotionModel(props) {
         <Form onSubmit={submitHandler}>
           <Modal.Body>
             <Container className="small-container">
-              <img src={preview} width={200} height={200}></img>
+              <img src={preview} width={200} className="img-fluid"></img>
               <Form.Group className="mb-3" controlId="updated_price">
                 <Form.Label>Updated Price</Form.Label>
                 <Form.Control
@@ -258,23 +250,19 @@ export default function EditPromotionModel(props) {
                   required
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="promotion_image">
-                <Form.Label>Upload Image</Form.Label>
-                <Form.Control
-                  type="file"
-                  accept="image/png, image/jpeg image/jpg"
-                  onChange={(e) => {
-                    uploadFileHandler(e);
-                  }}
+              <Cropper
+                uploadHandler={uploadFileHandler}
+                w={15}
+                h={6}
+                isUploaded={isUploaded}
+              />
+              {uploadPercentage > 0 && (
+                <ProgressBar
+                  now={uploadPercentage}
+                  active
+                  label={`${uploadPercentage}%`}
                 />
-                {uploadPercentage > 0 && (
-                  <ProgressBar
-                    now={uploadPercentage}
-                    active
-                    label={`${uploadPercentage}%`}
-                  />
-                )}
-              </Form.Group>
+              )}
               <ToastContainer />
             </Container>
           </Modal.Body>

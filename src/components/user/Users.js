@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -14,8 +13,8 @@ import {
   InputGroup,
   Table,
 } from "react-bootstrap";
-import { MdToggleOff, MdToggleOn } from "react-icons/md";
 import CustomPagination from "../layout/CustomPagination";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -61,13 +60,9 @@ export default function Users() {
     if (window.confirm("Are you sure you want to delete this user?") === true) {
       try {
         setDel(true);
-        const res = await axios.delete(
-          `https://boston-api.adaptable.app/api/admin/user/${id}`,
-
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.delete(`/api/admin/user/${id}`, {
+          headers: { Authorization: token },
+        });
         setDel(false);
       } catch (error) {
         toast.error(getError(error), {
@@ -81,9 +76,8 @@ export default function Users() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          // "https://boston-api.adaptable.app/api/admin/user/all",
-          `https://boston-api.adaptable.app/api/admin/user/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+        const res = await axiosInstance.get(
+          `/api/admin/user/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
