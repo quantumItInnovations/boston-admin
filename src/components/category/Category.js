@@ -171,9 +171,7 @@ export default function Category() {
                           }}
                         />
                       </td>
-                      <td className="dtr-control sorting_1" tabIndex={0}>
-                        {category.name}
-                      </td>
+                      <td>{category.name}</td>
                       <td>{category.description}</td>
                       <td>
                         <Button

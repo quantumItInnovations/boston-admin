@@ -133,7 +133,7 @@ export default function Promotions() {
                           }}
                         />
                       </td>
-                      <td className="dtr-control sorting_1" tabIndex={0}>
+                      <td>
                         {promotion.product ? (
                           promotion.product.name
                         ) : (

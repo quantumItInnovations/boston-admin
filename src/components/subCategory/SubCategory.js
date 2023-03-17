@@ -177,9 +177,7 @@ export default function SubCategory() {
                           }}
                         />
                       </td>
-                      <td className="dtr-control sorting_1" tabIndex={0}>
-                        {subCategory.name}
-                      </td>
+                      <td>{subCategory.name}</td>
                       <td>
                         {subCategory.category ? (
                           subCategory.category.name

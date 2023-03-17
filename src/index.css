@@ -242,6 +242,22 @@ table.table {
 .login-box {
   width: 90%;
 }
+.dropdown-toggle:hover,
+.dropdown-toggle,
+.dropdown:hover {
+  background-color: transparent;
+  border: none;
+}
+
+.dropdown button {
+  background: transparent !important;
+}
+
+.dropdown-menu span:active,
+.dropdown-menu Link:active {
+  background-color: transparent !important;
+  color: black;
+}
 
 .login-logo,
 .register-logo {

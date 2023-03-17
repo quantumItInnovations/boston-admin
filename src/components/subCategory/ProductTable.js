@@ -190,9 +190,7 @@ export default function ProductTable({ id: subCategoryId }) {
                           }}
                         />
                       </td>
-                      <td className="dtr-control sorting_1" tabIndex={0}>
-                        {product.name}
-                      </td>
+                      <td>{product.name}</td>
                       <td>{product.amount}</td>
                       <td>
                         {product.stock ? (
