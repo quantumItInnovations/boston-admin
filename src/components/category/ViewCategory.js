@@ -3,12 +3,12 @@ import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditCategoryModel from "./EditCategory.js";
 import SubCategoryTable from "./SubCategoryTable";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -40,12 +40,9 @@ const ViewCategory = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/category/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/category/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -93,8 +90,9 @@ const ViewCategory = () => {
                   <img
                     src={category.category_image}
                     alt=""
+                    className="img-fluid"
                     width={"200px"}
-                    height={"200px"}
+                    // height={"200px"}
                   />
                 </Col>
                 <Col md={8}>

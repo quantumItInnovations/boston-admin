@@ -5,8 +5,9 @@ import { getError } from "../../utils";
 import { uploadImage } from "../../uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 export default function AddCategory() {
   const navigate = useNavigate();
@@ -19,31 +20,34 @@ export default function AddCategory() {
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
+  const uploadFileHandler = async (file, type) => {
+    // if (!e.target.files[0]) {
+    if (!file) {
       setCategoryImage(null);
       return;
     }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setCategoryImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      // if (e.target.files[0]) {
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setCategoryImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -58,11 +62,16 @@ export default function AddCategory() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (category_image) {
+      toast.warning("Please select an image for category.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       setLoadingUpdate(true);
-      const { data } = await axios.post(
-        "https://boston-api.adaptable.app/api/admin/category/create",
+      const { data } = await axiosInstance.post(
+        "/api/admin/category/create",
         {
           name,
           description,
@@ -146,24 +155,19 @@ export default function AddCategory() {
                       />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="product_image">
-                      <Form.Label>Upload Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/png image/jpeg image/jpg"
-                        onChange={(e) => {
-                          uploadFileHandler(e);
-                        }}
-                        required
+                    <Cropper
+                      uploadHandler={uploadFileHandler}
+                      w={25}
+                      h={17}
+                      isUploaded={isUploaded}
+                    />
+                    {uploadPercentage > 0 && (
+                      <ProgressBar
+                        now={uploadPercentage}
+                        active="true"
+                        label={`${uploadPercentage}%`}
                       />
-                      {uploadPercentage > 0 && (
-                        <ProgressBar
-                          now={uploadPercentage}
-                          active="true"
-                          label={`${uploadPercentage}%`}
-                        />
-                      )}
-                    </Form.Group>
+                    )}
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">

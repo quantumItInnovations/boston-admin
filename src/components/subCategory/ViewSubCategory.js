@@ -3,12 +3,12 @@ import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditSubCategoryModel from "./EditSubCategory.js";
 import ProductTable from "./ProductTable";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -44,12 +44,9 @@ const ViewSubCategory = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/subCategory/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/subCategory/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -96,8 +93,9 @@ const ViewSubCategory = () => {
                   <img
                     src={subCategory.sub_category_image}
                     alt=""
+                    className="img-fluid"
                     width={"200px"}
-                    height={"200px"}
+                    // height={"200px"}
                   />
                 </Col>
                 <Col md={8}>
@@ -118,7 +116,13 @@ const ViewSubCategory = () => {
                       <p className="mb-0">
                         <strong>Category</strong>
                       </p>
-                      <p>{subCategory.category ? subCategory.category.name : <b>Category not set</b>}</p>
+                      <p>
+                        {subCategory.category ? (
+                          subCategory.category.name
+                        ) : (
+                          <b>Category not set</b>
+                        )}
+                      </p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">

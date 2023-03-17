@@ -5,8 +5,9 @@ import { getError } from "../../utils";
 import { uploadImage } from "../../uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -44,31 +45,37 @@ export default function AddSubCategory() {
     setName("");
     setDescription("");
     setCategory("");
-    setSubCategoryImage("");  
-  }
+    setSubCategoryImage("");
+  };
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e) => {
+  const uploadFileHandler = async (file) => {
+    if (!file) {
+      setSubCategoryImage(null);
+      return;
+    }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setSubCategoryImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      // if (e.target.files[0]) {
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setSubCategoryImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -84,11 +91,18 @@ export default function AddSubCategory() {
       });
       return;
     }
+
+    if (!sub_category_image) {
+      toast.warning("Please select an image for sub-category.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       setLoadingUpdate(true);
 
-      const { data } = await axios.post(
-        "https://boston-api.adaptable.app/api/admin/subCategory/create",
+      const { data } = await axiosInstance.post(
+        "/api/admin/subCategory/create",
         {
           name,
           description,
@@ -109,10 +123,9 @@ export default function AddSubCategory() {
         });
         resetForm();
         setTimeout(() => {
-          navigate("/admin/sub-category");
+          navigate("/admin/subCategory");
           setLoadingUpdate(false);
         }, 3000);
-        
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -134,12 +147,9 @@ export default function AddSubCategory() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
         console.log("add subCategory data", res);
         dispatch({
@@ -210,7 +220,9 @@ export default function AddSubCategory() {
                         aria-label="Select Category"
                         onChange={(e) => setCategory(e.target.value)}
                       >
-                        <option key="blankChoice" hidden value>Select Category</option>
+                        <option key="blankChoice" hidden value>
+                          Select Category
+                        </option>
                         {/* {console.log("dfsdf", categories)} */}
 
                         {categories &&
@@ -221,24 +233,19 @@ export default function AddSubCategory() {
                           ))}
                       </Form.Select>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="product_image">
-                      <Form.Label>Upload Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/png image/jpeg image/jpg"
-                        onChange={(e) => {
-                          uploadFileHandler(e);
-                        }}
-                        required
+                    <Cropper
+                      uploadHandler={uploadFileHandler}
+                      w={5}
+                      h={6}
+                      isUploaded={isUploaded}
+                    />
+                    {uploadPercentage > 0 && (
+                      <ProgressBar
+                        now={uploadPercentage}
+                        active
+                        label={`${uploadPercentage}%`}
                       />
-                      {uploadPercentage > 0 && (
-                        <ProgressBar
-                          now={uploadPercentage}
-                          active
-                          label={`${uploadPercentage}%`}
-                        />
-                      )}
-                    </Form.Group>
+                    )}
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">

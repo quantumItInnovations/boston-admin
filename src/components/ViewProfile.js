@@ -2,10 +2,10 @@ import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../Store";
 import { getError } from "../utils";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingBox from "./layout/LoadingBox";
 import MessageBox from "./layout/MessageBox";
+import axiosInstance from "../axiosUtil";
 // import EditUserModel from "./EditUser.js";
 
 const reducer = (state, action) => {
@@ -37,8 +37,8 @@ const ViewProfile = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/user/user-profile`,
+        const { data } = await axiosInstance.get(
+          `/api/user/user-profile`,
           {
             headers: { Authorization: token },
           }

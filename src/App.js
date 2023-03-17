@@ -33,6 +33,8 @@ import ViewUser from "./components/user/ViewUser";
 import AdminLoginScreen from "./components/AdminLoginScreen";
 import Dashboard from "./components/layout/Dashboard";
 import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
+import Order from "./components/order/Orders";
+import ViewOrder from "./components/order/ViewOrder";
 
 const Children = ({ child }) => (
   <AdminProtectedRoute>{child}</AdminProtectedRoute>
@@ -100,15 +102,15 @@ function App() {
             />
 
             <Route
-              path="/admin/sub-category"
+              path="/admin/subCategory"
               element={<Children child={<SubCategory />} />}
             />
             <Route
-              path="/admin/sub-category/create"
+              path="/admin/subCategory/create"
               element={<Children child={<AddSubCategory />} />}
             />
             <Route
-              path="/admin/view/sub-category/:id"
+              path="/admin/view/subCategory/:id"
               element={<Children child={<ViewSubCategory />} />}
             />
 
@@ -141,6 +143,15 @@ function App() {
             <Route
               path="/admin/view/promotion/:id"
               element={<Children child={<ViewPromotion />} />}
+            />
+            
+            <Route
+              path="/admin/orders"
+              element={<Children child={<Order />} />}
+            />
+            <Route
+              path="/admin/view/order/:id"
+              element={<Children child={<ViewOrder />} />}
             />
 
             <Route path="*" element={<NotFound />} />

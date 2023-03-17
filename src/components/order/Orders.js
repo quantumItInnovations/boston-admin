@@ -1,19 +1,11 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import {
-  Button,
-  Card,
-  Container,
-  Form,
-  InputGroup,
-  Table,
-} from "react-bootstrap";
-import { IoMdOpen } from "react-icons/io";
+import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../axiosUtil";
 
@@ -24,9 +16,8 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return {
         ...state,
-        subCategories: action.payload.subCategories,
-        subCategoryCount: action.payload.subCategoryCount,
-        filteredSubCategoryCount: action.payload.filteredSubCategoryCount,
+        orders: action.payload.orders,
+        filteredOrderCount: action.payload.filteredOrderCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -36,41 +27,34 @@ const reducer = (state, action) => {
   }
 };
 
-export default function SubCategoryTable({ id }) {
+export default function Order() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
   console.log(token);
 
   const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(5);
-  const [searchInput, setSearchInput] = useState("");
-  const [query, setQuery] = useState("");
+  const [resultPerPage, setResultPerPage] = useState(15);
+  const [status, setStatus] = useState("all");
   const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
-  const [
-    {
-      loading,
-      error,
-      subCategories,
-      subCategoryCount,
-      filteredSubCategoryCount,
-    },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
 
-  const deleteSubCategory = async (id) => {
+  const [{ loading, error, orders, filteredOrderCount }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      error: "",
+    }
+  );
+
+  const deleteOrder = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this sub-category?") ===
-      true
+      window.confirm("Are you sure you want to delete this order?") === true
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(`/api/admin/subCategory/${id}`, {
+        const res = await axiosInstance.delete(`/api/admin/order/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
@@ -86,25 +70,14 @@ export default function SubCategoryTable({ id }) {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        if (searchInput) {
-          const res = await axiosInstance.get(
-            `/api/admin?search=${searchInput}&in=shops`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-
-          navigate("/admin/shops?page=1");
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        } else {
-          const res = await axiosInstance.get(
-            `/api/category/${id}/subCategories`,
-            {
-              headers: { Authorization: token },
-            }
-          );
-          dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        }
+        const res = await axiosInstance.get(
+          `/api/admin/orders/all/?status=${status}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
+        console.log("orders", res.data);
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -116,9 +89,9 @@ export default function SubCategoryTable({ id }) {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, query]);
+  }, [token, del, curPage, resultPerPage, status]);
 
-  const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
+  const numOfPages = Math.ceil(filteredOrderCount / resultPerPage);
   console.log("nuofPage", numOfPages);
 
   return (
@@ -130,34 +103,32 @@ export default function SubCategoryTable({ id }) {
       ) : (
         <Card>
           <Card.Header>
-            <Button
+            {/* <Button
               onClick={() => {
-                navigate(`/admin/subCategory/create`);
+                navigate(`/admin/category/create`);
               }}
               type="success"
               className="btn btn-primary btn-block mt-1"
             >
-              Add Sub Category
-            </Button>
-            <div className="search-box float-end">
-              <InputGroup>
-                <Form.Control
-                  aria-label="Search Input"
-                  placeholder="Search"
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <InputGroup.Text
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setQuery(searchInput);
+              Add Category
+            </Button> */}
+            <div className="float-end d-flex align-items-center">
+              <p className="p-bold m-0 me-3">Filter by Status</p>
+              <Form.Group controlId="status">
+                <Form.Select
+                  value={status}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
                     setCurPage(1);
                   }}
+                  aria-label="Default select example"
                 >
-                  <i className="fas fa-search"></i>
-                </InputGroup.Text>
-              </InputGroup>
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  <option value="delivered">Delivered</option>
+                </Form.Select>
+              </Form.Group>
             </div>
           </Card.Header>
           <Card.Body>
@@ -165,41 +136,35 @@ export default function SubCategoryTable({ id }) {
               <thead>
                 <tr>
                   <th>S.No</th>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Description</th>
+                  <th>Order Id</th>
+                  <th>User</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Address</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {subCategories &&
-                  subCategories.map((subCategory, i) => (
-                    <tr key={subCategory._id} className="odd">
+                {orders &&
+                  orders.map((order, i) => (
+                    <tr key={order._id} className="odd">
                       <td className="text-center">{i + 1}</td>
-                      <td>
-                        <img
-                          className="td-img"
-                          src={subCategory.sub_category_image}
-                          alt=""
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </td>
                       <td className="dtr-control sorting_1" tabIndex={0}>
-                        {subCategory.name}
+                        {order.orderId && order.orderId}
                       </td>
-                      <td>{subCategory.category.name}</td>
-                      <td>{subCategory.description}</td>
+                      <td>
+                        {order.userId &&
+                          `${order.userId.firstname} ${order.userId.lastname}`}
+                      </td>
+                      <td>View Product Details</td>
+                      <td>{order.amount}</td>
+                      <td>{order.status}</td>
+                      <td>{order.address.town}</td>
                       <td>
                         <Button
                           onClick={() => {
-                            navigate(
-                              `/admin/view/subCategory/${subCategory._id}`
-                            );
+                            navigate(`/admin/view/order/${order._id}`);
                           }}
                           type="success"
                           className="btn btn-primary"
@@ -208,7 +173,7 @@ export default function SubCategoryTable({ id }) {
                         </Button>
                         <Button
                           onClick={() => {
-                            deleteSubCategory(subCategory._id);
+                            deleteOrder(order._id);
                           }}
                           type="danger"
                           className="btn btn-danger ms-2"
@@ -221,7 +186,7 @@ export default function SubCategoryTable({ id }) {
               </tbody>
             </Table>
           </Card.Body>
-          {/* <Card.Footer>
+          <Card.Footer>
             <div className="float-start d-flex align-items-center mt-3">
               <p className="p-bold m-0 me-3">Row No.</p>
               <Form.Group controlId="resultPerPage">
@@ -239,14 +204,14 @@ export default function SubCategoryTable({ id }) {
                 </Form.Select>
               </Form.Group>
             </div>
-            {resultPerPage < filteredSubCategoryCount && (
+            {resultPerPage < filteredOrderCount && (
               <CustomPagination
                 pages={numOfPages}
                 pageHandler={curPageHandler}
                 curPage={curPage}
               />
             )}
-          </Card.Footer> */}
+          </Card.Footer>
         </Card>
       )}
       <ToastContainer />

@@ -5,8 +5,9 @@ import { getError } from "../../utils";
 import { uploadImage } from "../../uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -68,31 +69,34 @@ export default function AddPromotion() {
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
+  const uploadFileHandler = async (file, type) => {
+    console.log("file", file);
+    // if (!e.target.files[0]) {
+    if (!file) {
       setPromoImage(null);
       return;
     }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setPromoImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setPromoImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -103,26 +107,17 @@ export default function AddPromotion() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res1 = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
-        const res2 = await axios.get(
-          "https://boston-api.adaptable.app/api/subCategory/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res2 = await axiosInstance.get("/api/subCategory/all", {
+          headers: { Authorization: token },
+        });
 
-        const res3 = await axios.get(
-          "https://boston-api.adaptable.app/api/product/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res3 = await axiosInstance.get("/api/product/all", {
+          headers: { Authorization: token },
+        });
 
         console.log("add promotion data", res1.data, res2.data, res3.data);
         dispatch({
@@ -166,11 +161,18 @@ export default function AddPromotion() {
       });
       return;
     }
+
+    if (!promo_image) {
+      toast.warning("Please select an image for promotion.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
       setLoadingUpdate(true);
 
-      const { data } = await axios.post(
-        "https://boston-api.adaptable.app/api/admin/promotion/create",
+      const { data } = await axiosInstance.post(
+        "/api/admin/promotion/create",
         {
           product,
           updated_price,
@@ -308,30 +310,26 @@ export default function AddPromotion() {
                       <Form.Group className="mb-3" controlId="updated_price">
                         <Form.Label>Updated Price</Form.Label>
                         <Form.Control
+                          type="number"
                           value={updated_price}
                           onChange={(e) => setUpdatedPrice(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group className="mb-3" controlId="promotion_image">
-                        <Form.Label>Upload Image</Form.Label>
-                        <Form.Control
-                          type="file"
-                          accept="image/png image/jpeg image/jpg"
-                          onChange={(e) => {
-                            uploadFileHandler(e);
-                          }}
-                          required
+                      <Cropper
+                        uploadHandler={uploadFileHandler}
+                        w={15}
+                        h={6}
+                        isUploaded={isUploaded}
+                      />
+                      {uploadPercentage > 0 && (
+                        <ProgressBar
+                          now={uploadPercentage}
+                          active="true"
+                          label={`${uploadPercentage}%`}
                         />
-                        {uploadPercentage > 0 && (
-                          <ProgressBar
-                            now={uploadPercentage}
-                            active="true"
-                            label={`${uploadPercentage}%`}
-                          />
-                        )}
-                      </Form.Group>
+                      )}
                     </div>
                     {/* /.card-body */}
                     <div className="card-footer">

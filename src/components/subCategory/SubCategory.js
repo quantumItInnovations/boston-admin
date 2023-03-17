@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -16,6 +15,7 @@ import {
 } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -70,13 +70,9 @@ export default function SubCategory() {
     ) {
       try {
         setDel(true);
-        const res = await axios.delete(
-          `https://boston-api.adaptable.app/api/admin/subCategory/${id}`,
-
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.delete(`/api/admin/subCategory/${id}`, {
+          headers: { Authorization: token },
+        });
         setDel(false);
       } catch (error) {
         toast.error(getError(error), {
@@ -90,9 +86,9 @@ export default function SubCategory() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          `https://boston-api.adaptable.app/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
-          // `https://boston-api.adaptable.app/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+        const res = await axiosInstance.get(
+          `/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          // `/api/subCategory/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -124,7 +120,7 @@ export default function SubCategory() {
           <Card.Header>
             <Button
               onClick={() => {
-                navigate(`/admin/sub-category/create`);
+                navigate(`/admin/subCategory/create`);
               }}
               type="success"
               className="btn btn-primary btn-block mt-1"
@@ -196,7 +192,7 @@ export default function SubCategory() {
                         <Button
                           onClick={() => {
                             navigate(
-                              `/admin/view/sub-category/${subCategory._id}`
+                              `/admin/view/subCategory/${subCategory._id}`
                             );
                           }}
                           type="success"

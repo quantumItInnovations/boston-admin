@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -17,6 +16,7 @@ import {
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import CustomPagination from "../layout/CustomPagination";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -64,8 +64,8 @@ export default function ProductTable({ id: subCategoryId }) {
     ) {
       try {
         setDel(true);
-        const res = await axios.delete(
-          `https://boston-api.adaptable.app/api/admin/product/${id}`,
+        const res = await axiosInstance.delete(
+          `/api/admin/product/${id}`,
 
           {
             headers: { Authorization: token },
@@ -85,8 +85,8 @@ export default function ProductTable({ id: subCategoryId }) {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         if (searchInput) {
-          const res = await axios.get(
-            `https://boston-api.adaptable.app/api/admin?search=${searchInput}&in=products`,
+          const res = await axiosInstance.get(
+            `/api/admin?search=${searchInput}&in=products`,
             {
               headers: { Authorization: token },
             }
@@ -96,8 +96,8 @@ export default function ProductTable({ id: subCategoryId }) {
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
           console.log("subCategoryId", subCategoryId);
-          const res = await axios.get(
-            `https://boston-api.adaptable.app/api/subCategory/${subCategoryId}/products`,
+          const res = await axiosInstance.get(
+            `/api/subCategory/${subCategoryId}/products`,
             {
               headers: { Authorization: token },
             }

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -15,6 +14,7 @@ import {
   Table,
 } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,12 +51,9 @@ export default function Promotions() {
     ) {
       try {
         setDel(true);
-        const res = await axios.delete(
-          `https://boston-api.adaptable.app/api/admin/promotion/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.delete(`/api/admin/promotion/${id}`, {
+          headers: { Authorization: token },
+        });
         setDel(false);
       } catch (error) {
         toast.error(getError(error), {
@@ -70,12 +67,9 @@ export default function Promotions() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          "https://boston-api.adaptable.app/api/promotion/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.get("/api/promotion/all", {
+          headers: { Authorization: token },
+        });
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({

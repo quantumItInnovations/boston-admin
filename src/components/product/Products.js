@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -17,6 +16,7 @@ import {
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import CustomPagination from "../layout/CustomPagination";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -64,13 +64,9 @@ export default function Products() {
     ) {
       try {
         setDel(true);
-        const res = await axios.delete(
-          `https://boston-api.adaptable.app/api/admin/product/${id}`,
-
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.delete(`/api/admin/product/${id}`, {
+          headers: { Authorization: token },
+        });
         setDel(false);
       } catch (error) {
         toast.error(getError(error), {
@@ -84,9 +80,8 @@ export default function Products() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axios.get(
-          // "https://boston-api.adaptable.app/api/product/all",
-          `https://boston-api.adaptable.app/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+        const res = await axiosInstance.get(
+          `/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }

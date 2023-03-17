@@ -65,7 +65,7 @@ export default function ArrayView(props) {
   //     // console.log(id);
   //     console.log(dive_conditions);
   //     console.log("token", token);
-  //     // const { data } = await axios.put(
+  //     // const { data } = await axiosInstance.put(
   //     //   `http://54.175.187.169:5000/api/diveSpots/editDiveConditions`,
   //     //   {
   //     //     dive_spot_id: id,

@@ -5,8 +5,8 @@ import { getError } from "../../utils";
 import { uploadMultiImage } from "../../uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -107,23 +107,23 @@ export default function AddProduct() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if(!category) {
+    if (!category) {
       toast.warning("Please select a category.", {
-        position: toast.POSITION.TOP_CENTER
-      })
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
-    } 
-    if(!sub_category) {
+    }
+    if (!sub_category) {
       toast.warning("Please select a sub category.", {
-        position: toast.POSITION.TOP_CENTER
-      })
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
     }
     try {
       setLoadingUpdate(true);
 
-      const { data } = await axios.post(
-        "https://boston-api.adaptable.app/api/admin/product/create",
+      const { data } = await axiosInstance.post(
+        "/api/admin/product/create",
         {
           name,
           description,
@@ -150,7 +150,6 @@ export default function AddProduct() {
           navigate("/admin/products");
           setLoadingUpdate(false);
         }, 3000);
-
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.TOP_CENTER,
@@ -172,19 +171,13 @@ export default function AddProduct() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res1 = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
-        const res2 = await axios.get(
-          "https://boston-api.adaptable.app/api/subCategory/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res2 = await axiosInstance.get("/api/subCategory/all", {
+          headers: { Authorization: token },
+        });
 
         console.log("add product data", res1, res2);
         dispatch({
@@ -297,7 +290,9 @@ export default function AddProduct() {
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                         >
-                          <option key="blankChoice" hidden value>Select Category</option>
+                          <option key="blankChoice" hidden value>
+                            Select Category
+                          </option>
                           {categories &&
                             categories.map((cat) => (
                               <option key={cat._id} value={cat._id}>
@@ -315,7 +310,9 @@ export default function AddProduct() {
                             value={sub_category}
                             onChange={(e) => setSubCategory(e.target.value)}
                           >
-                            <option key="blankChoice" hidden value>Select Sub Category</option>
+                            <option key="blankChoice" hidden value>
+                              Select Sub Category
+                            </option>
                             {subCategories &&
                               category &&
                               getAllSubCategory(subCategories, category).map(

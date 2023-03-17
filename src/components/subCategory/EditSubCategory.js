@@ -5,8 +5,9 @@ import { uploadImage } from "../../uploadImage";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,31 +54,33 @@ export default function EditSubCategoryModel(props) {
   const [preview, setPreview] = useState("");
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
+  const uploadFileHandler = async (file) => {
+    if (!file) {
       setSubCategoryImage(null);
       return;
     }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setSubCategoryImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      // if (e.target.files[0]) {
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setSubCategoryImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -90,19 +93,13 @@ export default function EditSubCategoryModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res = await axios.get(
-          "https://boston-api.adaptable.app/api/category/all",
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const res = await axiosInstance.get("/api/category/all", {
+          headers: { Authorization: token },
+        });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/subCategory/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/subCategory/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         const subCategory = data.subCategory;
@@ -135,8 +132,8 @@ export default function EditSubCategoryModel(props) {
     }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `https://boston-api.adaptable.app/api/admin/subCategory/${id}`,
+      const { data } = await axiosInstance.put(
+        `/api/admin/subCategory/${id}`,
         {
           name,
           description,
@@ -156,7 +153,7 @@ export default function EditSubCategoryModel(props) {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setTimeout(() => {
-          navigate("/admin/sub-category");
+          navigate("/admin/subCategory");
           dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
@@ -188,7 +185,6 @@ export default function EditSubCategoryModel(props) {
         <Modal.Body>
           <Container className="small-container">
             <img src={preview} width={200} height={200}></img>
-
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -221,23 +217,19 @@ export default function EditSubCategoryModel(props) {
                   ))}
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="sub_category_image">
-              <Form.Label>Upload Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/png image/jpeg image/jpg"
-                onChange={(e) => {
-                  uploadFileHandler(e);
-                }}
+            <Cropper
+              uploadHandler={uploadFileHandler}
+              w={5}
+              h={6}
+              isUploaded={isUploaded}
+            />
+            {uploadPercentage > 0 && (
+              <ProgressBar
+                now={uploadPercentage}
+                active
+                label={`${uploadPercentage}%`}
               />
-              {uploadPercentage > 0 && (
-                <ProgressBar
-                  now={uploadPercentage}
-                  active
-                  label={`${uploadPercentage}%`}
-                />
-              )}
-            </Form.Group>
+            )}
             <ToastContainer />
           </Container>
         </Modal.Body>

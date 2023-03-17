@@ -13,8 +13,9 @@ import {
   Row,
   ProgressBar,
 } from "react-bootstrap";
-import axios from "axios";
 import LoadingBox from "../layout/LoadingBox";
+import Cropper from "../cropper/cropper";
+import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,31 +54,34 @@ export default function EditCategoryModel(props) {
   const [preview, setPreview] = useState("");
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [isUploaded, setIsUploaded] = useState(false);
   const uploadPercentageHandler = (per) => {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
+  const uploadFileHandler = async (file, type) => {
+    // if (!e.target.files[0]) {
+    if (!file) {
       setCategoryImage(null);
       return;
     }
     try {
-      if (e.target.files[0]) {
-        const location = await uploadImage(
-          e.target.files[0],
-          token,
-          uploadPercentageHandler
-        );
-        if (location.error) {
-          throw location.error;
-        }
-
-        setCategoryImage(location);
-        setTimeout(() => {
-          setUploadPercentage(0);
-        }, 1000);
+      // if (e.target.files[0]) {
+      const location = await uploadImage(
+        // e.target.files[0],
+        file,
+        token,
+        uploadPercentageHandler
+      );
+      if (location.error) {
+        throw location.error;
       }
+
+      setCategoryImage(location);
+      setTimeout(() => {
+        setUploadPercentage(0);
+        setIsUploaded(true);
+      }, 1000);
     } catch (error) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -96,12 +100,9 @@ export default function EditCategoryModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axios.get(
-          `https://boston-api.adaptable.app/api/category/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/category/${id}`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         const category = data.category;
@@ -133,8 +134,8 @@ export default function EditCategoryModel(props) {
     }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `https://boston-api.adaptable.app/api/admin/category/${id}`,
+      const { data } = await axiosInstance.put(
+        `/api/admin/category/${id}`,
         {
           name,
           description,
@@ -185,7 +186,7 @@ export default function EditCategoryModel(props) {
       <Form onSubmit={submitHandler}>
         <Modal.Body>
           <Container className="small-container">
-            <img src={preview} width={200} height={200}></img>
+            <img src={preview} width={200} className="img-fluid"></img>
 
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Name</Form.Label>
@@ -205,23 +206,19 @@ export default function EditCategoryModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="category_image">
-              <Form.Label>Upload Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/png, image/jpeg image/jpg"
-                onChange={(e) => {
-                  uploadFileHandler(e);
-                }}
+            <Cropper
+              uploadHandler={uploadFileHandler}
+              w={25}
+              h={17}
+              isUploaded={isUploaded}
+            />
+            {uploadPercentage > 0 && (
+              <ProgressBar
+                now={uploadPercentage}
+                active
+                label={`${uploadPercentage}%`}
               />
-              {uploadPercentage > 0 && (
-                <ProgressBar
-                  now={uploadPercentage}
-                  active
-                  label={`${uploadPercentage}%`}
-                />
-              )}
-            </Form.Group>
+            )}
             <ToastContainer />
           </Container>
         </Modal.Body>
