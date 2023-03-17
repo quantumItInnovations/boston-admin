@@ -25,17 +25,18 @@ export default function AddCategory() {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (file, type) => {
-    // if (!e.target.files[0]) {
-    if (!file) {
+  // const uploadFileHandler = async (file, type) => {
+  const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+    // if (!file) {
       setCategoryImage(null);
       return;
     }
     try {
       // if (e.target.files[0]) {
       const location = await uploadImage(
-        // e.target.files[0],
-        file,
+        e.target.files[0],
+        // file,
         token,
         uploadPercentageHandler
       );
@@ -62,7 +63,7 @@ export default function AddCategory() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (category_image) {
+    if (!category_image) {
       toast.warning("Please select an image for category.", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -155,7 +156,7 @@ export default function AddCategory() {
                       />
                     </Form.Group>
 
-                    <Cropper
+                    {/* <Cropper
                       uploadHandler={uploadFileHandler}
                       w={25}
                       h={17}
@@ -167,7 +168,25 @@ export default function AddCategory() {
                         active="true"
                         label={`${uploadPercentage}%`}
                       />
-                    )}
+                    )} */}
+                    <Form.Group className="mb-3" controlId="category_image">
+                        <Form.Label>Upload Image</Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept="image/png image/jpeg image/jpg"
+                          onChange={(e) => {
+                            uploadFileHandler(e);
+                          }}
+                          required
+                        />
+                        {uploadPercentage > 0 && (
+                          <ProgressBar
+                            now={uploadPercentage}
+                            active
+                            label={`${uploadPercentage}%`}
+                          />
+                        )}
+                      </Form.Group>
                   </div>
                   {/* /.card-body */}
                   <div className="card-footer">

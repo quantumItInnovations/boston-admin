@@ -59,17 +59,18 @@ export default function EditCategoryModel(props) {
     setUploadPercentage(per);
   };
 
-  const uploadFileHandler = async (file, type) => {
-    // if (!e.target.files[0]) {
-    if (!file) {
+  // const uploadFileHandler = async (file, type) => {
+  const uploadFileHandler = async (e, type) => {
+    if (!e.target.files[0]) {
+      // if (!file) {
       setCategoryImage(null);
       return;
     }
     try {
       // if (e.target.files[0]) {
       const location = await uploadImage(
-        // e.target.files[0],
-        file,
+        e.target.files[0],
+        // file,
         token,
         uploadPercentageHandler
       );
@@ -206,7 +207,7 @@ export default function EditCategoryModel(props) {
               />
             </Form.Group>
 
-            <Cropper
+            {/* <Cropper
               uploadHandler={uploadFileHandler}
               w={25}
               h={17}
@@ -218,7 +219,24 @@ export default function EditCategoryModel(props) {
                 active
                 label={`${uploadPercentage}%`}
               />
-            )}
+            )} */}
+            <Form.Group className="mb-3" controlId="category_image">
+              <Form.Label>Upload Image</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/png image/jpeg image/jpg"
+                onChange={(e) => {
+                  uploadFileHandler(e);
+                }}
+              />
+              {uploadPercentage > 0 && (
+                <ProgressBar
+                  now={uploadPercentage}
+                  active
+                  label={`${uploadPercentage}%`}
+                />
+              )}
+            </Form.Group>
             <ToastContainer />
           </Container>
         </Modal.Body>
