@@ -46,6 +46,13 @@ export default function EditUserModel(props) {
   const [fax, setFax] = useState("");
   const [role, setRole] = useState("");
 
+  const resetForm = () => {
+    setFirstname("");
+    setLastname("");
+    setTelephone("");
+    setFax("");
+    setRole("");
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -92,7 +99,6 @@ export default function EditUserModel(props) {
           telephone,
           fax,
           role,
-          //   password,
         },
         {
           headers: {
@@ -103,12 +109,13 @@ export default function EditUserModel(props) {
 
       console.log("user update data", data);
       if (data.user) {
-        dispatch({ type: "UPDATE_SUCCESS" });
         toast.success("User Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
+        resetForm();
         setTimeout(() => {
           navigate("/admin/users");
+          dispatch({ type: "UPDATE_SUCCESS" });
         }, 3000);
       } else {
         toast.error(data.error.message, {
@@ -183,11 +190,16 @@ export default function EditUserModel(props) {
 
             <Form.Group className="mb-3" controlId="role">
               <Form.Label>Role</Form.Label>
-              <Form.Control
+              <Form.Select
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
-                required
-              />
+                onChange={(e) => {
+                  setRole(e.target.value);
+                }}
+                aria-label="Default select example"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </Form.Select>
             </Form.Group>
             <ToastContainer />
           </Container>

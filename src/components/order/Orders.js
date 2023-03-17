@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import LoadingBox from "../layout/LoadingBox";
-import { Button, Card, Container, Form, Table } from "react-bootstrap";
+import { Button, Card, Container, Form, InputGroup, Table } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 import ArrayView from "../listView/ArrayView";
 import CustomPagination from "../layout/CustomPagination";
@@ -38,6 +38,8 @@ export default function Order() {
   const [status, setStatus] = useState("all");
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(15);
+  const [searchInput, setSearchInput] = useState("");
+  const [query, setQuery] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [productList, setProductList] = useState([]);
   const [del, setDel] = useState(false);
@@ -81,7 +83,7 @@ export default function Order() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/orders/all/?status=${status}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/orders/all/?status=${status}&orderId=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -99,7 +101,7 @@ export default function Order() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, status]);
+  }, [token, del, curPage, resultPerPage, status, query]);
 
   const numOfPages = Math.ceil(filteredOrderCount / resultPerPage);
   console.log("nuofPage", numOfPages);
@@ -113,16 +115,7 @@ export default function Order() {
       ) : (
         <Card>
           <Card.Header>
-            {/* <Button
-              onClick={() => {
-                navigate(`/admin/category/create`);
-              }}
-              type="success"
-              className="btn btn-primary btn-block mt-1"
-            >
-              Add Category
-            </Button> */}
-            <div className="float-end d-flex align-items-center">
+            <div className="float-start d-flex align-items-center">
               <p className="p-bold m-0 me-3">Filter by Status</p>
               <Form.Group controlId="status">
                 <Form.Select
@@ -139,6 +132,27 @@ export default function Order() {
                   <option value="delivered">Delivered</option>
                 </Form.Select>
               </Form.Group>
+            </div>
+            <div className="search-box float-end">
+              <InputGroup>
+                <Form.Control
+                  aria-label="Search Input"
+                  placeholder="Search by Order Id"
+                  type="search"
+                  maxLength="6"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <InputGroup.Text
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setQuery(searchInput);
+                    setCurPage(1);
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup>
             </div>
           </Card.Header>
           <Card.Body>
