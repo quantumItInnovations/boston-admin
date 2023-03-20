@@ -8,6 +8,7 @@ import {
   Form,
   InputGroup,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
@@ -115,7 +116,11 @@ export default function AdminLoginScreen() {
               </Col>
               <Col sm={5}>
                 <Button type="submit" className="float-sm-end">
-                  {loading ? <LoadingBox></LoadingBox> : "Sign In"}
+                  {loading ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </Col>
             </Row>
