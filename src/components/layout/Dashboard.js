@@ -6,11 +6,12 @@ import { getError } from "../../utils";
 
 import MessageBox from "./MessageBox";
 import LoadingBox from "./LoadingBox";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { Form, Container } from "react-bootstrap";
+import { Form, Container, Card, Row, Col } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
+import { IoIosPerson, IoIosPersonAdd, IoMdPie } from "react-icons/io";
+import { GiNetworkBars } from "react-icons/gi";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -66,282 +67,243 @@ export default function Dashboard() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <div>
-          {/* Content Header (Page header) */}
-          <div className="content-header">
-            <div className="container-fluid">
-              <div className="row mb-2">
-                <div className="col-sm-6">
-                  <h1 className="m-0 text-dark">Dashboard</h1>
-                </div>
-                {/* /.col */}
-                <div className="col-sm-6">
-                  <div className="d-flex justify-content-end align-item-center">
-                    <Form className="py-2">
-                      <Form.Group controlId="time">
-                        <Form.Label className="mr-2 mb-0">
-                          Statistics For
-                        </Form.Label>
-                        <Form.Select
-                          value={time}
-                          onChange={(e) => {
-                            setTime(e.target.value);
-                          }}
-                          aria-label="Default select example"
-                        >
-                          <option>Select Time</option>
-                          <option value="daily">Daily Statistics</option>
-                          <option value="weekly">Weekly Statistics</option>
-                          <option value="monthly">Monthly Statistics</option>
-                        </Form.Select>
-                      </Form.Group>
-                    </Form>
-                  </div>
-                </div>
+        <>
+          <Row
+            className="my-3 pb-2"
+            style={{ borderBottom: "1px solid rgba(0,0,0,0.2)" }}
+          >
+            <Col md={6}>
+              <h3>Dashboard</h3>
+            </Col>
+            <Col md={6}>
+              <div className="float-md-end d-flex align-items-center">
+                <p className="p-bold m-0 me-3">Statistics For</p>
+                <Form.Group controlId="time">
+                  <Form.Select
+                    value={time}
+                    onChange={(e) => {
+                      setTime(e.target.value);
+                    }}
+                    aria-label="Default select example"
+                  >
+                    <option key="blankChoice" hidden value>
+                      Select Time
+                    </option>
+                    <option value="daily">Daily Statistics</option>
+                    <option value="weekly">Weekly Statistics</option>
+                    <option value="monthly">Monthly Statistics</option>
+                  </Form.Select>
+                </Form.Group>
               </div>
-              {/* /.row */}
-            </div>
-            {/* /.container-fluid */}
-          </div>
-          <section className="content">
-            <div className="container-fluid">
-              {/* Small boxes (Stat box) */}
-              <div className="row">
-                <div className="col-lg-3 col-6">
-                  {/* small box */}
-                  <div className="small-box bg-info">
-                    <div className="inner">
-                      <h3>
-                        {summary.users && summary.users[0]
-                          ? summary.users[0].total
-                          : 0}
-                      </h3>
-                      <p>Users</p>
-                    </div>
-                    <div className="icon">
-                      <i className="ion ion-person-add" />
-                    </div>
-                    <Link to="/admin/users" className="small-box-footer">
-                      More info <i className="fas fa-arrow-circle-right" />
-                    </Link>
-                  </div>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col lg={3} sm={6}>
+              <div className="small-box bg-info">
+                <div className="inner">
+                  <h3>
+                    {summary.users && summary.users[0]
+                      ? summary.users[0].total
+                      : 0}
+                  </h3>
+                  <p>Users</p>
                 </div>
-                {/* ./col */}
-                <div className="col-lg-3 col-6">
-                  {/* small box */}
-                  <div className="small-box bg-success">
-                    <div className="inner">
-                      <h3>
-                        {summary.orders && summary.orders[0]
-                          ? summary.orders[0].total
-                          : 0}
-                        <sup style={{ fontSize: 20 }}></sup>
-                      </h3>
-                      <p>Orders</p>
-                    </div>
-                    <div className="icon">
-                      <i className="ion ion-person" />
-                    </div>
-                    <Link to="/admin" className="small-box-footer">
-                      More info <i className="fas fa-arrow-circle-right" />
-                    </Link>
-                  </div>
+                <div className="icon">
+                  <IoIosPersonAdd />
                 </div>
-                {/* ./col */}
-                <div className="col-lg-3 col-6">
-                  {/* small box */}
-                  <div className="small-box bg-warning">
-                    <div className="inner">
-                      <h3>
-                        {summary.payments && summary.payments[0]
-                          ? summary.payments[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Orders Price</p>
-                    </div>
-                    <div className="icon">
-                      <i className="ion ion-stats-bars" />
-                    </div>
-                    <Link to="/admin/payments" className="small-box-footer">
-                      More info <i className="fas fa-arrow-circle-right" />
-                    </Link>
-                  </div>
-                </div>
-                {/* ./col */}
-                <div className="col-lg-3 col-6">
-                  {/* small box */}
-                  <div className="small-box bg-danger">
-                    <div className="inner">
-                      <h3>
-                        {summary.quantity && summary.quantity[0]
-                          ? summary.quantity[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Orders Product Quantity</p>
-                    </div>
-                    <div className="icon">
-                      <i className="ion ion-pie-graph" />
-                    </div>
-                    <Link to="/admin/subscription-types" className="small-box-footer">
-                      More info <i className="fas fa-arrow-circle-right" />
-                    </Link>
-                  </div>
-                </div>
-                {/* ./col */}
+                <Link to="/admin/users" className="small-box-footer">
+                  More info {<FaArrowCircleRight />}
+                </Link>
               </div>
-              {/* /.row */}
-              {/* Main row */}
-              <div className="my-3">
-                <Row>
-                  <Col md={6}>
-                    <div className="card">
-                      <div className="card-header card-header-primary">
-                        <h2 className="card-title">User</h2>
-                      </div>
-                      <div className="card-body">
-                        {summary.dailyUsers.length === 0 ? (
-                          <MessageBox>No Users Added</MessageBox>
-                        ) : (
-                          <Chart
-                            // style={{ border: "1px solid #aaa" }}
-                            width="100%"
-                            height="400px"
-                            chartType="AreaChart"
-                            loader={<div>Loading Users...</div>}
-                            options={{
-                              vAxis: {
-                                title: "Count",
-                                titleTextStyle: { color: "#1fd655" },
-                              },
-
-                              colors: ["#00ab41"],
-                            }}
-                            data={[
-                              ["Date", "Count"],
-                              ...summary.dailyUsers.map((x) => [
-                                x._id,
-                                x.total,
-                              ]),
-                            ]}
-                          ></Chart>
-                        )}
-                      </div>
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div className="card">
-                      <div className="card-header card-header-primary">
-                        <h2 className="card-title">Orders</h2>
-                      </div>
-                      <div className="card-body">
-                        {summary.dailyOrders.length === 0 ? (
-                          <MessageBox>No Orders</MessageBox>
-                        ) : (
-                          <Chart
-                            // style={{ border: "1px solid #aaa" }}
-                            width="100%"
-                            height="400px"
-                            chartType="AreaChart"
-                            loader={<div>Loading Orders...</div>}
-                            options={{
-                              vAxis: {
-                                title: "Count",
-                                titleTextStyle: { color: "#1fd655" },
-                              },
-
-                              colors: ["#00c04b"],
-                            }}
-                            data={[
-                              ["Date", "Count"],
-                              ...summary.dailyOrders.map((x) => [
-                                x._id,
-                                x.total,
-                              ]),
-                            ]}
-                          ></Chart>
-                        )}
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col md={6}>
-                    <div className="card">
-                      <div className="card-header card-header-primary">
-                        <h2 className="card-title">Total Order Amount</h2>
-                      </div>
-                      <div className="card-body">
-                        {summary.dailyPayments.length === 0 ? (
-                          <MessageBox>No Payments Added</MessageBox>
-                        ) : (
-                          <Chart
-                            // style={{ border: "1px solid #aaa" }}
-                            width="100%"
-                            height="400px"
-                            chartType="AreaChart"
-                            loader={<div>Loading Payments...</div>}
-                            options={{
-                              vAxis: {
-                                title: "Count",
-                                titleTextStyle: { color: "#1fd655" },
-                              },
-
-                              colors: ["#90EE90"],
-                            }}
-                            data={[
-                              ["Date", "Count"],
-                              ...summary.dailyPayments.map((x) => [
-                                x._id,
-                                x.total,
-                              ]),
-                            ]}
-                          ></Chart>
-                        )}
-                      </div>
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div className="card">
-                      <div className="card-header card-header-primary">
-                        <h2 className="card-title">Total Product Quantity</h2>
-                      </div>
-                      <div className="card-body">
-                        {summary.dailyQuantity.length === 0 ? (
-                          <MessageBox>No Orders</MessageBox>
-                        ) : (
-                          <Chart
-                            // style={{ border: "1px solid #aaa" }}
-                            width="100%"
-                            height="400px"
-                            chartType="AreaChart"
-                            loader={<div>Loading Products...</div>}
-                            options={{
-                              vAxis: {
-                                title: "Count",
-                                titleTextStyle: { color: "#1fd655" },
-                              },
-
-                              colors: ["#90EE90"],
-                             // title: "Subscriptions",
-                            }}
-                            data={[
-                              ["Date", "Count"],
-                              ...summary.dailyQuantity.map((x) => [
-                                x._id,
-                                x.total,
-                              ]),
-                            ]}
-                          ></Chart>
-                        )}
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+            </Col>
+            <Col lg={3} sm={6}>
+              <div className="small-box bg-success">
+                <div className="inner">
+                  <h3>
+                    {summary.orders && summary.orders[0]
+                      ? summary.orders[0].total
+                      : 0}
+                    <sup style={{ fontSize: 20 }}></sup>
+                  </h3>
+                  <p>Orders</p>
+                </div>
+                <div className="icon">
+                  <IoIosPerson />
+                </div>
+                <Link to="/admin" className="small-box-footer">
+                  More info {<FaArrowCircleRight />}
+                </Link>
               </div>
-            </div>
-          </section>
+            </Col>
+            <Col lg={3} sm={6}>
+              <div className="small-box bg-warning">
+                <div className="inner">
+                  <h3>
+                    {summary.payments && summary.payments[0]
+                      ? summary.payments[0].total
+                      : 0}
+                  </h3>
+                  <p>Total Orders Price</p>
+                </div>
+                <div className="icon">
+                  <GiNetworkBars />
+                </div>
+                <Link to="/admin/payments" className="small-box-footer">
+                  More info {<FaArrowCircleRight />}
+                </Link>
+              </div>
+            </Col>
+            <Col lg={3} sm={6}>
+              <div className="small-box bg-danger">
+                <div className="inner">
+                  <h3>
+                    {summary.quantity && summary.quantity[0]
+                      ? summary.quantity[0].total
+                      : 0}
+                  </h3>
+                  <p>Total Orders Product Quantity</p>
+                </div>
+                <div className="icon">
+                  <IoMdPie />
+                </div>
+                <Link
+                  to="/admin/subscription-types"
+                  className="small-box-footer"
+                >
+                  More info {<FaArrowCircleRight />}
+                </Link>
+              </div>
+            </Col>
+          </Row>
+          <Row className="my-4">
+            <Col sm={6}>
+              <Card className="mb-3">
+                <Card.Header className="card-header-primary">User</Card.Header>
+                <Card.Body>
+                  {summary.dailyUsers.length === 0 ? (
+                    <MessageBox>No Users Added</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="AreaChart"
+                      loader={<div>Loading Users...</div>}
+                      options={{
+                        vAxis: {
+                          title: "Count",
+                          titleTextStyle: { color: "#1fd655" },
+                        },
+
+                        colors: ["#00ab41"],
+                      }}
+                      data={[
+                        ["Date", "Count"],
+                        ...summary.dailyUsers.map((x) => [x._id, x.total]),
+                      ]}
+                    ></Chart>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col sm={6}>
+              <Card className="mb-3">
+                <Card.Header className="card-header-primary">
+                  Orders
+                </Card.Header>
+                <Card.Body>
+                  {summary.dailyOrders.length === 0 ? (
+                    <MessageBox>No Orders</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="AreaChart"
+                      loader={<div>Loading Orders...</div>}
+                      options={{
+                        vAxis: {
+                          title: "Count",
+                          titleTextStyle: { color: "#1fd655" },
+                        },
+
+                        colors: ["#00c04b"],
+                      }}
+                      data={[
+                        ["Date", "Count"],
+                        ...summary.dailyOrders.map((x) => [x._id, x.total]),
+                      ]}
+                    ></Chart>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col sm={6}>
+              <Card className="mb-3">
+                <Card.Header className="card-header-primary">
+                  Total Order Amount
+                </Card.Header>
+                <Card.Body>
+                  {summary.dailyPayments.length === 0 ? (
+                    <MessageBox>No Payments Added</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="AreaChart"
+                      loader={<div>Loading Payments...</div>}
+                      options={{
+                        vAxis: {
+                          title: "Count",
+                          titleTextStyle: { color: "#1fd655" },
+                        },
+
+                        colors: ["#90EE90"],
+                      }}
+                      data={[
+                        ["Date", "Count"],
+                        ...summary.dailyPayments.map((x) => [x._id, x.total]),
+                      ]}
+                    ></Chart>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col sm={6}>
+              <Card className="mb-3">
+                <Card.Header className="card-header-primary">
+                  Total Product Quantity
+                </Card.Header>
+                <Card.Body>
+                  {summary.dailyQuantity.length === 0 ? (
+                    <MessageBox>No Orders</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="AreaChart"
+                      loader={<div>Loading Products...</div>}
+                      options={{
+                        vAxis: {
+                          title: "Count",
+                          titleTextStyle: { color: "#1fd655" },
+                        },
+
+                        colors: ["#90EE90"],
+                        // title: "Subscriptions",
+                      }}
+                      data={[
+                        ["Date", "Count"],
+                        ...summary.dailyQuantity.map((x) => [x._id, x.total]),
+                      ]}
+                    ></Chart>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
           <ToastContainer />
-        </div>
+        </>
       )}
     </Container>
   );

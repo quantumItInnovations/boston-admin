@@ -66,32 +66,10 @@ td {
   max-width: initial;
 }
 
-.map-input-box {
-  box-sizing: border-box;
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  margin: 0.5rem auto;
-  width: 25rem;
-  height: 3rem;
-  display: flex;
-}
-
-.map-input-box input {
-  border-radius: 10px 0 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  border-right: 0;
-  padding: 0.5rem;
-}
-
-.map-input-box input:focus-visible {
-  outline: none;
-}
-
-.map-input-box button {
-  border-radius: 0 10px 10px 0;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  border-left: 0;
+@media (max-width: 768px) {
+  .pagination {
+    font-size: 10px;
+  }
 }
 
 .p-bold {
@@ -195,14 +173,15 @@ td {
 .body-wrapper.mini-body {
   margin-left: 250px;
 }
+
 .body-wrapper.full-body {
   margin-left: 4.6rem;
 }
+
 .sidebar-wrapper {
   box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22) !important;
   background: linear-gradient(rgba(15, 145, 122, 1) 0%, rgba(131, 227, 124, 1) 75%);
   z-index: 1038;
-  /* overflow-y: hidden; */
   height: 100vh;
   position: fixed;
   top: 0;
@@ -235,13 +214,6 @@ table.table {
   width: 100%;
 }
 
-.login-page {
-  background-color: #e9ecef;
-}
-
-.login-box {
-  width: 90%;
-}
 .dropdown-toggle:hover,
 .dropdown-toggle,
 .dropdown:hover {
@@ -257,6 +229,14 @@ table.table {
 .dropdown-menu Link:active {
   background-color: transparent !important;
   color: black;
+}
+
+.login-page {
+  background-color: #e9ecef;
+}
+
+.login-box {
+  width: 90%;
 }
 
 .login-logo,
@@ -291,3 +271,73 @@ table.table {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {}
+
+.bg-info,
+.bg-info>a {
+  color: #fff !important;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+.small-box {
+  border-radius: 0.25rem;
+  box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+  display: block;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.small-box>.inner {
+  padding: 10px;
+  color: #fff;
+}
+
+.small-box h3,
+.small-box p {
+  z-index: 5;
+}
+
+.small-box h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.small-box p {
+  font-size: 1rem;
+}
+
+.small-box .icon {
+  color: rgba(0, 0, 0, .15);
+  z-index: 0;
+}
+
+.small-box .icon svg {
+  font-size: 70px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  transition: -webkit-transform .3s linear;
+  transition: transform .3s linear;
+  transition: transform .3s linear, -webkit-transform .3s linear;
+}
+
+.small-box:hover .icon>svg {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.small-box>.small-box-footer {
+  background-color: rgba(0, 0, 0, .1);
+  color: rgba(255, 255, 255, .8);
+  display: block;
+  padding: 3px 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  z-index: 10;
+}

@@ -76,11 +76,9 @@ const ViewProfile = () => {
             <Card.Header>
               <Card.Title>{`${user.firstname} ${user.lastname}`}</Card.Title>
               {/* <div className="card-tools">
-                <i
-                  className="fa fa-edit"
-                  style={{ color: "blue" }}
+                <FaEdit style={{ color: "blue" }}
                   onClick={() => setModalShow(true)}
-                ></i>
+                />
               </div> */}
             </Card.Header>
             <Card.Body>

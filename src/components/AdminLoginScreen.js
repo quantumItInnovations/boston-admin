@@ -8,12 +8,13 @@ import {
   Form,
   InputGroup,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import LoadingBox from "../components/layout/LoadingBox";
 import axiosInstance from "../axiosUtil";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -89,7 +90,7 @@ export default function AdminLoginScreen() {
                 required
               />
               <InputGroup.Text>
-                <span className="fas fa-envelope" />
+                <FaEnvelope />
               </InputGroup.Text>
             </Form.Group>
             <Form.Group controlId="password" className="input-group mb-3">
@@ -100,7 +101,7 @@ export default function AdminLoginScreen() {
                 required
               />
               <InputGroup.Text>
-                <span className="fas fa-lock" />
+                <FaLock />
               </InputGroup.Text>
             </Form.Group>
             <Row>
@@ -115,7 +116,11 @@ export default function AdminLoginScreen() {
               </Col>
               <Col sm={5}>
                 <Button type="submit" className="float-sm-end">
-                  {loading ? <LoadingBox></LoadingBox> : "Sign In"}
+                  {loading ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </Col>
             </Row>

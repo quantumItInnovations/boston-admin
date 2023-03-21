@@ -16,6 +16,7 @@ import {
 import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../axiosUtil";
+import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -155,7 +156,7 @@ export default function SubCategoryTable({ id }) {
                     setCurPage(1);
                   }}
                 >
-                  <i className="fas fa-search"></i>
+                  <FaSearch />
                 </InputGroup.Text>
               </InputGroup>
             </div>
@@ -202,7 +203,7 @@ export default function SubCategoryTable({ id }) {
                           type="success"
                           className="btn btn-primary"
                         >
-                          <i className="fa fa-eye"></i>
+                          <FaEye />
                         </Button>
                         <Button
                           onClick={() => {
@@ -211,7 +212,7 @@ export default function SubCategoryTable({ id }) {
                           type="danger"
                           className="btn btn-danger ms-2"
                         >
-                          <i className="fas fa-trash-alt"></i>
+                          <FaTrashAlt />
                         </Button>
                       </td>
                     </tr>

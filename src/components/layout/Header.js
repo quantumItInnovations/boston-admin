@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { Store } from "../../Store";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars, FaUser } from "react-icons/fa";
 
 export default function Header({ sidebarHandler }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -18,7 +18,7 @@ export default function Header({ sidebarHandler }) {
                 className="nav-link header-link"
                 onClick={() => sidebarHandler()}
               >
-                <i className="fas fa-bars"></i>
+                <FaBars />
               </Link>
               <Link to="/admin/dashboard" className="nav-link header-link">
                 Home
@@ -35,7 +35,7 @@ export default function Header({ sidebarHandler }) {
                     alt="profile_img"
                     className="dropdown-logo"
                   /> */}
-                  <FaUserCircle size={'25px'}/>
+                  <FaUserCircle size={"25px"} />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
@@ -48,7 +48,7 @@ export default function Header({ sidebarHandler }) {
                   <Dropdown.Divider />
                   <Dropdown.Item>
                     <Link to="/view-profile/" className="dropdown-item">
-                      <i className="fas fa-user mr-2"></i> Profile
+                      <FaUser className="me-2" /> Profile
                     </Link>
                   </Dropdown.Item>
                 </Dropdown.Menu>

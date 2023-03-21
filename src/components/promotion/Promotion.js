@@ -13,7 +13,7 @@ import {
   InputGroup,
   Table,
 } from "react-bootstrap";
-import { IoMdOpen } from "react-icons/io";
+import { FaEye, FaTrashAlt } from "react-icons/fa";
 import axiosInstance from "../../axiosUtil";
 
 const reducer = (state, action) => {
@@ -149,7 +149,7 @@ export default function Promotions() {
                           type="success"
                           className="btn btn-primary"
                         >
-                          <i className="fa fa-eye"></i>
+                          <FaEye />
                         </Button>
                         <Button
                           onClick={() => {
@@ -158,7 +158,7 @@ export default function Promotions() {
                           type="danger"
                           className="btn btn-danger ms-2"
                         >
-                          <i className="fas fa-trash-alt"></i>
+                          <FaTrashAlt />
                         </Button>
                       </td>
                     </tr>
