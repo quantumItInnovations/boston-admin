@@ -3,15 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 import "./SideNavBar.css";
+import {RiDashboard2Fill} from 'react-icons/ri';
+import {HiUsers} from 'react-icons/hi'
+import {MdCategory, MdOutlineProductionQuantityLimits} from 'react-icons/md';
+import {BiCategory} from 'react-icons/bi';
+import {FaGift, FaHubspot, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
 
 const linkList = [
-  { icon: "fa fa-id-card", text: "Dashboard", url: "/admin/dashboard" },
-  { icon: "fa fa-user-friends", text: "Users", url: "/admin/users" },
-  { icon: "fa fa-store", text: "Category", url: "/admin/category" },
-  { icon: "fab fa-hubspot", text: "Sub Category", url: "/admin/subCategory" },
-  { icon: "fa fa-gift", text: "Products", url: "/admin/products" },
-  { icon: "fas fa-shopping-basket", text: "Orders", url: "/admin/orders"},
-  { icon: "fas fa-magic", text: "Promotions", url: "/admin/promotions" }
+  { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
+  { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
+  { icon: <MdCategory className="icon-md" />, text: "Category", url: "/admin/category" },
+  { icon: <BiCategory className="icon-md" />, text: "Sub Category", url: "/admin/subCategory" },
+  { icon: <MdOutlineProductionQuantityLimits className="icon-md" />, text: "Products", url: "/admin/products" },
+  { icon: <FaShoppingBasket className="icon-md" />, text: "Orders", url: "/admin/orders"},
+  { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" }
 ];
 
 const active_text = {
@@ -104,7 +109,8 @@ export default function SideNavbar({ isExpanded }) {
                     onClick={() => setActiveLink(text)}
                   >
                     <Link to={url} className="nav-link">
-                      <i className={icon}></i>
+                      {/* <i className={icon}></i> */}
+                      {icon}
                       <p className="ms-2">{text}</p>
                     </Link>
                   </li>
@@ -116,7 +122,8 @@ export default function SideNavbar({ isExpanded }) {
                   }`}
                 >
                   <Link onClick={signoutHandler} to="/" className="nav-link">
-                    <i className="fas fa-sign-out-alt"></i>
+                    {/* <i className="fas fa-sign-out-alt"></i> */}
+                    <FaSignOutAlt className="icon-md" />
                     <p className="ms-2">Log Out</p>
                   </Link>
                 </li>

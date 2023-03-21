@@ -8,6 +8,7 @@ import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../axiosUtil";
+import { FaEdit } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -77,11 +78,9 @@ const ViewUser = () => {
                 {`${user.firstname} ${user.lastname}`} Details
               </Card.Title>
               <div className="card-tools">
-                <i
-                  className="fa fa-edit"
-                  style={{ color: "blue" }}
+                <FaEdit style={{ color: "blue" }}
                   onClick={() => setModalShow(true)}
-                ></i>
+                />
               </div>
             </Card.Header>
             <Card.Body>

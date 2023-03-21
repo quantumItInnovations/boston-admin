@@ -10,6 +10,7 @@ import EditProductModel from "./EditProduct.js";
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import axiosInstance from "../../axiosUtil";
+import { FaEdit } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -77,11 +78,9 @@ const ViewProduct = () => {
             <Card.Header>
               <Card.Title>{product.name} Details</Card.Title>
               <div className="card-tools">
-                <i
-                  className="fa fa-edit"
-                  style={{ color: "blue" }}
+                <FaEdit style={{ color: "blue" }}
                   onClick={() => setModalShow(true)}
-                ></i>
+                />
               </div>
             </Card.Header>
             <Card.Body>
