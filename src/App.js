@@ -1,5 +1,6 @@
 import { Store } from "./Store";
-import { useContext, useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useContext, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,20 +37,27 @@ import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
 import Order from "./components/order/Orders";
 import ViewOrder from "./components/order/ViewOrder";
 
-const Children = ({ child }) => (
-  <AdminProtectedRoute>{child}</AdminProtectedRoute>
-);
+const Children = ({ child }) => {
+  return (
+    <AdminProtectedRoute>
+      <AnimatePresence initial={false}>{child}</AnimatePresence>
+    </AdminProtectedRoute>
+  );
+};
+
 function App() {
   const { state } = useContext(Store);
   const { token } = state;
 
   const [isExpanded, setExpandState] = useState(window.innerWidth > 768);
   const sidebarHandler = () => setExpandState((prev) => !prev);
-
+  const pathname = window.location.pathname;
   return (
     <BrowserRouter>
       <div className="main-wrapper">
-        {isExpanded && token && <div className="sidebar-overlay" onClick={sidebarHandler}></div>}
+        {isExpanded && token && (
+          <div className="sidebar-overlay" onClick={sidebarHandler}></div>
+        )}
         <div className="sidebar-wrapper">
           {/* <Menu/> */}
           <SideNavbar isExpanded={isExpanded} />
@@ -71,7 +79,7 @@ function App() {
             />
             <Route
               path="/admin/dashboard"
-              element={<Children child={<Dashboard />} />}
+              element={<Children child={<Dashboard key={pathname}/>} />}
             />
 
             <Route
@@ -81,7 +89,7 @@ function App() {
 
             <Route
               path="/admin/users"
-              element={<Children child={<Users />} />}
+              element={<Children child={<Users key={pathname}/>} />}
             />
             <Route
               path="/admin/view/user/:id"
@@ -90,7 +98,7 @@ function App() {
 
             <Route
               path="/admin/category"
-              element={<Children child={<Category />} />}
+              element={<Children child={<Category key={pathname}/>} />}
             />
             <Route
               path="/admin/category/create"
@@ -103,7 +111,7 @@ function App() {
 
             <Route
               path="/admin/subCategory"
-              element={<Children child={<SubCategory />} />}
+              element={<Children child={<SubCategory key={pathname}/>} />}
             />
             <Route
               path="/admin/subCategory/create"
@@ -116,7 +124,7 @@ function App() {
 
             <Route
               path="/admin/products"
-              element={<Children child={<Products />} />}
+              element={<Children child={<Products key={pathname}/>} />}
             />
             <Route
               path="/admin/product/create"
@@ -134,7 +142,7 @@ function App() {
 
             <Route
               path="/admin/promotions"
-              element={<Children child={<Promotions />} />}
+              element={<Children child={<Promotions key={pathname}/>} />}
             />
             <Route
               path="/admin/promotion/create"
@@ -144,10 +152,10 @@ function App() {
               path="/admin/view/promotion/:id"
               element={<Children child={<ViewPromotion />} />}
             />
-            
+
             <Route
               path="/admin/orders"
-              element={<Children child={<Order />} />}
+              element={<Children child={<Order key={pathname}/>} />}
             />
             <Route
               path="/admin/view/order/:id"
@@ -156,7 +164,6 @@ function App() {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
-
           <Footer />
         </div>
       </div>
