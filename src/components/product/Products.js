@@ -168,101 +168,78 @@ export default function Products() {
                   </tr>
                 </thead>
                 <tbody>
-                {loading
+                  {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr className="odd">
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
+                        <tr>
+                          {[...Array(9).keys()].map((d) => (
+                            <td>
+                              <Skeleton height={30} />
+                            </td>
+                          ))}
                         </tr>
                       ))
-                    : 
-                  products &&
-                    products.map((product, i) => (
-                      <tr key={product._id} className="odd">
-                        <td className="text-center">{i + 1}</td>
-                        <td>
-                          <img
-                            className="td-img"
-                            src={product.product_images[0]}
-                            alt=""
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </td>
-                        <td>{product.name}</td>
-                        <td>{product.amount}</td>
-                        <td>
-                          {product.stock ? (
-                            <TiTick className="green" />
-                          ) : (
-                            <ImCross className="red" />
-                          )}
-                        </td>
-                        <td>
-                          {product.category ? (
-                            product.category.name
-                          ) : (
-                            <b>Category not set</b>
-                          )}
-                        </td>
-                        <td>
-                          {product.sub_category ? (
-                            product.sub_category.name
-                          ) : (
-                            <b>Sub category not set</b>
-                          )}
-                        </td>
-                        <td>{product.description}</td>
-                        <td>
-                          <Button
-                            onClick={() => {
-                              navigate(`/admin/view/product/${product._id}`);
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteProduct(product._id);
-                            }}
-                            type="danger"
-                            className="btn btn-danger ms-2"
-                          >
-                            <FaTrashAlt />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                    : products &&
+                      products.map((product, i) => (
+                        <tr key={product._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>
+                            <img
+                              className="td-img"
+                              src={product.product_images[0]}
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </td>
+                          <td>{product.name}</td>
+                          <td>{product.amount}</td>
+                          <td>
+                            {product.stock ? (
+                              <TiTick className="green" />
+                            ) : (
+                              <ImCross className="red" />
+                            )}
+                          </td>
+                          <td>
+                            {product.category ? (
+                              product.category.name
+                            ) : (
+                              <b>Category not set</b>
+                            )}
+                          </td>
+                          <td>
+                            {product.sub_category ? (
+                              product.sub_category.name
+                            ) : (
+                              <b>Sub category not set</b>
+                            )}
+                          </td>
+                          <td>{product.description}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(`/admin/view/product/${product._id}`);
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deleteProduct(product._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
             </Card.Body>

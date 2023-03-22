@@ -185,25 +185,12 @@ export default function SubCategoryTable({ id }) {
                 <tbody>
                   {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr className="odd">
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
+                        <tr>
+                          {[...Array(6).keys()].map((d) => (
+                            <td>
+                              <Skeleton height={30} />
+                            </td>
+                          ))}
                         </tr>
                       ))
                     : subCategories &&

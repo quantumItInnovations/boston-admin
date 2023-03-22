@@ -187,76 +187,56 @@ export default function Order() {
                   </tr>
                 </thead>
                 <tbody>
-                {loading
+                  {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr className="odd">
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
+                        <tr>
+                          {[...Array(8).keys()].map((d) => (
+                            <td>
+                              <Skeleton height={30} />
+                            </td>
+                          ))}
                         </tr>
                       ))
-                    : 
-                  orders &&
-                    orders.map((order, i) => (
-                      <tr key={order._id} className="odd">
-                        <td className="text-center">{i + 1}</td>
-                        <td>{order.orderId && order.orderId}</td>
-                        <td>
-                          {order.userId &&
-                            `${order.userId.firstname} ${order.userId.lastname}`}
-                        </td>
-                        <td className="text-center">
-                          <IoMdOpen
-                            className="open-model"
-                            onClick={() => showModelHandler(order.products)}
-                          />
-                        </td>
-                        <td>{order.amount}</td>
-                        <td>{order.status}</td>
-                        <td>{order.address.town}</td>
-                        <td>
-                          <Button
-                            onClick={() => {
-                              navigate(`/admin/view/order/${order._id}`);
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteOrder(order._id);
-                            }}
-                            type="danger"
-                            className="btn btn-danger ms-2"
-                          >
-                            <FaTrashAlt />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                    : orders &&
+                      orders.map((order, i) => (
+                        <tr key={order._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>{order.orderId && order.orderId}</td>
+                          <td>
+                            {order.userId &&
+                              `${order.userId.firstname} ${order.userId.lastname}`}
+                          </td>
+                          <td className="text-center">
+                            <IoMdOpen
+                              className="open-model"
+                              onClick={() => showModelHandler(order.products)}
+                            />
+                          </td>
+                          <td>{order.amount}</td>
+                          <td>{order.status}</td>
+                          <td>{order.address.town}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(`/admin/view/order/${order._id}`);
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deleteOrder(order._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
             </Card.Body>

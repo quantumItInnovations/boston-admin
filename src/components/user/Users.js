@@ -163,44 +163,21 @@ export default function Users() {
                   </tr>
                 </thead>
                 <tbody>
-                {loading
+                  {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr className="odd">
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
+                        <tr>
+                          {[...Array(9).keys()].map((d) => (
+                            <td>
+                              <Skeleton height={30} />
+                            </td>
+                          ))}
                         </tr>
                       ))
-                    : 
-                  users &&
-                    users.map((user, i) => (
-                      <tr key={user._id} className="odd">
-                        <td className="text-center">{i + 1}</td>
-                        {/* <td>
+                    : users &&
+                      users.map((user, i) => (
+                        <tr key={user._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          {/* <td>
                             <img
                               className="td-img"
                               src={user.profile_image}
@@ -212,15 +189,17 @@ export default function Users() {
                               }}
                             />
                           </td> */}
-                        <td>{user.firstname}</td>
-                        <td>{user.lastname}</td>
-                        <td>{user.email}</td>
-                        <td>{getDateTime(user.createdAt && user.createdAt)}</td>
-                        {/* <td>{user.dob}</td> */}
-                        {/* <td>{user.sex}</td> */}
-                        <td>{user.telephone}</td>
-                        <td>{user.fax}</td>
-                        {/* <td>
+                          <td>{user.firstname}</td>
+                          <td>{user.lastname}</td>
+                          <td>{user.email}</td>
+                          <td>
+                            {getDateTime(user.createdAt && user.createdAt)}
+                          </td>
+                          {/* <td>{user.dob}</td> */}
+                          {/* <td>{user.sex}</td> */}
+                          <td>{user.telephone}</td>
+                          <td>{user.fax}</td>
+                          {/* <td>
                             {user.payment_status == 1 ? (
                               <MdToggleOn
                                 className="on"
@@ -243,29 +222,29 @@ export default function Users() {
                               />
                             )}
                           </td> */}
-                        <td>{user.role}</td>
-                        <td>
-                          <Button
-                            onClick={() => {
-                              navigate(`/admin/view/user/${user._id}`);
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteUser(user._id);
-                            }}
-                            type="danger"
-                            className="btn btn-danger ms-2"
-                          >
-                            <FaTrashAlt className="m-auto" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                          <td>{user.role}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(`/admin/view/user/${user._id}`);
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deleteUser(user._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt className="m-auto" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
             </Card.Body>
