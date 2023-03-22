@@ -30,6 +30,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
 export default function Dashboard() {
   const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -61,6 +62,7 @@ export default function Dashboard() {
     };
     fetchData();
   }, [token, time]);
+
   return (
     <motion.div
       initial={{ x: "-100%" }}

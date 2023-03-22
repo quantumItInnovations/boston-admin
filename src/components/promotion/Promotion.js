@@ -125,75 +125,64 @@ export default function Promotions() {
                   </tr>
                 </thead>
                 <tbody>
-                {loading
+                  {loading
                     ? [...Array(3).keys()].map((r) => (
-                        <tr className="odd">
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
-                          <td>
-                            <Skeleton height={30} />
-                          </td>
+                        <tr>
+                          {[...Array(5).keys()].map((d) => (
+                            <td>
+                              <Skeleton height={30} />
+                            </td>
+                          ))}
                         </tr>
                       ))
-                    : 
-                  promotions &&
-                    promotions.map((promotion, i) => (
-                      <tr key={promotion._id} className="odd">
-                        <td className="text-center">{i + 1}</td>
-                        <td>
-                          <img
-                            className="td-img"
-                            src={promotion.promo_image}
-                            alt=""
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </td>
-                        <td>
-                          {promotion.product ? (
-                            promotion.product.name
-                          ) : (
-                            <b>Promotion product not found</b>
-                          )}
-                        </td>
-                        <td>{promotion.updated_price}</td>
-                        <td>
-                          <Button
-                            onClick={() => {
-                              navigate(
-                                `/admin/view/promotion/${promotion._id}`
-                              );
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deletePromotion(promotion._id);
-                            }}
-                            type="danger"
-                            className="btn btn-danger ms-2"
-                          >
-                            <FaTrashAlt />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                    : promotions &&
+                      promotions.map((promotion, i) => (
+                        <tr key={promotion._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>
+                            <img
+                              className="td-img"
+                              src={promotion.promo_image}
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </td>
+                          <td>
+                            {promotion.product ? (
+                              promotion.product.name
+                            ) : (
+                              <b>Promotion product not found</b>
+                            )}
+                          </td>
+                          <td>{promotion.updated_price}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(
+                                  `/admin/view/promotion/${promotion._id}`
+                                );
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deletePromotion(promotion._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
             </Card.Body>

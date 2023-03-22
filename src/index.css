@@ -43,22 +43,8 @@ td {
   white-space: nowrap;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd)>* {
-  color: var(--bs-table-striped-color);
-  /* --a: #59c58363; */
-  --a: #83e37c8f;
-  /* --a: rgba(15, 145, 122, 0.2); */
-}
-
 .table-bordered>:not(caption)>*>* {
   border-width: 0 1px;
-}
-
-.table>:not(caption)>*>* {
-  padding: 0.5rem 0.5rem;
-  background-color: var(--bs-table-bg);
-  border-bottom-width: 1px;
-  box-shadow: inset 0 0 0 9999px var(--a);
 }
 
 /* ----------- Map Styling ------------- */
@@ -342,3 +328,14 @@ table.table {
   text-decoration: none;
   z-index: 10;
 }
+
+/* 
+get,
+
+ rating:
+ review: string
+ user: name;
+ product: id,
+ 
+
+*/
