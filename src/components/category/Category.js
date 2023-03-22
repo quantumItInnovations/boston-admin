@@ -17,6 +17,8 @@ import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -106,128 +108,155 @@ export default function Category() {
   console.log("nuofPage", numOfPages);
 
   return (
-    <Container fluid className="py-3">
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Card>
-          <Card.Header>
-            <Button
-              onClick={() => {
-                navigate(`/admin/category/create`);
-              }}
-              type="success"
-              className="btn btn-primary btn-block mt-1"
-            >
-              Add Category
-            </Button>
-            <div className="search-box float-end">
-              <InputGroup>
-                <Form.Control
-                  aria-label="Search Input"
-                  placeholder="Search"
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+    <motion.div
+      initial={{ x: "-100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid className="py-3">
+        {error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <Card>
+            <Card.Header>
+              <Button
+                onClick={() => {
+                  navigate(`/admin/category/create`);
+                }}
+                type="success"
+                className="btn btn-primary btn-block mt-1"
+              >
+                Add Category
+              </Button>
+              <div className="search-box float-end">
+                <InputGroup>
+                  <Form.Control
+                    aria-label="Search Input"
+                    placeholder="Search"
+                    type="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  <InputGroup.Text
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setQuery(searchInput);
+                      setCurPage(1);
+                    }}
+                  >
+                    <FaSearch />
+                  </InputGroup.Text>
+                </InputGroup>
+              </div>
+            </Card.Header>
+            <Card.Body>
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading
+                    ? [...Array(resultPerPage).keys()].map((r) => (
+                        <tr className="odd">
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                        </tr>
+                      ))
+                    : categories &&
+                      categories.map((category, i) => (
+                        <tr key={category._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>
+                            <img
+                              className="td-img"
+                              src={category.category_image}
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </td>
+                          <td>{category.name}</td>
+                          <td>{category.description}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(
+                                  `/admin/view/category/${category._id}`
+                                );
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deleteCategory(category._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+            <Card.Footer>
+              <div className="float-start d-flex align-items-center mt-3">
+                <p className="p-bold m-0 me-3">Row No.</p>
+                <Form.Group controlId="resultPerPage">
+                  <Form.Select
+                    value={resultPerPage}
+                    onChange={(e) => {
+                      setResultPerPage(e.target.value);
+                      setCurPage(1);
+                    }}
+                    aria-label="Default select example"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              {resultPerPage < filteredCategoryCount && (
+                <CustomPagination
+                  pages={numOfPages}
+                  pageHandler={curPageHandler}
+                  curPage={curPage}
                 />
-                <InputGroup.Text
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setQuery(searchInput);
-                    setCurPage(1);
-                  }}
-                >
-                  <FaSearch />
-                </InputGroup.Text>
-              </InputGroup>
-            </div>
-          </Card.Header>
-          <Card.Body>
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories &&
-                  categories.map((category, i) => (
-                    <tr key={category._id} className="odd">
-                      <td className="text-center">{i + 1}</td>
-                      <td>
-                        <img
-                          className="td-img"
-                          src={category.category_image}
-                          alt=""
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </td>
-                      <td>{category.name}</td>
-                      <td>{category.description}</td>
-                      <td>
-                        <Button
-                          onClick={() => {
-                            navigate(`/admin/view/category/${category._id}`);
-                          }}
-                          type="success"
-                          className="btn btn-primary"
-                        >
-                          <FaEye />
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            deleteCategory(category._id);
-                          }}
-                          type="danger"
-                          className="btn btn-danger ms-2"
-                        >
-                          <FaTrashAlt />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-          </Card.Body>
-          <Card.Footer>
-            <div className="float-start d-flex align-items-center mt-3">
-              <p className="p-bold m-0 me-3">Row No.</p>
-              <Form.Group controlId="resultPerPage">
-                <Form.Select
-                  value={resultPerPage}
-                  onChange={(e) => {
-                    setResultPerPage(e.target.value);
-                    setCurPage(1);
-                  }}
-                  aria-label="Default select example"
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={15}>15</option>
-                </Form.Select>
-              </Form.Group>
-            </div>
-            {resultPerPage < filteredCategoryCount && (
-              <CustomPagination
-                pages={numOfPages}
-                pageHandler={curPageHandler}
-                curPage={curPage}
-              />
-            )}
-          </Card.Footer>
-        </Card>
-      )}
-      <ToastContainer />
-    </Container>
+              )}
+            </Card.Footer>
+          </Card>
+        )}
+        <ToastContainer />
+      </Container>
+    </motion.div>
   );
 }

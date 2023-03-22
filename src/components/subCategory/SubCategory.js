@@ -17,6 +17,8 @@ import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -111,138 +113,169 @@ export default function SubCategory() {
   const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
   console.log("nuofPage", numOfPages);
   return (
-    <Container fluid className="py-3">
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Card>
-          <Card.Header>
-            <Button
-              onClick={() => {
-                navigate(`/admin/subCategory/create`);
-              }}
-              type="success"
-              className="btn btn-primary btn-block mt-1"
-            >
-              Add Sub Category
-            </Button>
-            <div className="search-box float-end">
-              <InputGroup>
-                <Form.Control
-                  aria-label="Search Input"
-                  placeholder="Search"
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+    <motion.div
+      initial={{ x: "-100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid className="py-3">
+        {/* {loading ? (
+          <LoadingBox></LoadingBox>
+        ) :  */}
+        {error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <Card>
+            <Card.Header>
+              <Button
+                onClick={() => {
+                  navigate(`/admin/subCategory/create`);
+                }}
+                type="success"
+                className="btn btn-primary btn-block mt-1"
+              >
+                Add Sub Category
+              </Button>
+              <div className="search-box float-end">
+                <InputGroup>
+                  <Form.Control
+                    aria-label="Search Input"
+                    placeholder="Search"
+                    type="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  <InputGroup.Text
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setQuery(searchInput);
+                      setCurPage(1);
+                    }}
+                  >
+                    <FaSearch />
+                  </InputGroup.Text>
+                </InputGroup>
+              </div>
+            </Card.Header>
+            <Card.Body>
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading
+                    ? [...Array(resultPerPage).keys()].map((r) => (
+                        <tr className="odd">
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                        </tr>
+                      ))
+                    : subCategories &&
+                      subCategories.map((subCategory, i) => (
+                        <tr key={subCategory._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>
+                            <img
+                              className="td-img"
+                              src={subCategory.sub_category_image}
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </td>
+                          <td>{subCategory.name}</td>
+                          <td>
+                            {subCategory.category ? (
+                              subCategory.category.name
+                            ) : (
+                              <b>Category not set</b>
+                            )}
+                          </td>
+                          <td>{subCategory.description}</td>
+                          <td>
+                            <Button
+                              onClick={() => {
+                                navigate(
+                                  `/admin/view/subCategory/${subCategory._id}`
+                                );
+                              }}
+                              type="success"
+                              className="btn btn-primary"
+                            >
+                              <FaEye />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                deleteSubCategory(subCategory._id);
+                              }}
+                              type="danger"
+                              className="btn btn-danger ms-2"
+                            >
+                              <FaTrashAlt />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+            <Card.Footer>
+              <div className="float-start d-flex align-items-center mt-3">
+                <p className="p-bold m-0 me-3">Row No.</p>
+                <Form.Group controlId="resultPerPage">
+                  <Form.Select
+                    value={resultPerPage}
+                    onChange={(e) => {
+                      setResultPerPage(e.target.value);
+                      setCurPage(1);
+                    }}
+                    aria-label="Default select example"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              {resultPerPage < filteredSubCategoryCount && (
+                <CustomPagination
+                  pages={numOfPages}
+                  pageHandler={curPageHandler}
+                  curPage={curPage}
                 />
-                <InputGroup.Text
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setQuery(searchInput);
-                    setCurPage(1);
-                  }}
-                >
-                  <FaSearch />
-                </InputGroup.Text>
-              </InputGroup>
-            </div>
-          </Card.Header>
-          <Card.Body>
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {subCategories &&
-                  subCategories.map((subCategory, i) => (
-                    <tr key={subCategory._id} className="odd">
-                      <td className="text-center">{i + 1}</td>
-                      <td>
-                        <img
-                          className="td-img"
-                          src={subCategory.sub_category_image}
-                          alt=""
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </td>
-                      <td>{subCategory.name}</td>
-                      <td>
-                        {subCategory.category ? (
-                          subCategory.category.name
-                        ) : (
-                          <b>Category not set</b>
-                        )}
-                      </td>
-                      <td>{subCategory.description}</td>
-                      <td>
-                        <Button
-                          onClick={() => {
-                            navigate(
-                              `/admin/view/subCategory/${subCategory._id}`
-                            );
-                          }}
-                          type="success"
-                          className="btn btn-primary"
-                        >
-                          <FaEye />
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            deleteSubCategory(subCategory._id);
-                          }}
-                          type="danger"
-                          className="btn btn-danger ms-2"
-                        >
-                          <FaTrashAlt />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-          </Card.Body>
-          <Card.Footer>
-            <div className="float-start d-flex align-items-center mt-3">
-              <p className="p-bold m-0 me-3">Row No.</p>
-              <Form.Group controlId="resultPerPage">
-                <Form.Select
-                  value={resultPerPage}
-                  onChange={(e) => {
-                    setResultPerPage(e.target.value);
-                    setCurPage(1);
-                  }}
-                  aria-label="Default select example"
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={15}>15</option>
-                </Form.Select>
-              </Form.Group>
-            </div>
-            {resultPerPage < filteredSubCategoryCount && (
-              <CustomPagination
-                pages={numOfPages}
-                pageHandler={curPageHandler}
-                curPage={curPage}
-              />
-            )}
-          </Card.Footer>
-        </Card>
-      )}
-      <ToastContainer />
-    </Container>
+              )}
+            </Card.Footer>
+          </Card>
+        )}
+        <ToastContainer />
+      </Container>
+    </motion.div>
   );
 }

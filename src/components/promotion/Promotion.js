@@ -15,6 +15,8 @@ import {
 } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import axiosInstance from "../../axiosUtil";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -85,90 +87,120 @@ export default function Promotions() {
   }, [token, del]);
 
   return (
-    <Container fluid className="py-3">
-      {" "}
-      {loading ? (
+    <motion.div
+      initial={{ x: "-100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid className="py-3">
+        {/* {loading ? (
         <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Card>
-          <Card.Header>
-            <Button
-              onClick={() => {
-                navigate(`/admin/promotion/create`);
-              }}
-              type="success"
-              className="btn btn-primary btn-block mt-1"
-            >
-              Add Promotion
-            </Button>
-          </Card.Header>
+      ) : error ? ( */}
+        {error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <Card>
+            <Card.Header>
+              <Button
+                onClick={() => {
+                  navigate(`/admin/promotion/create`);
+                }}
+                type="success"
+                className="btn btn-primary btn-block mt-1"
+              >
+                Add Promotion
+              </Button>
+            </Card.Header>
 
-          <Card.Body>
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Image</th>
-                  <th>Product</th>
-                  <th>Updated Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {promotions &&
-                  promotions.map((promotion, i) => (
-                    <tr key={promotion._id} className="odd">
-                      <td className="text-center">{i + 1}</td>
-                      <td>
-                        <img
-                          className="td-img"
-                          src={promotion.promo_image}
-                          alt=""
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </td>
-                      <td>
-                        {promotion.product ? (
-                          promotion.product.name
-                        ) : (
-                          <b>Promotion product not found</b>
-                        )}
-                      </td>
-                      <td>{promotion.updated_price}</td>
-                      <td>
-                        <Button
-                          onClick={() => {
-                            navigate(`/admin/view/promotion/${promotion._id}`);
-                          }}
-                          type="success"
-                          className="btn btn-primary"
-                        >
-                          <FaEye />
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            deletePromotion(promotion._id);
-                          }}
-                          type="danger"
-                          className="btn btn-danger ms-2"
-                        >
-                          <FaTrashAlt />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
-      )}
-      <ToastContainer />
-    </Container>
+            <Card.Body>
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Updated Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {loading
+                    ? [...Array(3).keys()].map((r) => (
+                        <tr className="odd">
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                          <td>
+                            <Skeleton height={30} />
+                          </td>
+                        </tr>
+                      ))
+                    : 
+                  promotions &&
+                    promotions.map((promotion, i) => (
+                      <tr key={promotion._id} className="odd">
+                        <td className="text-center">{i + 1}</td>
+                        <td>
+                          <img
+                            className="td-img"
+                            src={promotion.promo_image}
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </td>
+                        <td>
+                          {promotion.product ? (
+                            promotion.product.name
+                          ) : (
+                            <b>Promotion product not found</b>
+                          )}
+                        </td>
+                        <td>{promotion.updated_price}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(
+                                `/admin/view/promotion/${promotion._id}`
+                              );
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deletePromotion(promotion._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        )}
+        <ToastContainer />
+      </Container>
+    </motion.div>
   );
 }
