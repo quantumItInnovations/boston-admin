@@ -10,7 +10,7 @@ import Footer from "./components/layout/Footer";
 import SideNavbar from "./components/layout/SideNavBar";
 import NotFound from "./components/layout/NotFound";
 
-import ViewProfile from "./components/ViewProfile";
+import ViewProfile from "./components/profile/ViewProfile";
 
 import Category from "./components/category/Category";
 import AddCategory from "./components/category/AddCategory";
@@ -37,14 +37,6 @@ import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
 import Order from "./components/order/Orders";
 import ViewOrder from "./components/order/ViewOrder";
 
-const Children = ({ child }) => {
-  return (
-    <AdminProtectedRoute>
-      <AnimatePresence initial={false}>{child}</AnimatePresence>
-    </AdminProtectedRoute>
-  );
-};
-
 function App() {
   const { state } = useContext(Store);
   const { token } = state;
@@ -52,6 +44,46 @@ function App() {
   const [isExpanded, setExpandState] = useState(window.innerWidth > 768);
   const sidebarHandler = () => setExpandState((prev) => !prev);
   const pathname = window.location.pathname;
+
+  const routeList = [
+    { path: "/admin/dashboard", element: <Dashboard key={pathname} /> },
+    { path: "/view-profile", element: <ViewProfile key={pathname} /> },
+    { path: "/admin/users", element: <Users key={pathname} /> },
+    { path: "/admin/view/user/:id", element: <ViewUser key={pathname} /> },
+    { path: "/admin/category", element: <Category key={pathname} /> },
+    { path: "/admin/category/create", element: <AddCategory key={pathname} /> },
+    {
+      path: "/admin/view/category/:id",
+      element: <ViewCategory key={pathname} />,
+    },
+    { path: "/admin/subCategory", element: <SubCategory key={pathname} /> },
+    {
+      path: "/admin/subCategory/create",
+      element: <AddSubCategory key={pathname} />,
+    },
+    {
+      path: "/admin/view/subCategory/:id",
+      element: <ViewSubCategory key={pathname} />,
+    },
+    { path: "/admin/products", element: <Products key={pathname} /> },
+    { path: "/admin/product/create", element: <AddProduct key={pathname} /> },
+    {
+      path: "/admin/view/product/:id",
+      element: <ViewProduct key={pathname} />,
+    },
+    { path: "/admin/promotions", element: <Promotions key={pathname} /> },
+    {
+      path: "/admin/promotion/create",
+      element: <AddPromotion key={pathname} />,
+    },
+    {
+      path: "/admin/view/promotion/:id",
+      element: <ViewPromotion key={pathname} />,
+    },
+    { path: "/admin/orders", element: <Order key={pathname} /> },
+    { path: "/admin/view/order/:id", element: <ViewOrder key={pathname} /> },
+  ];
+
   return (
     <BrowserRouter>
       <div className="main-wrapper">
@@ -77,91 +109,17 @@ function App() {
                 </UnprotectedRoute>
               }
             />
-            <Route
-              path="/admin/dashboard"
-              element={<Children child={<Dashboard key={pathname}/>} />}
-            />
-
-            <Route
-              path="/view-profile"
-              element={<Children child={<ViewProfile />} />}
-            />
-
-            <Route
-              path="/admin/users"
-              element={<Children child={<Users key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/view/user/:id"
-              element={<Children child={<ViewUser />} />}
-            />
-
-            <Route
-              path="/admin/category"
-              element={<Children child={<Category key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/category/create"
-              element={<Children child={<AddCategory />} />}
-            />
-            <Route
-              path="/admin/view/category/:id"
-              element={<Children child={<ViewCategory />} />}
-            />
-
-            <Route
-              path="/admin/subCategory"
-              element={<Children child={<SubCategory key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/subCategory/create"
-              element={<Children child={<AddSubCategory />} />}
-            />
-            <Route
-              path="/admin/view/subCategory/:id"
-              element={<Children child={<ViewSubCategory />} />}
-            />
-
-            <Route
-              path="/admin/products"
-              element={<Children child={<Products key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/product/create"
-              element={<Children child={<AddProduct />} />}
-            />
-            <Route
-              path="/admin/view/product/:id"
-              element={<Children child={<ViewProduct />} />}
-            />
-
-            <Route
-              path="/admin/product/create"
-              element={<Children child={<AddProduct />} />}
-            />
-
-            <Route
-              path="/admin/promotions"
-              element={<Children child={<Promotions key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/promotion/create"
-              element={<Children child={<AddPromotion />} />}
-            />
-            <Route
-              path="/admin/view/promotion/:id"
-              element={<Children child={<ViewPromotion />} />}
-            />
-
-            <Route
-              path="/admin/orders"
-              element={<Children child={<Order key={pathname}/>} />}
-            />
-            <Route
-              path="/admin/view/order/:id"
-              element={<Children child={<ViewOrder />} />}
-            />
-
+            {routeList.map(({ path, element }) => (
+              <Route
+                key={path}
+                path={path}
+                element={
+                  <AdminProtectedRoute>
+                    <AnimatePresence initial={false}>{element}</AnimatePresence>
+                  </AdminProtectedRoute>
+                }
+              />
+            ))}
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

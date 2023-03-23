@@ -1,12 +1,13 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
-import { Store } from "../Store";
-import { getError } from "../utils";
+import { Store } from "../../Store";
+import { getError } from "../../utils/error";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import LoadingBox from "./layout/LoadingBox";
-import MessageBox from "./layout/MessageBox";
-import axiosInstance from "../axiosUtil";
-// import EditUserModel from "./EditUser.js";
+import LoadingBox from "../layout/LoadingBox";
+import MessageBox from "../layout/MessageBox";
+import UpdateProfileModel from "./UpdateProfile";
+import axiosInstance from "../../utils/axiosUtil";
+import { FaEdit } from "react-icons/fa";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,7 +27,7 @@ const ViewProfile = () => {
   const { state } = useContext(Store);
   const { token } = state;
 
-//   const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, user }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -37,12 +38,9 @@ const ViewProfile = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get(
-          `/api/user/user-profile`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        const { data } = await axiosInstance.get(`/api/user/user-profile`, {
+          headers: { Authorization: token },
+        });
         console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -75,11 +73,12 @@ const ViewProfile = () => {
           <Card>
             <Card.Header>
               <Card.Title>{`${user.firstname} ${user.lastname}`}</Card.Title>
-              {/* <div className="card-tools">
-                <FaEdit style={{ color: "blue" }}
+              <div className="card-tools">
+                <FaEdit
+                  style={{ color: "blue" }}
                   onClick={() => setModalShow(true)}
                 />
-              </div> */}
+              </div>
             </Card.Header>
             <Card.Body>
               <Row>
@@ -134,6 +133,11 @@ const ViewProfile = () => {
               </Row>
             </Card.Body>
           </Card>
+
+          <UpdateProfileModel
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+          />
           <ToastContainer />
         </>
       )}

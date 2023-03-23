@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import Chart from "react-google-charts";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 
 import MessageBox from "./MessageBox";
 import Skeleton from "react-loading-skeleton";

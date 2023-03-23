@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
@@ -111,6 +111,7 @@ export default function SubCategory() {
   }, [token, del, curPage, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
+  const skip = resultPerPage * (curPage - 1);
   console.log("nuofPage", numOfPages);
   return (
     <motion.div
@@ -173,9 +174,9 @@ export default function SubCategory() {
                 <tbody>
                   {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr>
+                        <tr key={r}>
                           {[...Array(6).keys()].map((d) => (
-                            <td>
+                            <td key={d}>
                               <Skeleton height={30} />
                             </td>
                           ))}
@@ -184,7 +185,7 @@ export default function SubCategory() {
                     : subCategories &&
                       subCategories.map((subCategory, i) => (
                         <tr key={subCategory._id} className="odd">
-                          <td className="text-center">{i + 1}</td>
+                          <td className="text-center">{skip + i + 1}</td>
                           <td>
                             <img
                               className="td-img"

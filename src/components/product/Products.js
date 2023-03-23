@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -16,7 +16,7 @@ import {
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import CustomPagination from "../layout/CustomPagination";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
@@ -105,6 +105,7 @@ export default function Products() {
   }, [token, del, curPage, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredProductCount / resultPerPage);
+  const skip = resultPerPage * (curPage - 1);
 
   return (
     <motion.div
@@ -170,9 +171,9 @@ export default function Products() {
                 <tbody>
                   {loading
                     ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr>
+                        <tr key={r}>
                           {[...Array(9).keys()].map((d) => (
-                            <td>
+                            <td key={d}>
                               <Skeleton height={30} />
                             </td>
                           ))}
@@ -181,7 +182,7 @@ export default function Products() {
                     : products &&
                       products.map((product, i) => (
                         <tr key={product._id} className="odd">
-                          <td className="text-center">{i + 1}</td>
+                          <td className="text-center">{skip + i + 1}</td>
                           <td>
                             <img
                               className="td-img"

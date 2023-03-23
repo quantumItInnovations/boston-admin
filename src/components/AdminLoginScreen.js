@@ -12,8 +12,8 @@ import {
 } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
-import { getError } from "../utils";
-import axiosInstance from "../axiosUtil";
+import { getError } from "../utils/error";
+import axiosInstance from "../utils/axiosUtil";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 
 const reducer = (state, action) => {

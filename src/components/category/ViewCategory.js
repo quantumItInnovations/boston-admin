@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -8,7 +8,7 @@ import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditCategoryModel from "./EditCategory.js";
 import SubCategoryTable from "./SubCategoryTable";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 
 const reducer = (state, action) => {

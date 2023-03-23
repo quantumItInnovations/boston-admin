@@ -1,12 +1,12 @@
 import React, { useContext, useReducer, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
-import { uploadMultiImage } from "../../uploadImage";
+import { getError } from "../../utils/error";
+import { uploadMultiImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,7 +52,7 @@ export default function AddProduct() {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [stock, setStock] = useState("");
-  const [product_images, setProductImage] = useState("");
+  const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
 
@@ -115,6 +115,12 @@ export default function AddProduct() {
     }
     if (!sub_category) {
       toast.warning("Please select a sub category.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    if(!product_images) {
+      toast.warning("Please select at at least one image for product.", {
         position: toast.POSITION.TOP_CENTER,
       });
       return;

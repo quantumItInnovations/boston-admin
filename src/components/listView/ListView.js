@@ -1,7 +1,7 @@
 import React, { useReducer, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal, Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
