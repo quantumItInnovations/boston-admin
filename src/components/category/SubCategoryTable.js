@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
+import { getError } from "../../utils/error";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap";
 import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";

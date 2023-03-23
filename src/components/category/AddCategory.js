@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
-import { getError } from "../../utils";
-import { uploadImage } from "../../uploadImage";
+import { getError } from "../../utils/error";
+import { uploadImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Form, ProgressBar } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import Cropper from "../cropper/cropper";
-import axiosInstance from "../../axiosUtil";
+import axiosInstance from "../../utils/axiosUtil";
 
 export default function AddCategory() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosUtil";
-import { getError } from "./utils";
+import { getError } from "./error";
 
 export const uploadImage = async (file, token, percentHandler) => {
   try {
