@@ -18,7 +18,7 @@ export default function Header({ sidebarHandler }) {
                 className="nav-link header-link"
                 onClick={() => sidebarHandler()}
               >
-                <FaBars />
+                <FaBars style={{fontSize: "1.5rem"}}/>
               </Link>
               <Link to="/admin/dashboard" className="nav-link header-link">
                 Home

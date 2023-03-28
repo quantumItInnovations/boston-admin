@@ -12,14 +12,11 @@ import {
   InputGroup,
   Table,
 } from "react-bootstrap";
-import { TiTick } from "react-icons/ti";
-import { ImCross } from "react-icons/im";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-import { Rating } from "react-simple-star-rating";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -183,14 +180,7 @@ export default function Review() {
                           />
                         </td>
                         <td>
-                          <Rating
-                            initialValue={review?.rating}
-                            size={20}
-                            showTooltip
-                            readonly={true}
-                            allowHover={false}
-                            allowFraction={true}
-                          />
+                          <div className="rating">{review.rating}</div>
                         </td>
                         <td>{review.comment}</td>
                         <td>
