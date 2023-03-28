@@ -17,7 +17,6 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-import { Rating } from "react-simple-star-rating";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -172,14 +171,7 @@ export default function ProductReviewTable({ id: productId }) {
                             </td>
                             <td>{review.user.email}</td>
                             <td>
-                              <Rating
-                                initialValue={review?.rating}
-                                size={20}
-                                showTooltip
-                                readonly={true}
-                                allowHover={false}
-                                allowFraction={true}
-                              />
+                              <div className="rating">{review.rating}</div>
                             </td>
                             <td>{review.comment}</td>
                             <td>
@@ -227,7 +219,9 @@ export default function ProductReviewTable({ id: productId }) {
                 </Card.Footer>
               </>
             ) : (
-              <Card.Body><h5>No Reviews</h5></Card.Body>
+              <Card.Body>
+                <h5>No Reviews</h5>
+              </Card.Body>
             )}
           </Card>
         )}

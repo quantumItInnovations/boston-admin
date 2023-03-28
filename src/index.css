@@ -67,6 +67,16 @@ td {
 
 /* --------------------- */
 
+.rating {
+  padding: 0.2rem 0.7rem;
+  width: 3rem;
+  background-color: rgba(0, 0, 0, .8);
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+}
+
 .on,
 .green {
   font-size: 2em;
