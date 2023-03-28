@@ -19,7 +19,7 @@ import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -183,65 +183,59 @@ export default function ProductTable({ id: subCategoryId }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {loading
-                    ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr>
-                          {[...Array(8).keys()].map((d) => (
-                            <td>
-                              <Skeleton height={30} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    : products &&
-                      products.map((product, i) => (
-                        <tr key={product._id} className="odd">
-                          <td className="text-center">{i + 1}</td>
-                          <td>
-                            <img
-                              className="td-img"
-                              src={product.product_images[0]}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td>{product.name}</td>
-                          <td>{product.amount}</td>
-                          <td>
-                            {product.stock ? (
-                              <TiTick className="green" />
-                            ) : (
-                              <ImCross className="red" />
-                            )}
-                          </td>
-                          <td>{product.category.name}</td>
-                          <td>{product.description}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(`/admin/view/product/${product._id}`);
-                              }}
-                              type="success"
-                              className="btn btn-primary"
-                            >
-                              <FaEye />
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteProduct(product._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              <FaTrashAlt />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                  {loading ? (
+                    <CustomSkeleton resutltPerPage={resultPerPage} column={8} />
+                  ) : (
+                    products &&
+                    products.map((product, i) => (
+                      <tr key={product._id} className="odd">
+                        <td className="text-center">{i + 1}</td>
+                        <td>
+                          <img
+                            className="td-img"
+                            src={product.product_images[0]}
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </td>
+                        <td>{product.name}</td>
+                        <td>{product.amount}</td>
+                        <td>
+                          {product.stock ? (
+                            <TiTick className="green" />
+                          ) : (
+                            <ImCross className="red" />
+                          )}
+                        </td>
+                        <td>{product.category.name}</td>
+                        <td>{product.description}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(`/admin/view/product/${product._id}`);
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteProduct(product._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </Table>
             </Card.Body>

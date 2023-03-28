@@ -7,7 +7,7 @@ import {RiDashboard2Fill} from 'react-icons/ri';
 import {HiUsers} from 'react-icons/hi'
 import {MdCategory, MdOutlineProductionQuantityLimits} from 'react-icons/md';
 import {BiCategory} from 'react-icons/bi';
-import {FaGift, FaHubspot, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
+import {FaGift, FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
 
 const linkList = [
   { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
@@ -15,6 +15,7 @@ const linkList = [
   { icon: <MdCategory className="icon-md" />, text: "Category", url: "/admin/category" },
   { icon: <BiCategory className="icon-md" />, text: "Sub Category", url: "/admin/subCategory" },
   { icon: <MdOutlineProductionQuantityLimits className="icon-md" />, text: "Products", url: "/admin/products" },
+  { icon: <FaStarHalfAlt className="icon-md" />, text: "Reviews", url: "/admin/reviews" },
   { icon: <FaShoppingBasket className="icon-md" />, text: "Orders", url: "/admin/orders"},
   { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" }
 ];
@@ -25,6 +26,7 @@ const active_text = {
   "Category": "category",
   "Sub Category": "subCategory",
   "Products": "product",
+  "Reviews": "review",
   "Orders": "order",
   "Promotions": "promotion",
 };

@@ -17,7 +17,7 @@ import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -102,7 +102,7 @@ export default function Users() {
 
   const numOfPages = Math.ceil(filteredUserCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-  console.log("nuofPage", numOfPages);
+  console.log("nuofPage", numOfPages, resultPerPage);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -165,15 +165,7 @@ export default function Users() {
                 </thead>
                 <tbody>
                   {loading
-                    ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr key={r}>
-                          {[...Array(9).keys()].map((d) => (
-                            <td key={d}>
-                              <Skeleton height={30} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))
+                    ? <CustomSkeleton resutltPerPage={resultPerPage} column={9} />
                     : users &&
                       users.map((user, i) => (
                         <tr key={user._id} className="odd">

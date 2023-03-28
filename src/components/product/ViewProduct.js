@@ -11,6 +11,7 @@ import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
+import ProductReviewTable from "./ProductReviewTable";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -162,6 +163,10 @@ const ViewProduct = () => {
                     </Col>
                   </Row>
                 </Col>
+              </Row>
+
+              <Row className="mb-3">
+                <ProductReviewTable id={id} />
               </Row>
             </Card.Body>
           </Card>

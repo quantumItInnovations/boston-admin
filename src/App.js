@@ -31,6 +31,8 @@ import ViewPromotion from "./components/promotion/ViewPromotion";
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
 
+import Review from "./components/review/Review";
+
 import AdminLoginScreen from "./components/AdminLoginScreen";
 import Dashboard from "./components/layout/Dashboard";
 import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
@@ -70,6 +72,10 @@ function App() {
     {
       path: "/admin/view/product/:id",
       element: <ViewProduct key={pathname} />,
+    },
+    {
+      path: "/admin/reviews",
+      element: <Review key={pathname} />,
     },
     { path: "/admin/promotions", element: <Promotions key={pathname} /> },
     {

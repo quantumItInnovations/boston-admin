@@ -18,7 +18,7 @@ import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -163,58 +163,50 @@ export default function Category() {
                   </tr>
                 </thead>
                 <tbody>
-                  {loading
-                    ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr key={r}>
-                          {[...Array(5).keys()].map((d) => (
-                            <td key={d}>
-                              <Skeleton height={30} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    : categories &&
-                      categories.map((category, i) => (
-                        <tr key={category._id} className="odd">
-                          <td className="text-center">{skip + i + 1}</td>
-                          <td>
-                            <img
-                              className="td-img"
-                              src={category.category_image}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td>{category.name}</td>
-                          <td>{category.description}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(
-                                  `/admin/view/category/${category._id}`
-                                );
-                              }}
-                              type="success"
-                              className="btn btn-primary"
-                            >
-                              <FaEye />
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteCategory(category._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              <FaTrashAlt />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                  {loading ? (
+                    <CustomSkeleton resutltPerPage={resultPerPage} column={5} />
+                  ) : (
+                    categories &&
+                    categories.map((category, i) => (
+                      <tr key={category._id} className="odd">
+                        <td className="text-center">{skip + i + 1}</td>
+                        <td>
+                          <img
+                            className="td-img"
+                            src={category.category_image}
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </td>
+                        <td>{category.name}</td>
+                        <td>{category.description}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(`/admin/view/category/${category._id}`);
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteCategory(category._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </Table>
             </Card.Body>

@@ -4,7 +4,6 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
 import {
   Button,
   Card,
@@ -20,6 +19,7 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
+import { Rating } from "react-simple-star-rating";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,9 +28,8 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return {
         ...state,
-        products: action.payload.products,
-        productCount: action.payload.productCount,
-        filteredProductCount: action.payload.filteredProductCount,
+        reviews: action.payload.reviews,
+        filteredReviewCount: action.payload.filteredReviewCount,
         loading: false,
       };
     case "FETCH_FAIL":
@@ -40,7 +39,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Products() {
+export default function Review() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
@@ -53,21 +52,19 @@ export default function Products() {
   const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
-  const [
-    { loading, error, products, productCount, filteredProductCount },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, reviews, filteredReviewCount }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: "",
+    });
 
-  const deleteProduct = async (id) => {
+  const deleteReview = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this product?") === true
+      window.confirm("Are you sure you want to delete this review?") === true
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(`/api/admin/product/${id}`, {
+        const res = await axiosInstance.delete(`/api/admin/review/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
@@ -84,7 +81,7 @@ export default function Products() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/review/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -104,7 +101,8 @@ export default function Products() {
     fetchData();
   }, [token, del, curPage, resultPerPage, query]);
 
-  const numOfPages = Math.ceil(filteredProductCount / resultPerPage);
+  const numOfPages = Math.ceil(filteredReviewCount / resultPerPage);
+  console.log({resultPerPage, numOfPages, filteredReviewCount})
   const skip = resultPerPage * (curPage - 1);
 
   return (
@@ -123,15 +121,6 @@ export default function Products() {
         ) : (
           <Card>
             <Card.Header>
-              <Button
-                onClick={() => {
-                  navigate(`/admin/product/create`);
-                }}
-                type="success"
-                className="btn btn-primary btn-block mt-1"
-              >
-                Add Product
-              </Button>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -158,28 +147,33 @@ export default function Products() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Stock</th>
-                    <th>Category</th>
-                    <th>SubCategory</th>
-                    <th>Description</th>
+                    <th>User's fullname</th>
+                    <th>Email</th>
+                    <th>Product</th>
+                    <th>Product Image</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={9} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
                   ) : (
-                    products &&
-                    products.map((product, i) => (
-                      <tr key={product._id} className="odd">
+                    reviews &&
+                    reviews.map((review, i) => (
+                      <tr key={review._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
+                        <td>
+                          {review.user &&
+                            `${review.user.firstname} ${review.user.lastname}`}
+                        </td>
+                        <td>{review.user.email}</td>
+                        <td>{review.product && review.product.name}</td>
                         <td>
                           <img
                             className="td-img"
-                            src={product.product_images[0]}
+                            src={review.product.product_images[0]}
                             alt=""
                             style={{
                               width: "50px",
@@ -188,43 +182,21 @@ export default function Products() {
                             }}
                           />
                         </td>
-                        <td>{product.name}</td>
-                        <td>{product.amount}</td>
                         <td>
-                          {product.stock ? (
-                            <TiTick className="green" />
-                          ) : (
-                            <ImCross className="red" />
-                          )}
+                          <Rating
+                            initialValue={review?.rating}
+                            size={20}
+                            showTooltip
+                            readonly={true}
+                            allowHover={false}
+                            allowFraction={true}
+                          />
                         </td>
-                        <td>
-                          {product.category ? (
-                            product.category.name
-                          ) : (
-                            <b>Category not set</b>
-                          )}
-                        </td>
-                        <td>
-                          {product.sub_category ? (
-                            product.sub_category.name
-                          ) : (
-                            <b>Sub category not set</b>
-                          )}
-                        </td>
-                        <td>{product.description}</td>
+                        <td>{review.comment}</td>
                         <td>
                           <Button
                             onClick={() => {
-                              navigate(`/admin/view/product/${product._id}`);
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteProduct(product._id);
+                              deleteReview(review._id);
                             }}
                             type="danger"
                             className="btn btn-danger ms-2"
@@ -256,7 +228,7 @@ export default function Products() {
                   </Form.Select>
                 </Form.Group>
               </div>
-              {resultPerPage < filteredProductCount && (
+              {resultPerPage < filteredReviewCount && (
                 <CustomPagination
                   pages={numOfPages}
                   pageHandler={curPageHandler}
