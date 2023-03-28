@@ -19,7 +19,7 @@ import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "../layout/CustomSkeleton"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -188,56 +188,50 @@ export default function Order() {
                   </tr>
                 </thead>
                 <tbody>
-                  {loading
-                    ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr key={r}>
-                          {[...Array(8).keys()].map((d) => (
-                            <td key={d}>
-                              <Skeleton height={30} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    : orders &&
-                      orders.map((order, i) => (
-                        <tr key={order._id} className="odd">
-                          <td className="text-center">{skip + i + 1}</td>
-                          <td>{order.orderId && order.orderId}</td>
-                          <td>
-                            {order.userId &&
-                              `${order.userId.firstname} ${order.userId.lastname}`}
-                          </td>
-                          <td className="text-center">
-                            <IoMdOpen
-                              className="open-model"
-                              onClick={() => showModelHandler(order.products)}
-                            />
-                          </td>
-                          <td>{order.amount}</td>
-                          <td>{order.status}</td>
-                          <td>{order.address.town}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(`/admin/view/order/${order._id}`);
-                              }}
-                              type="success"
-                              className="btn btn-primary"
-                            >
-                              <FaEye />
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteOrder(order._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              <FaTrashAlt />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                  {loading ? (
+                    <CustomSkeleton resutltPerPage={resultPerPage} column={8} />
+                  ) : (
+                    orders &&
+                    orders.map((order, i) => (
+                      <tr key={order._id} className="odd">
+                        <td className="text-center">{skip + i + 1}</td>
+                        <td>{order.orderId && order.orderId}</td>
+                        <td>
+                          {order.userId &&
+                            `${order.userId.firstname} ${order.userId.lastname}`}
+                        </td>
+                        <td className="text-center">
+                          <IoMdOpen
+                            className="open-model"
+                            onClick={() => showModelHandler(order.products)}
+                          />
+                        </td>
+                        <td>{order.amount}</td>
+                        <td>{order.status}</td>
+                        <td>{order.address.town}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(`/admin/view/order/${order._id}`);
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteOrder(order._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </Table>
             </Card.Body>

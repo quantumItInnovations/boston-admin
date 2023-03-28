@@ -35,7 +35,6 @@ export default function UpdateProfileModel(props) {
   const [telephone, setTelephone] = useState("");
   const [fax, setFax] = useState("");
 
-  const [closed, setClosed] = useState(props.show);
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -69,7 +68,7 @@ export default function UpdateProfileModel(props) {
       }
     };
     fetchData();
-  }, [token, props.show, closed]);
+  }, [token, props.show]);
 
   const resetForm = () => {
     setFirstname("");

@@ -18,7 +18,7 @@ import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -172,65 +172,59 @@ export default function SubCategory() {
                   </tr>
                 </thead>
                 <tbody>
-                  {loading
-                    ? [...Array(resultPerPage).keys()].map((r) => (
-                        <tr key={r}>
-                          {[...Array(6).keys()].map((d) => (
-                            <td key={d}>
-                              <Skeleton height={30} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    : subCategories &&
-                      subCategories.map((subCategory, i) => (
-                        <tr key={subCategory._id} className="odd">
-                          <td className="text-center">{skip + i + 1}</td>
-                          <td>
-                            <img
-                              className="td-img"
-                              src={subCategory.sub_category_image}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td>{subCategory.name}</td>
-                          <td>
-                            {subCategory.category ? (
-                              subCategory.category.name
-                            ) : (
-                              <b>Category not set</b>
-                            )}
-                          </td>
-                          <td>{subCategory.description}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(
-                                  `/admin/view/subCategory/${subCategory._id}`
-                                );
-                              }}
-                              type="success"
-                              className="btn btn-primary"
-                            >
-                              <FaEye />
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteSubCategory(subCategory._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              <FaTrashAlt />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                  {loading ? (
+                    <CustomSkeleton resutltPerPage={resultPerPage} column={6} />
+                  ) : (
+                    subCategories &&
+                    subCategories.map((subCategory, i) => (
+                      <tr key={subCategory._id} className="odd">
+                        <td className="text-center">{skip + i + 1}</td>
+                        <td>
+                          <img
+                            className="td-img"
+                            src={subCategory.sub_category_image}
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </td>
+                        <td>{subCategory.name}</td>
+                        <td>
+                          {subCategory.category ? (
+                            subCategory.category.name
+                          ) : (
+                            <b>Category not set</b>
+                          )}
+                        </td>
+                        <td>{subCategory.description}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(
+                                `/admin/view/subCategory/${subCategory._id}`
+                              );
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteSubCategory(subCategory._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </Table>
             </Card.Body>
