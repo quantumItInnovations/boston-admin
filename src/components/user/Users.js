@@ -165,7 +165,7 @@ export default function Users() {
                 </thead>
                 <tbody>
                   {loading
-                    ? <CustomSkeleton resutltPerPage={resultPerPage} column={9} />
+                    ? <CustomSkeleton resultPerPage={resultPerPage} column={9} />
                     : users &&
                       users.map((user, i) => (
                         <tr key={user._id} className="odd">

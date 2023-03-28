@@ -2,8 +2,9 @@ import React from "react";
 import Skeleton from "react-loading-skeleton";
 
 const CustomSkeleton = ({ resultPerPage, column }) => {
-  console.log(resultPerPage, column);
-  return [...Array(resultPerPage).keys()].map((r) => (
+  console.log({ resultPerPage, column });
+  
+  return [...Array(parseInt(resultPerPage)).keys()].map((r) => (
     <tr key={r}>
       {[...Array(column).keys()].map((d) => (
         <td key={d}>

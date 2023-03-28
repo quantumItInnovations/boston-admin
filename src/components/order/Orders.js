@@ -189,7 +189,7 @@ export default function Order() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={8} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
                   ) : (
                     orders &&
                     orders.map((order, i) => (

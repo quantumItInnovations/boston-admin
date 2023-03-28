@@ -170,7 +170,7 @@ export default function Products() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={9} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
                   ) : (
                     products &&
                     products.map((product, i) => (

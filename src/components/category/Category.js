@@ -164,7 +164,7 @@ export default function Category() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={5} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={5} />
                   ) : (
                     categories &&
                     categories.map((category, i) => (

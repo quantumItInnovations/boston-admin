@@ -184,7 +184,7 @@ export default function ProductTable({ id: subCategoryId }) {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={8} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
                   ) : (
                     products &&
                     products.map((product, i) => (
