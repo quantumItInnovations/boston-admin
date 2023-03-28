@@ -182,7 +182,7 @@ export default function SubCategoryTable({ id }) {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={9} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
                   ) : (
                     subCategories &&
                     subCategories.map((subCategory, i) => (

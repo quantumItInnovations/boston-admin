@@ -126,7 +126,7 @@ export default function Promotions() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={3} column={5} />
+                    <CustomSkeleton resultPerPage={3} column={5} />
                   ) : (
                     promotions &&
                     promotions.map((promotion, i) => (

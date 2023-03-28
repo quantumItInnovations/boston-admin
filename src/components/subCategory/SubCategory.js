@@ -173,7 +173,7 @@ export default function SubCategory() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resutltPerPage={resultPerPage} column={6} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={6} />
                   ) : (
                     subCategories &&
                     subCategories.map((subCategory, i) => (
