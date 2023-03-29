@@ -15,7 +15,7 @@ export default function Header({ sidebarHandler }) {
         <Navbar className="header">
           <Container fluid className="ps-0">
             <GiHamburgerMenu
-              style={{ fontSize: "1.5rem", color: "#fff", marginLeft: "1.75rem" }}
+              style={{ fontSize: "1.5rem", color: "#fff", marginLeft: "1.75rem", cursor: 'pointer' }}
               onClick={() => sidebarHandler()}
             />
 
