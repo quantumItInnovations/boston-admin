@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { Store } from "../../Store";
 import { FaUserCircle, FaBars, FaUser } from "react-icons/fa";
+import {GiHamburgerMenu} from 'react-icons/gi'
 
 export default function Header({ sidebarHandler }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -13,17 +14,11 @@ export default function Header({ sidebarHandler }) {
       {userInfo ? (
         <Navbar className="header">
           <Container fluid className="ps-0">
-            <Nav>
-              <Link
-                className="nav-link header-link"
-                onClick={() => sidebarHandler()}
-              >
-                <FaBars style={{fontSize: "1.5rem"}}/>
-              </Link>
-              {/* <Link to="/admin/dashboard" className="nav-link header-link">
-                Home
-              </Link> */}
-            </Nav>
+            <GiHamburgerMenu
+              style={{ fontSize: "1.5rem", color: "#fff", marginLeft: "1.75rem" }}
+              onClick={() => sidebarHandler()}
+            />
+
             <Nav className="ms-auto">
               <Dropdown align="end">
                 <Dropdown.Toggle
