@@ -61,12 +61,12 @@ export default function SideNavbar({ isExpanded }) {
               : "side-nav-container side-nav-container-NX"
           }
         >
-          <Link to="/admin/dashboard" className="brand-link">
+          <div className="brand-link">
             <img src="/LogoWhite.png" alt="" width={"50px"} height="auto" />
             <span className="brand-text ms-2 font-weight-light">
               Boston George
             </span>
-          </Link>
+          </div>
 
           <div className="sidebar">
             {/* Sidebar user panel (optional) */}
