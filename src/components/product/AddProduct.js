@@ -221,8 +221,8 @@ export default function AddProduct() {
     <motion.div
       initial={{ x: "100%" }}
       animate={{ x: "0%" }}
-      transition={{ duration: 0.75, ease: "easeOut" }}
-      exit={{ opacity: 1 }}
+      transition={{ duration: 0.75, ease: "easeInOut" }}
+      exit={{ x: "100%" }}
     >
       <Container fluid>
         <Row
