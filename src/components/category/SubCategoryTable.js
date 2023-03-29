@@ -15,7 +15,6 @@ import {
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
-import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
@@ -123,31 +122,25 @@ export default function SubCategoryTable({ id }) {
   console.log("nuofPage", numOfPages);
 
   return (
-    <motion.div
-      initial={{ x: "-100%" }}
-      animate={{ x: "0%" }}
-      transition={{ duration: 0.75, ease: "easeOut" }}
-      exit={{ opacity: 1 }}
-    >
-      <Container fluid className="py-3">
-        {/* {loading ? (
+    <Container fluid className="py-3">
+      {/* {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? ( */}
-        {error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <Card>
-            <Card.Header>
-              <Button
-                onClick={() => {
-                  navigate(`/admin/subCategory/create`);
-                }}
-                type="success"
-                className="btn btn-primary btn-block mt-1"
-              >
-                Add Sub Category
-              </Button>
-              <div className="search-box float-end">
+      {error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : (
+        <Card>
+          <Card.Header>
+            <Button
+              onClick={() => {
+                navigate(`/admin/subCategory/create`);
+              }}
+              type="success"
+              className="btn btn-primary btn-block mt-1"
+            >
+              Add Sub Category
+            </Button>
+            {/* <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
@@ -166,72 +159,72 @@ export default function SubCategoryTable({ id }) {
                     <FaSearch />
                   </InputGroup.Text>
                 </InputGroup>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <Table responsive striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>S.No</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {loading ? (
-                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
-                  ) : (
-                    subCategories &&
-                    subCategories.map((subCategory, i) => (
-                      <tr key={subCategory._id} className="odd">
-                        <td className="text-center">{i + 1}</td>
-                        <td>
-                          <img
-                            className="td-img"
-                            src={subCategory.sub_category_image}
-                            alt=""
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </td>
-                        <td>{subCategory.name}</td>
-                        <td>{subCategory.category.name}</td>
-                        <td>{subCategory.description}</td>
-                        <td>
-                          <Button
-                            onClick={() => {
-                              navigate(
-                                `/admin/view/subCategory/${subCategory._id}`
-                              );
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteSubCategory(subCategory._id);
-                            }}
-                            type="danger"
-                            className="btn btn-danger ms-2"
-                          >
-                            <FaTrashAlt />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </Table>
-            </Card.Body>
-            {/* <Card.Footer>
+              </div> */}
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <CustomSkeleton resultPerPage={resultPerPage} column={9} />
+                ) : (
+                  subCategories &&
+                  subCategories.map((subCategory, i) => (
+                    <tr key={subCategory._id} className="odd">
+                      <td className="text-center">{i + 1}</td>
+                      <td>
+                        <img
+                          className="td-img"
+                          src={subCategory.sub_category_image}
+                          alt=""
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </td>
+                      <td>{subCategory.name}</td>
+                      <td>{subCategory.category.name}</td>
+                      <td>{subCategory.description}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            navigate(
+                              `/admin/view/subCategory/${subCategory._id}`
+                            );
+                          }}
+                          type="success"
+                          className="btn btn-primary"
+                        >
+                          <FaEye />
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deleteSubCategory(subCategory._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <FaTrashAlt />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </Table>
+          </Card.Body>
+          {/* <Card.Footer>
             <div className="float-start d-flex align-items-center mt-3">
               <p className="p-bold m-0 me-3">Row No.</p>
               <Form.Group controlId="resultPerPage">
@@ -257,10 +250,9 @@ export default function SubCategoryTable({ id }) {
               />
             )}
           </Card.Footer> */}
-          </Card>
-        )}
-        <ToastContainer />
-      </Container>
-    </motion.div>
+        </Card>
+      )}
+      <ToastContainer />
+    </Container>
   );
 }

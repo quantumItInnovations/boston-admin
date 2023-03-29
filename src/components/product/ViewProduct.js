@@ -12,6 +12,8 @@ import { ImCross } from "react-icons/im";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import ProductReviewTable from "./ProductReviewTable";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -68,116 +70,146 @@ const ViewProduct = () => {
     return `${dT[0]} ${dT[1]}`;
   };
   return (
-    <Container className="py-3">
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <>
-          <Card>
-            <Card.Header>
-              <Card.Title>{product.name} Details</Card.Title>
-              <div className="card-tools">
-                <FaEdit style={{ color: "blue" }}
-                  onClick={() => setModalShow(true)}
-                />
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <Row className="mb-3">
-                <Col md={4}>
-                  <img
-                    src={product.product_images[0]}
-                    alt=""
-                    className="img-fluid"
-                    width={"200px"}
-                    // height={"200px"}
+    <motion.div
+      initial={{ x: "100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid className="py-3">
+        {error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <>
+            <Card>
+              <Card.Header>
+                <Card.Title>
+                  {loading ? <Skeleton /> : product.name} Details
+                </Card.Title>
+                <div className="card-tools">
+                  <FaEdit
+                    style={{ color: "blue" }}
+                    onClick={() => setModalShow(true)}
                   />
-                </Col>
-                <Col md={8}>
-                  <Row>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Name</strong>
-                      </p>
-                      <p>{product.name}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Description</strong>
-                      </p>
-                      <p>{product.description}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Amount</strong>
-                      </p>
-                      <p>{product.amount}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Stock</strong>
-                      </p>
-                      {product.stock ? (
-                        <TiTick className="green" />
-                      ) : (
-                        <ImCross className="red" />
-                      )}
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Category</strong>
-                      </p>
-                      <p>
-                        {product.category ? (
-                          product.category.name
+                </div>
+              </Card.Header>
+              <Card.Body>
+                <Row className="mb-3">
+                  <Col md={4}>
+                    {loading ? (
+                      <Skeleton height={200} />
+                    ) : (
+                      <img
+                        src={product.product_images[0]}
+                        alt=""
+                        className="img-fluid"
+                        width={"200px"}
+                        // height={"200px"}
+                      />
+                    )}
+                  </Col>
+                  <Col md={8}>
+                    <Row>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Name</strong>
+                        </p>
+                        <p>{loading ? <Skeleton /> : product.name}</p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Description</strong>
+                        </p>
+                        <p>{loading ? <Skeleton /> : product.description}</p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Amount</strong>
+                        </p>
+                        <p>{loading ? <Skeleton /> : product.amount}</p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Stock</strong>
+                        </p>
+                        {loading ? (
+                          <Skeleton />
+                        ) : product.stock ? (
+                          <TiTick className="green" />
                         ) : (
-                          <b>Category not set</b>
+                          <ImCross className="red" />
                         )}
-                      </p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Sub Category</strong>
-                      </p>
-                      <p>
-                        {product.sub_category ? (
-                          product.sub_category.name
-                        ) : (
-                          <b>Sub category not set</b>
-                        )}
-                      </p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Created At</strong>
-                      </p>
-                      <p>{getDateTime(product.createdAt)}</p>
-                    </Col>
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Last Update</strong>
-                      </p>
-                      <p>{getDateTime(product.updatedAt)}</p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Category</strong>
+                        </p>
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : product.category ? (
+                            product.category.name
+                          ) : (
+                            <b>Category not set</b>
+                          )}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Sub Category</strong>
+                        </p>
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : product.sub_category ? (
+                            product.sub_category.name
+                          ) : (
+                            <b>Sub category not set</b>
+                          )}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Created At</strong>
+                        </p>
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : (
+                            getDateTime(product.createdAt)
+                          )}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Last Update</strong>
+                        </p>
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : (
+                            getDateTime(product.updatedAt)
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
 
-              <Row className="mb-3">
-                <ProductReviewTable id={id} />
-              </Row>
-            </Card.Body>
-          </Card>
-          <EditProductModel
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-          />
-          <ToastContainer />
-        </>
-      )}
-    </Container>
+                <Row className="mb-3">
+                  <ProductReviewTable id={id} />
+                </Row>
+              </Card.Body>
+            </Card>
+            <EditProductModel
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
+            <ToastContainer />
+          </>
+        )}
+      </Container>
+    </motion.div>
   );
 };
 

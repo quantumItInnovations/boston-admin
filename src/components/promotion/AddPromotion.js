@@ -4,10 +4,20 @@ import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { uploadImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Form, ProgressBar } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  ProgressBar,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
+import Skeleton from "react-loading-skeleton";
+import { motion } from "framer-motion";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -209,152 +219,136 @@ export default function AddPromotion() {
   };
 
   return (
-    <div className="wrapper">
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Add Promotion</h1>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-
-      {/* Main content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            {/* left column */}
-            <div className="col-md-12">
-              {/* jquery validation */}
-              <div className="card card-primary">
-                <div className="card-header">
-                  <h3 className="card-title">Add Details</h3>
-                </div>
-                {/* /.card-header */}
-                {/* form start */}
-                {loading ? (
-                  <LoadingBox />
-                ) : (
-                  <Form onSubmit={submitHandler}>
-                    <div className="card-body">
-                      {categories && (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mr-3">Category</Form.Label>
-                          <Form.Select
-                            aria-label="Select Category"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                          >
-                            <option key="blankChoice" hidden value>
-                              Select Category
+    <motion.div
+      initial={{ x: "100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid>
+        <Row
+          className="mt-2 mb-3"
+          style={{ borderBottom: "1px solid rgba(0,0,0,0.2)" }}
+        >
+          <Col>
+            <span style={{ fontSize: "xx-large" }}>Add Promotion</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <Card.Header as={"h4"}>Add Details</Card.Header>
+              <Form onSubmit={submitHandler}>
+                <Card.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mr-3">Category</Form.Label>
+                    {loading ? (
+                      <Skeleton />
+                    ) : (
+                      categories && (
+                        <Form.Select
+                          aria-label="Select Category"
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                        >
+                          <option key="blankChoice" hidden value>
+                            Select Category
+                          </option>
+                          {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                              {cat.name}
                             </option>
-                            {categories.map((cat) => (
-                              <option key={cat._id} value={cat._id}>
-                                {cat.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                      )}
-                      {category && (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mr-3">Sub Category</Form.Label>
-                          <Form.Select
-                            aria-label="Select Sub Category"
-                            value={subCategory}
-                            onChange={(e) => setSubCategory(e.target.value)}
-                          >
-                            <option key="blankChoice" hidden value>
-                              Select Sub Category
-                            </option>
-                            {subCategories &&
-                              getAllSubCategory(subCategories, category).map(
-                                (subCat) => (
-                                  <option key={subCat._id} value={subCat._id}>
-                                    {subCat.name}
-                                  </option>
-                                )
-                              )}
-                          </Form.Select>
-                        </Form.Group>
-                      )}
-                      {subCategory && (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mr-3">Product</Form.Label>
-                          <Form.Select
-                            aria-label="Select Product"
-                            value={product}
-                            onChange={(e) => setProduct(e.target.value)}
-                          >
-                            <option key="blankChoice" hidden value>
-                              Select Product
-                            </option>
-                            {products &&
-                              subCategory &&
-                              getAllProduct(
-                                products,
-                                subCategory,
-                                category
-                              ).map((prod) => (
-                                <option key={prod._id} value={prod._id}>
-                                  {prod.name}
-                                </option>
-                              ))}
-                          </Form.Select>
-                        </Form.Group>
-                      )}
+                          ))}
+                        </Form.Select>
+                      )
+                    )}
+                  </Form.Group>
 
-                      <Form.Group className="mb-3" controlId="updated_price">
-                        <Form.Label>Updated Price</Form.Label>
-                        <Form.Control
-                          type="number"
-                          value={updated_price}
-                          onChange={(e) => setUpdatedPrice(e.target.value)}
-                          required
-                        />
-                      </Form.Group>
-
-                      <Cropper
-                        uploadHandler={uploadFileHandler}
-                        w={15}
-                        h={6}
-                        isUploaded={isUploaded}
-                      />
-                      {uploadPercentage > 0 && (
-                        <ProgressBar
-                          now={uploadPercentage}
-                          active="true"
-                          label={`${uploadPercentage}%`}
-                        />
-                      )}
-                    </div>
-                    {/* /.card-body */}
-                    <div className="card-footer">
-                      <Button
-                        type="submit"
-                        disabled={loadingUpdate ? true : false}
+                  {category && (
+                    <Form.Group className="mb-3">
+                      <Form.Label className="mr-3">Sub Category</Form.Label>
+                      <Form.Select
+                        aria-label="Select Sub Category"
+                        value={subCategory}
+                        onChange={(e) => setSubCategory(e.target.value)}
                       >
-                        Submit
-                      </Button>
-                      {loadingUpdate && <LoadingBox></LoadingBox>}
-                    </div>
-                  </Form>
-                )}
+                        <option key="blankChoice" hidden value>
+                          Select Sub Category
+                        </option>
+                        {subCategories &&
+                          getAllSubCategory(subCategories, category).map(
+                            (subCat) => (
+                              <option key={subCat._id} value={subCat._id}>
+                                {subCat.name}
+                              </option>
+                            )
+                          )}
+                      </Form.Select>
+                    </Form.Group>
+                  )}
+                  {subCategory && (
+                    <Form.Group className="mb-3">
+                      <Form.Label className="mr-3">Product</Form.Label>
+                      <Form.Select
+                        aria-label="Select Product"
+                        value={product}
+                        onChange={(e) => setProduct(e.target.value)}
+                      >
+                        <option key="blankChoice" hidden value>
+                          Select Product
+                        </option>
+                        {products &&
+                          subCategory &&
+                          getAllProduct(products, subCategory, category).map(
+                            (prod) => (
+                              <option key={prod._id} value={prod._id}>
+                                {prod.name}
+                              </option>
+                            )
+                          )}
+                      </Form.Select>
+                    </Form.Group>
+                  )}
+
+                  <Form.Group className="mb-3" controlId="updated_price">
+                    <Form.Label>Updated Price</Form.Label>
+                    <Form.Control
+                      type="number"
+                      value={updated_price}
+                      onChange={(e) => setUpdatedPrice(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+
+                  <Cropper
+                    uploadHandler={uploadFileHandler}
+                    w={15}
+                    h={6}
+                    isUploaded={isUploaded}
+                  />
+                  {uploadPercentage > 0 && (
+                    <ProgressBar
+                      now={uploadPercentage}
+                      active="true"
+                      label={`${uploadPercentage}%`}
+                    />
+                  )}
+                </Card.Body>
+                <Card.Footer>
+                  <Button type="submit" disabled={loadingUpdate ? true : false}>
+                    {loadingUpdate ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                </Card.Footer>
                 <ToastContainer />
-              </div>
-              {/* /.card */}
-            </div>
-            <div className="col-md-6"></div>
-            {/*/}.col (left) */}
-          </div>
-          {/* /.row */}
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* /.content */}
-    </div>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </motion.div>
   );
 }

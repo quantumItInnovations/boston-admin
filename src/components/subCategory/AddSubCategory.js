@@ -4,10 +4,20 @@ import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { uploadImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Form, ProgressBar } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  ProgressBar,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -172,52 +182,48 @@ export default function AddSubCategory() {
   }, [token]);
 
   return (
-    <div className="wrapper">
-      {/* Content Header (Page header) */}
-      <section className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Add Sub Category</h1>
-            </div>
-          </div>
-        </div>
-        {/* /.container-fluid */}
-      </section>
-
-      {/* Main content */}
-      <section className="content">
-        <div className="container-fluid">
-          <div className="row">
-            {/* left column */}
-            <div className="col-md-12">
-              {/* jquery validation */}
-              <div className="card card-primary">
-                <div className="card-header">
-                  <h3 className="card-title">Add Details</h3>
-                </div>
-                {/* /.card-header */}
-                {/* form start */}
-                <Form onSubmit={submitHandler}>
-                  <div className="card-body">
-                    <Form.Group className="mb-3" controlId="name">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="description">
-                      <Form.Label>Description</Form.Label>
-                      <Form.Control
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="mr-3">Category</Form.Label>
+    <motion.div
+      initial={{ x: "100%" }}
+      animate={{ x: "0%" }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
+      exit={{ opacity: 1 }}
+    >
+      <Container fluid>
+        <Row
+          className="mt-2 mb-3"
+          style={{ borderBottom: "1px solid rgba(0,0,0,0.2)" }}
+        >
+          <Col>
+            <span style={{ fontSize: "xx-large" }}>Add Sub Category</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <Card.Header as={"h4"}>Add Details</Card.Header>
+              <Form onSubmit={submitHandler}>
+                <Card.Body>
+                  <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mr-3">Category</Form.Label>
+                    {loading ? (
+                      <Skeleton />
+                    ) : (
                       <Form.Select
                         aria-label="Select Category"
                         onChange={(e) => setCategory(e.target.value)}
@@ -234,8 +240,9 @@ export default function AddSubCategory() {
                             </option>
                           ))}
                       </Form.Select>
-                    </Form.Group>
-                    {/* <Cropper
+                    )}
+                  </Form.Group>
+                  {/* <Cropper
                       uploadHandler={uploadFileHandler}
                       w={5}
                       h={6}
@@ -248,48 +255,40 @@ export default function AddSubCategory() {
                         label={`${uploadPercentage}%`}
                       />
                     )} */}
-                    <Form.Group className="mb-3" controlId="sub_category_image">
-                      <Form.Label>Upload Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        accept="image/png image/jpeg image/jpg"
-                        onChange={(e) => {
-                          uploadFileHandler(e);
-                        }}
-                        required
+                  <Form.Group className="mb-3" controlId="sub_category_image">
+                    <Form.Label>Upload Image</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/png image/jpeg image/jpg"
+                      onChange={(e) => {
+                        uploadFileHandler(e);
+                      }}
+                      required
+                    />
+                    {uploadPercentage > 0 && (
+                      <ProgressBar
+                        now={uploadPercentage}
+                        active="true"
+                        label={`${uploadPercentage}%`}
                       />
-                      {uploadPercentage > 0 && (
-                        <ProgressBar
-                          now={uploadPercentage}
-                          active="true"
-                          label={`${uploadPercentage}%`}
-                        />
-                      )}
-                    </Form.Group>
-                  </div>
-                  {/* /.card-body */}
-                  <div className="card-footer">
-                    <Button
-                      type="submit"
-                      disabled={loadingUpdate ? true : false}
-                    >
-                      Submit
-                    </Button>
-                    {loadingUpdate && <LoadingBox></LoadingBox>}
-                  </div>
-                </Form>
+                    )}
+                  </Form.Group>
+                </Card.Body>
+                <Card.Footer>
+                  <Button type="submit" disabled={loadingUpdate ? true : false}>
+                    {loadingUpdate ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                </Card.Footer>
                 <ToastContainer />
-              </div>
-              {/* /.card */}
-            </div>
-            <div className="col-md-6"></div>
-            {/*/}.col (left) */}
-          </div>
-          {/* /.row */}
-        </div>
-        {/* /.container-fluid */}
-      </section>
-      {/* /.content */}
-    </div>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </motion.div>
   );
 }

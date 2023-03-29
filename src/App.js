@@ -121,7 +121,7 @@ function App() {
                 path={path}
                 element={
                   <AdminProtectedRoute>
-                    <AnimatePresence initial={false}>{element}</AnimatePresence>
+                    <AnimatePresence initial={false} mode={'wait'}>{element}</AnimatePresence>
                   </AdminProtectedRoute>
                 }
               />
