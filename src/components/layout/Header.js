@@ -12,7 +12,7 @@ export default function Header({ sidebarHandler }) {
     <>
       {userInfo ? (
         <Navbar className="header">
-          <Container fluid>
+          <Container fluid className="ps-0">
             <Nav>
               <Link
                 className="nav-link header-link"
@@ -20,9 +20,9 @@ export default function Header({ sidebarHandler }) {
               >
                 <FaBars style={{fontSize: "1.5rem"}}/>
               </Link>
-              <Link to="/admin/dashboard" className="nav-link header-link">
+              {/* <Link to="/admin/dashboard" className="nav-link header-link">
                 Home
-              </Link>
+              </Link> */}
             </Nav>
             <Nav className="ms-auto">
               <Dropdown align="end">

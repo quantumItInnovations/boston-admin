@@ -42,7 +42,7 @@ export default function ProductReviewTable({ id: productId }) {
   console.log(token);
 
   const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(10);
+  const [resultPerPage, setResultPerPage] = useState(5);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
@@ -103,130 +103,104 @@ export default function ProductReviewTable({ id: productId }) {
   const skip = resultPerPage * (curPage - 1);
 
   return (
-    <motion.div
-      initial={{ x: "-100%" }}
-      animate={{ x: "0%" }}
-      transition={{ duration: 0.75, ease: "easeOut" }}
-      exit={{ opacity: 1 }}
-    >
-      <Container fluid className="py-3">
-        {/* {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? ( */}
-        {error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <Card>
-            <Card.Header>
-              {/* <div className="search-box float-end">
-                <InputGroup>
-                  <Form.Control
-                    aria-label="Search Input"
-                    placeholder="Search"
-                    type="search"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                  />
-                  <InputGroup.Text
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setQuery(searchInput);
+    <Container fluid className="py-3">
+      {error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : (
+        <Card>
+          <Card.Header>Product Reviews</Card.Header>
+          <Card.Body>
+            {loading ? (
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>User's fullname</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <CustomSkeleton resultPerPage={resultPerPage} column={6} />
+                </tbody>
+              </Table>
+            ) : reviews && reviews.length > 0 ? (
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>User's fullname</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviews.map((review, i) => (
+                    <tr key={review._id} className="odd">
+                      <td className="text-center">{skip + i + 1}</td>
+                      <td>
+                        {review.user &&
+                          `${review.user.firstname} ${review.user.lastname}`}
+                      </td>
+                      <td>{review.user.email}</td>
+                      <td>
+                        <div className="rating">{review.rating}</div>
+                      </td>
+                      <td>{review.comment}</td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            deleteReview(review._id);
+                          }}
+                          type="danger"
+                          className="btn btn-danger ms-2"
+                        >
+                          <FaTrashAlt />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              "No Reviews"
+            )}
+          </Card.Body>
+          {reviews && reviews.length > 0 && (
+            <Card.Footer>
+              <div className="float-start d-flex align-items-center mt-3">
+                <p className="p-bold m-0 me-3">Row No.</p>
+                <Form.Group controlId="resultPerPage">
+                  <Form.Select
+                    value={resultPerPage}
+                    onChange={(e) => {
+                      setResultPerPage(e.target.value);
                       setCurPage(1);
                     }}
+                    aria-label="Default select example"
                   >
-                    <FaSearch />
-                  </InputGroup.Text>
-                </InputGroup>
-              </div> */}
-              Product Reviews
-            </Card.Header>
-            {reviews && reviews.length > 0 ? (
-              <>
-                <Card.Body>
-                  <Table responsive striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>S.No</th>
-                        <th>User's fullname</th>
-                        <th>Email</th>
-                        <th>Rating</th>
-                        <th>Comment</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {loading ? (
-                        <CustomSkeleton
-                          resultPerPage={resultPerPage}
-                          column={6}
-                        />
-                      ) : (
-                        reviews &&
-                        reviews.map((review, i) => (
-                          <tr key={review._id} className="odd">
-                            <td className="text-center">{skip + i + 1}</td>
-                            <td>
-                              {review.user &&
-                                `${review.user.firstname} ${review.user.lastname}`}
-                            </td>
-                            <td>{review.user.email}</td>
-                            <td>
-                              <div className="rating">{review.rating}</div>
-                            </td>
-                            <td>{review.comment}</td>
-                            <td>
-                              <Button
-                                onClick={() => {
-                                  deleteReview(review._id);
-                                }}
-                                type="danger"
-                                className="btn btn-danger ms-2"
-                              >
-                                <FaTrashAlt />
-                              </Button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-                <Card.Footer>
-                  <div className="float-start d-flex align-items-center mt-3">
-                    <p className="p-bold m-0 me-3">Row No.</p>
-                    <Form.Group controlId="resultPerPage">
-                      <Form.Select
-                        value={resultPerPage}
-                        onChange={(e) => {
-                          setResultPerPage(e.target.value);
-                          setCurPage(1);
-                        }}
-                        aria-label="Default select example"
-                      >
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={15}>15</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                  {/* {resultPerPage < filteredReviewCount && (
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              {/* {resultPerPage < filteredReviewCount && (
                 <CustomPagination
                   pages={numOfPages}
                   pageHandler={curPageHandler}
                   curPage={curPage}
                 />
               )} */}
-                </Card.Footer>
-              </>
-            ) : (
-              <Card.Body>
-                <h5>No Reviews</h5>
-              </Card.Body>
-            )}
-          </Card>
-        )}
-        <ToastContainer />
-      </Container>
-    </motion.div>
+            </Card.Footer>
+          )}
+        </Card>
+      )}
+      <ToastContainer />
+    </Container>
   );
 }

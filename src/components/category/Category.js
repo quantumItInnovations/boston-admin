@@ -4,7 +4,6 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
 import {
   Button,
   Card,
@@ -13,7 +12,6 @@ import {
   InputGroup,
   Table,
 } from "react-bootstrap";
-import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
