@@ -147,7 +147,7 @@ export default function Dashboard() {
                     <div className="icon">
                       <IoIosPerson />
                     </div>
-                    <Link to="/admin" className="small-box-footer">
+                    <Link to="/admin/orders" className="small-box-footer">
                       More info {<FaArrowCircleRight />}
                     </Link>
                   </div>
@@ -169,7 +169,7 @@ export default function Dashboard() {
                     <div className="icon">
                       <GiNetworkBars />
                     </div>
-                    <Link to="/admin/payments" className="small-box-footer">
+                    <Link to="/admin/orders" className="small-box-footer">
                       More info {<FaArrowCircleRight />}
                     </Link>
                   </div>
@@ -192,7 +192,7 @@ export default function Dashboard() {
                       <IoMdPie />
                     </div>
                     <Link
-                      to="/admin/subscription-types"
+                      to="/admin/orders"
                       className="small-box-footer"
                     >
                       More info {<FaArrowCircleRight />}

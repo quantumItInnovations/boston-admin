@@ -53,12 +53,6 @@ td {
   max-width: initial;
 }
 
-@media (max-width: 768px) {
-  .pagination {
-    font-size: 10px;
-  }
-}
-
 .p-bold {
   margin: 1rem;
   color: rgba(0, 0, 0, 0.8);
@@ -249,6 +243,17 @@ table.table {
 }
 
 /* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .search-box {
+    margin-top: 0.5rem;
+  }
+
+  .pagination {
+    --bs-pagination-padding-x: 0.65rem;
+    --bs-pagination-border-radius: 0.25rem;
+  }
+}
+
 @media (min-width: 576px) {
   .login-box {
     width: 360px;
