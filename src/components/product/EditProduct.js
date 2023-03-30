@@ -32,7 +32,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if (subCat.category) return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category === categoryId;
   });
   return subCategoryList;
 }
@@ -103,18 +103,12 @@ export default function EditProductModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res1 = await axiosInstance.get("/api/category/all", {
-          headers: { Authorization: token },
-        });
-
-        const res2 = await axiosInstance.get("/api/subCategory/all", {
-          headers: { Authorization: token },
-        });
+        const res = await axiosInstance.get("/api/admin/all");
 
         const { data } = await axiosInstance.get(`/api/product/${id}`, {
           headers: { Authorization: token },
         });
-        console.log("edit product data", res1.data, res2.data, data);
+        console.log("edit product data", res, data);
 
         const product = data.product;
         setName(product.name);
@@ -126,9 +120,9 @@ export default function EditProductModel(props) {
         setProductImage(product.product_images[0]);
         setPreview(product.product_images[0]);
 
-        console.log(res1.data.categories, res2.data.subCategories);
-        setCategories([...res1.data.categories]);
-        setSubCategories([...res2.data.subCategories]);
+        console.log(res.data.categories, res.data.subCategories);
+        setCategories([...res.data.categories]);
+        setSubCategories([...res.data.subCategories]);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
@@ -145,9 +139,21 @@ export default function EditProductModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!category) {
+      toast.warning("Please select a category.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      return;
+    }
+    if (!sub_category) {
+      toast.warning("Please select a sub category.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      return;
+    }
     if (!product_images) {
       toast.warning("Please choose a file.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -182,7 +188,7 @@ export default function EditProductModel(props) {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     } catch (err) {
@@ -262,9 +268,14 @@ export default function EditProductModel(props) {
               <Form.Select
                 aria-label="Select Category"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => {
+                  setSubCategory("");
+                  setCategory(e.target.value);
+                }}
               >
-                <option disabled>Select Category</option>
+                <option key="blankChoice" hidden value>
+                  Select Category
+                </option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -282,7 +293,9 @@ export default function EditProductModel(props) {
                   value={sub_category}
                   onChange={(e) => setSubCategory(e.target.value)}
                 >
-                  <option disabled>Select Sub Category</option>
+                  <option key="blankChoice" hidden value>
+                    Select Sub Category
+                  </option>
                   {subCategories &&
                     category &&
                     getAllSubCategory(subCategories, category).map((subCat) => (

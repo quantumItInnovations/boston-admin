@@ -42,7 +42,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if (subCat.category) return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category === categoryId;
   });
   return subCategoryList;
 }
@@ -53,8 +53,7 @@ function getAllProduct(products, subCategoryId, categoryId) {
   const productList = products.filter((prod) => {
     if (prod.sub_category && prod.category)
       return (
-        prod.sub_category._id === subCategoryId &&
-        prod.category._id === categoryId
+        prod.sub_category === subCategoryId && prod.category === categoryId
       );
   });
   return productList;
@@ -117,27 +116,10 @@ export default function AddPromotion() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axiosInstance.get("/api/category/all", {
-          headers: { Authorization: token },
-        });
+        const res = await axiosInstance.get("/api/admin/all/?product=true");
+        console.log("add promotion data", res);
 
-        const res2 = await axiosInstance.get("/api/subCategory/all", {
-          headers: { Authorization: token },
-        });
-
-        const res3 = await axiosInstance.get("/api/product/all", {
-          headers: { Authorization: token },
-        });
-
-        console.log("add promotion data", res1.data, res2.data, res3.data);
-        dispatch({
-          type: "FETCH_SUCCESS",
-          payload: {
-            categories: res1.data.categories,
-            subCategories: res2.data.subCategories,
-            products: res3.data.products,
-          },
-        });
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -155,26 +137,26 @@ export default function AddPromotion() {
     e.preventDefault();
     if (!category) {
       toast.warning("Please select a category.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
     if (!subCategory) {
       toast.warning("Please select a sub category.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
     if (!product) {
       toast.warning("Please select a product.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
 
     if (!promo_image) {
       toast.warning("Please select an image for promotion.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -206,7 +188,7 @@ export default function AddPromotion() {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
         setLoadingUpdate(false);
       }
@@ -249,7 +231,11 @@ export default function AddPromotion() {
                         <Form.Select
                           aria-label="Select Category"
                           value={category}
-                          onChange={(e) => setCategory(e.target.value)}
+                          onChange={(e) => {
+                            setSubCategory("");
+                            setProduct("");
+                            setCategory(e.target.value);
+                          }}
                         >
                           <option key="blankChoice" hidden value>
                             Select Category
@@ -270,7 +256,10 @@ export default function AddPromotion() {
                       <Form.Select
                         aria-label="Select Sub Category"
                         value={subCategory}
-                        onChange={(e) => setSubCategory(e.target.value)}
+                        onChange={(e) => {
+                          setProduct("");
+                          setSubCategory(e.target.value);
+                        }}
                       >
                         <option key="blankChoice" hidden value>
                           Select Sub Category

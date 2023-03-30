@@ -86,7 +86,7 @@ export default function ListView(props) {
         console.log(props.show, 2);
         } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
       dispatch({ type: "UPDATE_SUCCESS" });

@@ -22,13 +22,7 @@ const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return {
-        ...state,
-        categories: action.payload.categories,
-        subCategories: action.payload.subCategories,
-        products: action.payload.products,
-        loading: false,
-      };
+      return { ...state, loading: false };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     case "UPDATE_REQUEST":
@@ -43,28 +37,6 @@ const reducer = (state, action) => {
   }
 };
 
-function getAllSubCategory(subCategories, categoryId) {
-  if (!categoryId) return [];
-
-  const subCategoryList = subCategories.filter((subCat) => {
-    if (subCat.category) return subCat.category._id === categoryId;
-  });
-  return subCategoryList;
-}
-
-function getAllProduct(products, subCategoryId, categoryId) {
-  if (!categoryId || !subCategoryId) return [];
-
-  const productList = products.filter((prod) => {
-    if (prod.sub_category && prod.category)
-      return (
-        prod.sub_category._id === subCategoryId &&
-        prod.category._id === categoryId
-      );
-  });
-  return productList;
-}
-
 export default function EditPromotionModel(props) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
@@ -72,7 +44,7 @@ export default function EditPromotionModel(props) {
   const { id } = useParams(); // promotion/:id
 
   const [
-    { loading, error, loadingUpdate, categories, subCategories, products },
+    { loading, error, loadingUpdate },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
@@ -128,25 +100,13 @@ export default function EditPromotionModel(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axiosInstance.get("/api/category/all", {
-          headers: { Authorization: token },
-        });
-
-        const res2 = await axiosInstance.get("/api/subCategory/all", {
-          headers: { Authorization: token },
-        });
-
-        const res3 = await axiosInstance.get("/api/product/all", {
-          headers: { Authorization: token },
-        });
+        dispatch({ type: "FETCH_REQUEST" });
 
         const { data } = await axiosInstance.get(`/api/promotion/${id}`, {
           headers: { Authorization: token },
         });
         console.log("edit promotion", data);
-        console.log("add promotion data", res1.data, res2.data, res3.data);
 
         const promotion = data.promotion;
         setProduct(promotion.product);
@@ -154,14 +114,7 @@ export default function EditPromotionModel(props) {
         setPreview(promotion.promo_image);
         setPromoImage(promotion.promo_image);
 
-        dispatch({
-          type: "FETCH_SUCCESS",
-          payload: {
-            categories: res1.data.categories,
-            subCategories: res2.data.subCategories,
-            products: res3.data.products,
-          },
-        });
+        dispatch({ type: "FETCH_SUCCESS" });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -179,7 +132,7 @@ export default function EditPromotionModel(props) {
     e.preventDefault();
     if (!promo_image) {
       toast.warning("Please choose a file.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -212,7 +165,7 @@ export default function EditPromotionModel(props) {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     } catch (err) {

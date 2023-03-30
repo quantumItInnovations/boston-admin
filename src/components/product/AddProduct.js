@@ -41,7 +41,7 @@ function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
 
   const subCategoryList = subCategories.filter((subCat) => {
-    if (subCat.category) return subCat.category._id === categoryId;
+    if (subCat.category) return subCat.category === categoryId;
   });
   return subCategoryList;
 }
@@ -62,7 +62,7 @@ export default function AddProduct() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
-  const [stock, setStock] = useState("");
+  const [stock, setStock] = useState("false");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
@@ -120,19 +120,19 @@ export default function AddProduct() {
     e.preventDefault();
     if (!category) {
       toast.warning("Please select a category.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
     if (!sub_category) {
       toast.warning("Please select a sub category.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
     if (!product_images) {
-      toast.warning("Please select at at least one image for product.", {
-        position: toast.POSITION.TOP_CENTER,
+      toast.warning("Please select at at least one image for product or wait till image is uploaded.", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -169,7 +169,7 @@ export default function AddProduct() {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
         setLoadingUpdate(false);
       }
@@ -188,22 +188,9 @@ export default function AddProduct() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res1 = await axiosInstance.get("/api/category/all", {
-          headers: { Authorization: token },
-        });
-
-        const res2 = await axiosInstance.get("/api/subCategory/all", {
-          headers: { Authorization: token },
-        });
-
-        console.log("add product data", res1, res2);
-        dispatch({
-          type: "FETCH_SUCCESS",
-          payload: {
-            categories: res1.data.categories,
-            subCategories: res2.data.subCategories,
-          },
-        });
+        const res = await axiosInstance.get("/api/admin/all");
+        console.log("add product data", res);
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -296,7 +283,10 @@ export default function AddProduct() {
                       <Form.Select
                         aria-label="Select Category"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={(e) => {
+                          setSubCategory("");
+                          setCategory(e.target.value);
+                        }}
                       >
                         <option key="blankChoice" hidden value>
                           Select Category

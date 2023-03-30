@@ -128,7 +128,7 @@ export default function EditSubCategoryModel(props) {
     e.preventDefault();
     if (!sub_category_image) {
       toast.warning("Please choose a file.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -160,7 +160,7 @@ export default function EditSubCategoryModel(props) {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     } catch (err) {

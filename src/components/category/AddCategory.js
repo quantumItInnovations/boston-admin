@@ -73,8 +73,8 @@ export default function AddCategory() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!category_image) {
-      toast.warning("Please select an image for category.", {
-        position: toast.POSITION.TOP_CENTER,
+      toast.warning("Please select an image or wait till image is uploaded.", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -106,7 +106,7 @@ export default function AddCategory() {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
         setLoadingUpdate(false);
       }
