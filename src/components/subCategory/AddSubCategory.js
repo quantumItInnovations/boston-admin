@@ -99,14 +99,14 @@ export default function AddSubCategory() {
     e.preventDefault();
     if (!category) {
       toast.warning("Please select a category", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
 
     if (!sub_category_image) {
       toast.warning("Please select an image for sub-category.", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
     }
@@ -140,7 +140,7 @@ export default function AddSubCategory() {
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
         setLoadingUpdate(false);
       }

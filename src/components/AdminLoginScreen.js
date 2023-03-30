@@ -58,7 +58,7 @@ export default function AdminLoginScreen() {
         navigate("/admin/dashboard");
         dispatch({ type: "FETCH_SUCCESS" });
       } else {
-        toast.error(data, { position: toast.POSITION.TOP_CENTER });
+        toast.error(data, { position: toast.POSITION.BOTTOM_CENTER });
       }
     } catch (err) {
       console.log("err", err.response);
@@ -66,7 +66,7 @@ export default function AdminLoginScreen() {
         type: "FETCH_FAIL",
         payload: getError(err),
       });
-      toast.error(getError(err), { position: toast.POSITION.TOP_CENTER });
+      toast.error(getError(err), { position: toast.POSITION.BOTTOM_CENTER });
     }
   };
 

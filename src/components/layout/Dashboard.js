@@ -43,6 +43,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axiosInstance.get(
           `/api/admin/statistics/${time}`,
           {
@@ -56,7 +57,7 @@ export default function Dashboard() {
           payload: getError(err),
         });
         toast.error(getError(err), {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     };
@@ -96,6 +97,7 @@ export default function Dashboard() {
                       <option key="blankChoice" hidden value>
                         Select Time
                       </option>
+                      <option value="all">All Time Statistics</option>
                       <option value="daily">Daily Statistics</option>
                       <option value="weekly">Weekly Statistics</option>
                       <option value="monthly">Monthly Statistics</option>

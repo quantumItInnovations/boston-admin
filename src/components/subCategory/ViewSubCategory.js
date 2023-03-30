@@ -59,7 +59,7 @@ const ViewSubCategory = () => {
           payload: getError(err),
         });
         toast.error(getError(err), {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     };

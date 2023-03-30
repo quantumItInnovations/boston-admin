@@ -95,6 +95,7 @@ function App() {
           />
           {routeList.map(({ path, element }) => (
             <Route
+              key={path}
               path={path}
               element={<AdminProtectedRoute>{element}</AdminProtectedRoute>}
             />

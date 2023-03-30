@@ -112,7 +112,7 @@ export default function UpdateProfileModel(props) {
       } else {
         dispatch({ type: "UPDATE_FAIL" });
         toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
         });
       }
     } catch (err) {
