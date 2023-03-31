@@ -245,6 +245,12 @@ const ViewOrder = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : order.address.post_code}</p>
                   </Col>
+                  <Col md={6}>
+                    <p className="mb-0">
+                      <strong>Mobile No.</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order.address.mobile_no}</p>
+                  </Col>
                 </Row>
                 <h4 className="my-3">Product Details</h4>
                 <Row className="mb-3">

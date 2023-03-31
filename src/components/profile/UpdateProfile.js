@@ -32,7 +32,7 @@ export default function UpdateProfileModel(props) {
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [telephone, setTelephone] = useState("");
+  const [mobile_no, setMobileNo] = useState("");
   const [fax, setFax] = useState("");
 
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
@@ -54,7 +54,7 @@ export default function UpdateProfileModel(props) {
         setFirstname(user.firstname);
         setLastname(user.lastname);
         setFax(user.fax);
-        setTelephone(user.telephone);
+        setMobileNo(user.mobile_no);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -73,7 +73,7 @@ export default function UpdateProfileModel(props) {
   const resetForm = () => {
     setFirstname("");
     setLastname("");
-    setTelephone("");
+    setMobileNo("");
     setFax("");
   };
 
@@ -89,7 +89,7 @@ export default function UpdateProfileModel(props) {
           firstname,
           lastname,
           fax,
-          telephone,
+          mobile_no,
         },
         {
           headers: {
@@ -168,11 +168,11 @@ export default function UpdateProfileModel(props) {
                 required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="telephone">
-              <Form.Label>Telephone</Form.Label>
+            <Form.Group className="mb-3" controlId="mobile_no">
+              <Form.Label>Mobile No.</Form.Label>
               <Form.Control
-                value={telephone}
-                onChange={(e) => setTelephone(e.target.value)}
+                value={mobile_no}
+                onChange={(e) => setMobileNo(e.target.value)}
                 required
               />
             </Form.Group>
