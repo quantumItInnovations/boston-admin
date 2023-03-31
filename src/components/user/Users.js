@@ -157,7 +157,7 @@ export default function Users() {
                     <th>Reg. Date</th>
                     {/* <th>DOB</th> */}
                     {/* <th>Sex</th> */}
-                    <th>Telephone</th>
+                    <th>Mobile No.</th>
                     <th>Fax</th>
                     <th>Role</th>
                     <th>Actions</th>
@@ -190,7 +190,7 @@ export default function Users() {
                           </td>
                           {/* <td>{user.dob}</td> */}
                           {/* <td>{user.sex}</td> */}
-                          <td>{user.telephone}</td>
+                          <td>{user.mobile_no}</td>
                           <td>{user.fax}</td>
                           {/* <td>
                             {user.payment_status == 1 ? (

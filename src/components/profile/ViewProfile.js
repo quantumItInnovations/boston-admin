@@ -102,9 +102,9 @@ const ViewProfile = () => {
                 </Col>
                 <Col md={4}>
                   <p className="mb-0">
-                    <strong>Telephone</strong>
+                    <strong>Mobile No.</strong>
                   </p>
-                  <p>{user.telephone}</p>
+                  <p>{user.mobile_no}</p>
                 </Col>
                 <Col md={4}>
                   <p className="mb-0">

@@ -42,14 +42,14 @@ export default function EditUserModel(props) {
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [telephone, setTelephone] = useState("");
+  const [mobile_no, setMobileNo] = useState("");
   const [fax, setFax] = useState("");
   const [role, setRole] = useState("");
 
   const resetForm = () => {
     setFirstname("");
     setLastname("");
-    setTelephone("");
+    setMobileNo("");
     setFax("");
     setRole("");
   };
@@ -67,7 +67,7 @@ export default function EditUserModel(props) {
         // setPassword(user.password);
         setFirstname(user.firstname);
         setLastname(user.lastname);
-        setTelephone(user.telephone);
+        setMobileNo(user.mobile_no);
         setFax(user.fax);
         setRole(user.role);
 
@@ -96,7 +96,7 @@ export default function EditUserModel(props) {
         {
           firstname,
           lastname,
-          telephone,
+          mobile_no,
           fax,
           role,
         },
@@ -170,11 +170,11 @@ export default function EditUserModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="telephone">
-              <Form.Label>Telephone</Form.Label>
+            <Form.Group className="mb-3" controlId="mobile_no">
+              <Form.Label>Mobile No.</Form.Label>
               <Form.Control
-                value={telephone}
-                onChange={(e) => setTelephone(e.target.value)}
+                value={mobile_no}
+                onChange={(e) => setMobileNo(e.target.value)}
                 required
               />
             </Form.Group>

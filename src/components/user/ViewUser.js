@@ -116,9 +116,9 @@ const ViewUser = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Telephone</strong>
+                      <strong>Mobile No.</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.telephone}</p>
+                    <p>{loading ? <Skeleton /> : user.mobile_no}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
