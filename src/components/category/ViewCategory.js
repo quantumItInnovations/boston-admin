@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { viewCategoryReducer as reducer } from "../../reducers/category";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditCategoryModel from "./EditCategory.js";
 import SubCategoryTable from "./SubCategoryTable";
@@ -12,20 +12,6 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, category: action.payload.category };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-};
 
 const ViewCategory = () => {
   const { state } = useContext(Store);

@@ -2,6 +2,7 @@ import React, { useContext, useReducer, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { categoryReducer as reducer } from "../../reducers/category";
 import { uploadImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import {
@@ -18,23 +19,6 @@ import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        categories: action.payload.categories,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function AddSubCategory() {
   const navigate = useNavigate();
@@ -105,7 +89,7 @@ export default function AddSubCategory() {
     }
 
     if (!sub_category_image) {
-      toast.warning("Please select an image for sub-category.", {
+      toast.warning("Please select an image for sub-category or wait till image is uploaded.", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       return;

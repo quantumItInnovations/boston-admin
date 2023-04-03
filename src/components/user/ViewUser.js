@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { viewUserReducer as reducer } from "../../reducers/user";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -10,20 +11,6 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, user: action.payload.user };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-};
 
 const ViewUser = () => {
   const { state } = useContext(Store);

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { reducer } from "../../reducers/review";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -17,24 +18,6 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        reviews: action.payload.reviews,
-        filteredReviewCount: action.payload.filteredReviewCount,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function Review() {
   const navigate = useNavigate();
@@ -99,7 +82,7 @@ export default function Review() {
   }, [token, del, curPage, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredReviewCount / resultPerPage);
-  console.log({resultPerPage, numOfPages, filteredReviewCount})
+  console.log({ resultPerPage, numOfPages, filteredReviewCount });
   const skip = resultPerPage * (curPage - 1);
 
   return (

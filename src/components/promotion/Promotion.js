@@ -1,39 +1,15 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { promotionReducer as reducer } from "../../reducers/promotion";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
-import {
-  Button,
-  Card,
-  Container,
-  Form,
-  InputGroup,
-  Table,
-} from "react-bootstrap";
+import { Button, Card, Container, Table } from "react-bootstrap";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import axiosInstance from "../../utils/axiosUtil";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        promotions: action.payload.promotions,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function Promotions() {
   const navigate = useNavigate();

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { userReducer } from "../../reducers/user";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -18,26 +19,6 @@ import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        users: action.payload.users,
-        userCount: action.payload.userCount,
-        filteredUserCount: action.payload.filteredUserCount,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-};
-
 export default function Users() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
@@ -45,7 +26,7 @@ export default function Users() {
   console.log("token", token);
 
   const [curPage, setCurPage] = useState(1);
-  const [resultPerPage, setResultPerPage] = useState(5);
+  const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
@@ -53,7 +34,7 @@ export default function Users() {
   const curPageHandler = (p) => setCurPage(p);
 
   const [{ loading, error, users, userCount, filteredUserCount }, dispatch] =
-    useReducer(reducer, {
+    useReducer(userReducer, {
       loading: true,
       error: "",
     });

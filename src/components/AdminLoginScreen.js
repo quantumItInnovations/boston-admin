@@ -13,21 +13,9 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils/error";
+import { editReducer as reducer } from "../reducers/commonReducer";
 import axiosInstance from "../utils/axiosUtil";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function AdminLoginScreen() {
   const [username, setUsername] = useState("");

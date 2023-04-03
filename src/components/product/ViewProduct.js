@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { viewProductReducer as reducer } from "../../reducers/product";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
 import MessageBox from "../layout/MessageBox";
 import EditProductModel from "./EditProduct.js";
 import { TiTick } from "react-icons/ti";
@@ -14,20 +14,6 @@ import { FaEdit } from "react-icons/fa";
 import ProductReviewTable from "./ProductReviewTable";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, product: action.payload.product };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-};
 
 const ViewProduct = () => {
   const { state } = useContext(Store);

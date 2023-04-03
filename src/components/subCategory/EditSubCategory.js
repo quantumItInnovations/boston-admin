@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { uploadImage } from "../../utils/uploadImage";
+import { editReducer as reducer } from "../../reducers/commonReducer";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
@@ -9,49 +10,23 @@ import LoadingBox from "../layout/LoadingBox";
 import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        categories: action.payload.categories,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    case "UPDATE_REQUEST":
-      return { ...state, loadingUpdate: true };
-    case "UPDATE_SUCCESS":
-      return { ...state, loadingUpdate: false };
-    case "UPDATE_FAIL":
-      return { ...state, loadingUpdate: false };
-
-    default:
-      return state;
-  }
-};
-
 export default function EditSubCategoryModel(props) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
   const { id } = useParams(); // category/:id
 
-  const [{ loading, error, loadingUpdate, categories }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-    }
-  );
+  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [sub_category_image, setSubCategoryImage] = useState("");
   const [preview, setPreview] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -110,7 +85,9 @@ export default function EditSubCategoryModel(props) {
         if (subCategory.category) setCategory(subCategory.category._id);
         setSubCategoryImage(subCategory.sub_category_image);
         setPreview(subCategory.sub_category_image);
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        setCategories([...res.data.categories]);
+
+        dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -127,7 +104,7 @@ export default function EditSubCategoryModel(props) {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!sub_category_image) {
-      toast.warning("Please choose a file.", {
+      toast.warning("Please choose a file or wait till image is uploaded.", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
