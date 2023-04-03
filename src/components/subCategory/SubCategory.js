@@ -4,7 +4,6 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
 import {
   Button,
   Card,
@@ -13,7 +12,6 @@ import {
   InputGroup,
   Table,
 } from "react-bootstrap";
-import { IoMdOpen } from "react-icons/io";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
@@ -68,8 +66,9 @@ export default function SubCategory() {
 
   const deleteSubCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this sub-category?") ===
-      true
+      window.confirm(
+        "Are you sure you want to delete this sub-category?\n\nNote: All belonging product's subCategory will be unset."
+      ) === true
     ) {
       try {
         setDel(true);

@@ -1,24 +1,14 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
-import {
-  Button,
-  Card,
-  Container,
-  Form,
-  InputGroup,
-  Table,
-} from "react-bootstrap";
+import { Button, Card, Container, Table } from "react-bootstrap";
 import { TiTick } from "react-icons/ti";
 import { ImCross } from "react-icons/im";
-import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { FaEye, FaTrashAlt } from "react-icons/fa";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
@@ -63,7 +53,9 @@ export default function ProductTable({ id: subCategoryId }) {
 
   const deleteProduct = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this product?") === true
+      window.confirm(
+        "Are you sure you want to delete this product?\n\nNote: All reviews of this product will also be deleted."
+      ) === true
     ) {
       try {
         setDel(true);

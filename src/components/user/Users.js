@@ -4,7 +4,6 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
 import {
   Button,
   Card,
@@ -60,7 +59,11 @@ export default function Users() {
     });
 
   const deleteUser = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?") === true) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this user?\n\nNote: All Related orders, addresses, coupons, cart and reviews will also be deleted."
+      ) === true
+    ) {
       try {
         setDel(true);
         const res = await axiosInstance.delete(`/api/admin/user/${id}`, {
@@ -117,8 +120,6 @@ export default function Users() {
       exit={{ x: "100%" }}
     >
       <Container fluid className="py-3">
-        {/* {loading ? (
-        <LoadingBox></LoadingBox> */}
         {error ? (
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
@@ -150,13 +151,10 @@ export default function Users() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    {/* <th>Image</th> */}
                     <th>Firstname</th>
                     <th>Lastname</th>
                     <th>Email</th>
                     <th>Reg. Date</th>
-                    {/* <th>DOB</th> */}
-                    {/* <th>Sex</th> */}
                     <th>Mobile No.</th>
                     <th>Fax</th>
                     <th>Role</th>
@@ -164,80 +162,43 @@ export default function Users() {
                   </tr>
                 </thead>
                 <tbody>
-                  {loading
-                    ? <CustomSkeleton resultPerPage={resultPerPage} column={9} />
-                    : users &&
-                      users.map((user, i) => (
-                        <tr key={user._id} className="odd">
-                          <td className="text-center">{skip + i + 1}</td>
-                          {/* <td>
-                            <img
-                              className="td-img"
-                              src={user.profile_image}
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td> */}
-                          <td>{user.firstname}</td>
-                          <td>{user.lastname}</td>
-                          <td>{user.email}</td>
-                          <td>
-                            {getDateTime(user.createdAt && user.createdAt)}
-                          </td>
-                          {/* <td>{user.dob}</td> */}
-                          {/* <td>{user.sex}</td> */}
-                          <td>{user.mobile_no}</td>
-                          <td>{user.fax}</td>
-                          {/* <td>
-                            {user.payment_status == 1 ? (
-                              <MdToggleOn
-                                className="on"
-                                onClick={() =>
-                                  paymentStatusHandler(
-                                    user._id,
-                                    0
-                                  )
-                                }
-                              />
-                            ) : (
-                              <MdToggleOff
-                                className="off"
-                                onClick={() =>
-                                  paymentStatusHandler(
-                                    user._id,
-                                    1
-                                  )
-                                }
-                              />
-                            )}
-                          </td> */}
-                          <td>{user.role}</td>
-                          <td>
-                            <Button
-                              onClick={() => {
-                                navigate(`/admin/view/user/${user._id}`);
-                              }}
-                              type="success"
-                              className="btn btn-primary"
-                            >
-                              <FaEye />
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                deleteUser(user._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              <FaTrashAlt className="m-auto" />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                  {loading ? (
+                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
+                  ) : (
+                    users &&
+                    users.map((user, i) => (
+                      <tr key={user._id} className="odd">
+                        <td className="text-center">{skip + i + 1}</td>
+                        <td>{user.firstname}</td>
+                        <td>{user.lastname}</td>
+                        <td>{user.email}</td>
+                        <td>{getDateTime(user.createdAt && user.createdAt)}</td>
+                        <td>{user.mobile_no}</td>
+                        <td>{user.fax}</td>
+                        <td>{user.role}</td>
+                        <td>
+                          <Button
+                            onClick={() => {
+                              navigate(`/admin/view/user/${user._id}`);
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteUser(user._id);
+                            }}
+                            type="danger"
+                            className="btn btn-danger ms-2"
+                          >
+                            <FaTrashAlt className="m-auto" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </Table>
             </Card.Body>
