@@ -61,7 +61,7 @@ export default function Category() {
 
   const deleteCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this category?") === true
+      window.confirm("Are you sure you want to delete this category?\n\nNote: All belonging subCategory's and product's category will be unset.") === true
     ) {
       try {
         setDel(true);

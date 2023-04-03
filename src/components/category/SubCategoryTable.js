@@ -4,17 +4,9 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import {
-  Button,
-  Card,
-  Container,
-  Form,
-  InputGroup,
-  Table,
-} from "react-bootstrap";
-import CustomPagination from "../layout/CustomPagination";
+import { Button, Card, Container, Table } from "react-bootstrap";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaTrashAlt } from "react-icons/fa";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
 const reducer = (state, action) => {
@@ -65,8 +57,9 @@ export default function SubCategoryTable({ id }) {
 
   const deleteSubCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this sub-category?") ===
-      true
+      window.confirm(
+        "Are you sure you want to delete this sub-category?\n\nNote: All belonging product's subCategory will be unset."
+      ) === true
     ) {
       try {
         setDel(true);

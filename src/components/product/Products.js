@@ -4,7 +4,6 @@ import { getError } from "../../utils/error";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import LoadingBox from "../layout/LoadingBox";
 import {
   Button,
   Card,
@@ -63,7 +62,9 @@ export default function Products() {
 
   const deleteProduct = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this product?") === true
+      window.confirm(
+        "Are you sure you want to delete this product?\n\nNote: All reviews of this product will also be deleted."
+      ) === true
     ) {
       try {
         setDel(true);
