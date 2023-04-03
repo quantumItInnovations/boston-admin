@@ -2,6 +2,7 @@ import React, { useContext, useReducer, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { productReducer as reducer } from "../../reducers/product";
 import { uploadMultiImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import {
@@ -18,24 +19,6 @@ import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        categories: action.payload.categories,
-        subCategories: action.payload.subCategories,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 function getAllSubCategory(subCategories, categoryId) {
   if (!categoryId) return [];
@@ -131,9 +114,12 @@ export default function AddProduct() {
       return;
     }
     if (!product_images) {
-      toast.warning("Please select at at least one image for product or wait till image is uploaded.", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
+      toast.warning(
+        "Please select at at least one image for product or wait till image is uploaded.",
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+        }
+      );
       return;
     }
     try {
@@ -190,7 +176,7 @@ export default function AddProduct() {
       try {
         const res = await axiosInstance.get("/api/admin/all");
         console.log("add product data", res);
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        dispatch({ type: "FETCH_ADD_PRODUCT_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",

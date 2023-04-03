@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { productReducer as reducer } from "../../reducers/product";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -10,25 +11,6 @@ import { ImCross } from "react-icons/im";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import CustomSkeleton from "../layout/CustomSkeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        products: action.payload.products,
-        productCount: action.payload.productCount,
-        filteredProductCount: action.payload.filteredProductCount,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function ProductTable({ id: subCategoryId }) {
   const navigate = useNavigate();

@@ -191,10 +191,7 @@ export default function Dashboard() {
                     <div className="icon">
                       <IoMdPie />
                     </div>
-                    <Link
-                      to="/admin/orders"
-                      className="small-box-footer"
-                    >
+                    <Link to="/admin/orders" className="small-box-footer">
                       More info {<FaArrowCircleRight />}
                     </Link>
                   </div>

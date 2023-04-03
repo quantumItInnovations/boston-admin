@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
+import { categoryReducer as reducer } from "../../reducers/category";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -17,25 +18,6 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return {
-        ...state,
-        categories: action.payload.categories,
-        categoryCount: action.payload.categoryCount,
-        filteredCategoryCount: action.payload.filteredCategoryCount,
-        loading: false,
-      };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
 export default function Category() {
   const navigate = useNavigate();
@@ -61,7 +43,9 @@ export default function Category() {
 
   const deleteCategory = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this category?\n\nNote: All belonging subCategory's and product's category will be unset.") === true
+      window.confirm(
+        "Are you sure you want to delete this category?\n\nNote: All belonging subCategory's and product's category will be unset."
+      ) === true
     ) {
       try {
         setDel(true);
