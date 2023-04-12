@@ -58,7 +58,7 @@ export default function EditProductModel(props) {
     }
     for (let k in e.target.files) {
       if (e.target.files[k].size > 5000000) {
-        toast.warning("One of the image size is too large.", {
+        toast.warning("One of the image size is too large. (max size 5MB)", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setProductImage(null);
