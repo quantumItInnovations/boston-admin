@@ -40,7 +40,7 @@ export default function EditPromotionModel(props) {
       return;
     }
     if(file.size > 5000000) {
-      toast.warning("Image size is too large.", {
+      toast.warning("Image size is too large. (max size 5MB)", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       setPromoImage(null);
