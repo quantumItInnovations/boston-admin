@@ -41,6 +41,13 @@ export default function AddCategory() {
       setCategoryImage(null);
       return;
     }
+    if(e.target.files[0].size > 5000000) {
+      toast.warning("Image size is too large.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      setCategoryImage(null);
+      return;
+    }
     try {
       // if (e.target.files[0]) {
       const location = await uploadImage(
@@ -175,7 +182,7 @@ export default function AddCategory() {
                     <Form.Label>Upload Image</Form.Label>
                     <Form.Control
                       type="file"
-                      accept="image/png image/jpeg image/jpg"
+                      accept="image/*"
                       onChange={(e) => {
                         uploadFileHandler(e);
                       }}

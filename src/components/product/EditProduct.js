@@ -56,6 +56,15 @@ export default function EditProductModel(props) {
       setProductImage(null);
       return;
     }
+    for (let k in e.target.files) {
+      if (e.target.files[k].size > 5000000) {
+        toast.warning("One of the image size is too large.", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        setProductImage(null);
+        return;
+      }
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadMultiImage(
@@ -292,7 +301,7 @@ export default function EditProductModel(props) {
               <Form.Label>Upload Image</Form.Label>
               <Form.Control
                 type="file"
-                accept="image/png image/jpeg image/jpg"
+                accept="image/*"
                 onChange={(e) => {
                   uploadFileHandler(e);
                 }}
