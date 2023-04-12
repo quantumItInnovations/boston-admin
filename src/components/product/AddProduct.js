@@ -76,6 +76,16 @@ export default function AddProduct() {
       setProductImage(null);
       return;
     }
+
+    for (let k in e.target.files) {
+      if (e.target.files[k].size > 5000000) {
+        toast.warning("One of the image size is too large.", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        setProductImage(null);
+        return;
+      }
+    }
     try {
       if (e.target.files[0]) {
         const location = await uploadMultiImage(
@@ -313,7 +323,7 @@ export default function AddProduct() {
                     <Form.Label>Upload Image</Form.Label>
                     <Form.Control
                       type="file"
-                      accept="image/png image/jpeg image/jpg"
+                      accept="image/*"
                       onChange={(e) => {
                         uploadFileHandler(e);
                       }}
@@ -323,7 +333,7 @@ export default function AddProduct() {
                     {uploadPercentage > 0 && (
                       <ProgressBar
                         now={uploadPercentage}
-                        active
+                        active="true"
                         label={`${uploadPercentage}%`}
                       />
                     )}

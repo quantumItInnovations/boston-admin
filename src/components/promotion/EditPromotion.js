@@ -39,6 +39,13 @@ export default function EditPromotionModel(props) {
       setPromoImage(null);
       return;
     }
+    if(file.size > 5000000) {
+      toast.warning("Image size is too large.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      setPromoImage(null);
+      return;
+    }
     try {
       const location = await uploadImage(
         // e.target.files[0],
