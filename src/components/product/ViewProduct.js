@@ -40,7 +40,7 @@ const ViewProduct = () => {
         const { data } = await axiosInstance.get(`/api/product/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -212,6 +212,7 @@ const ViewProduct = () => {
                 show={arrView}
                 onHide={() => setArrView(false)}
                 arr={product.subProduct}
+                column={{"Quantity Type": "qname","Amount": "amount"}}
                 title="Price List"
               />
             ) : (

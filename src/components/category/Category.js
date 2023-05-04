@@ -23,7 +23,6 @@ export default function Category() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(5);
@@ -88,7 +87,6 @@ export default function Category() {
 
   const numOfPages = Math.ceil(filteredCategoryCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-  console.log("nuofPage", numOfPages);
 
   return (
     <motion.div

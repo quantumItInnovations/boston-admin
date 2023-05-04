@@ -31,7 +31,7 @@ const ViewPromotion = () => {
         const { data } = await axiosInstance.get(`/api/promotion/${id}`, {
           headers: { Authorization: token },
         });
-        console.log("promotion", data);
+        // console.log("promotion", data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {

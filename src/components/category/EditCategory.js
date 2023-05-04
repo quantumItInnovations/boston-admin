@@ -92,7 +92,7 @@ export default function EditCategoryModel(props) {
         const { data } = await axiosInstance.get(`/api/category/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // // console.log(data);
 
         const category = data.category;
         setName(category.name);
@@ -137,7 +137,7 @@ export default function EditCategoryModel(props) {
         }
       );
 
-      console.log("category update data", data);
+      // console.log("category update data", data);
       if (data.category) {
         toast.success("Category Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,

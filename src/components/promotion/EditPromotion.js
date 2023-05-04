@@ -33,7 +33,7 @@ export default function EditPromotionModel(props) {
   };
 
   const uploadFileHandler = async (file, type) => {
-    console.log("file", file);
+    // console.log("file", file);
     // if (!e.target.files[0]) {
     if (!file) {
       setPromoImage(null);
@@ -83,7 +83,7 @@ export default function EditPromotionModel(props) {
         const { data } = await axiosInstance.get(`/api/promotion/${id}`, {
           headers: { Authorization: token },
         });
-        console.log("edit promotion", data);
+        // console.log("edit promotion", data);
 
         const promotion = data.promotion;
         setProduct(promotion.product);
@@ -130,7 +130,7 @@ export default function EditPromotionModel(props) {
         }
       );
 
-      console.log("promotion update data", data);
+      // console.log("promotion update data", data);
       if (data.promotion) {
         toast.success("Promotion Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,

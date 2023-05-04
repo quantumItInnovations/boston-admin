@@ -59,7 +59,7 @@ export default function UpdateProfileModel(props) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log("ok");
+    // // console.log("ok");
     try {
       dispatch({ type: "UPDATE_REQUEST" });
 
@@ -77,7 +77,7 @@ export default function UpdateProfileModel(props) {
           },
         }
       );
-      // console.log("data", data);
+      // // console.log("data", data);
       if (data.user) {
         toast.success("User Updated Successfully.", {
           position: toast.POSITION.BOTTOM_CENTER,

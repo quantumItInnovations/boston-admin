@@ -13,26 +13,26 @@ import { FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-ico
 
 const linkList = [
   { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
-  { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
-  { icon: <TbNumbers className="icon-md" />, text: "Quantity", url: "/admin/quantity" },
   { icon: <MdCategory className="icon-md" />, text: "Category", url: "/admin/category" },
   { icon: <BiCategory className="icon-md" />, text: "Sub Category", url: "/admin/subCategory" },
   { icon: <MdOutlineProductionQuantityLimits className="icon-md" />, text: "Products", url: "/admin/products" },
-  { icon: <FaStarHalfAlt className="icon-md" />, text: "Reviews", url: "/admin/reviews" },
   { icon: <FaShoppingBasket className="icon-md" />, text: "Orders", url: "/admin/orders"},
-  { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" }
+  { icon: <FaStarHalfAlt className="icon-md" />, text: "Reviews", url: "/admin/reviews" },
+  { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
+  { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" },
+  { icon: <TbNumbers className="icon-md" />, text: "Quantity", url: "/admin/quantity" },
 ];
 
 const active_text = {
   "Dashboard": "dashboard",
-  "Users": "user",
-  "Quantity": "quantity",
   "Category": "category",
   "Sub Category": "subCategory",
   "Products": "product",
-  "Reviews": "review",
   "Orders": "order",
+  "Reviews": "review",
+  "Users": "user",
   "Promotions": "promotion",
+  "Quantity": "quantity",
 };
 
 export default function SideNavbar({ isExpanded }) {
@@ -50,8 +50,8 @@ export default function SideNavbar({ isExpanded }) {
   };
 
   const activeLinkHandler = (text) => {
-    // console.log("text", active_text[text]);
-    // console.log(pathname.includes(active_text[text]));
+    // // console.log("text", active_text[text]);
+    // // console.log(pathname.includes(active_text[text]));
     return pathname.includes(active_text[text]);
   };
 

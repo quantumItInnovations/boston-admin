@@ -32,7 +32,7 @@ const ViewCategory = () => {
         const { data } = await axiosInstance.get(`/api/category/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // // console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {

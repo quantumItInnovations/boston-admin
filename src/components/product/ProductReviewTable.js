@@ -15,7 +15,6 @@ export default function ProductReviewTable({ id: productId }) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(5);
@@ -59,7 +58,7 @@ export default function ProductReviewTable({ id: productId }) {
             headers: { Authorization: token },
           }
         );
-        console.log("res", curPage, res.data);
+        // console.log("res", curPage, res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -75,7 +74,7 @@ export default function ProductReviewTable({ id: productId }) {
   }, [token, del, curPage, resultPerPage, query]);
 
   //   const numOfPages = Math.ceil(filteredReviewCount / resultPerPage);
-  //   console.log({resultPerPage, numOfPages, filteredReviewCount})
+  //   // console.log({resultPerPage, numOfPages, filteredReviewCount})
   const skip = resultPerPage * (curPage - 1);
 
   return (

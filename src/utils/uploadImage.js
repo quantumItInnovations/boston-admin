@@ -10,7 +10,7 @@ export const uploadImage = async (file, token, percentHandler) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
         percentHandler(percent);
-        console.log(`${loaded}kb of ${total}kb | ${percent}`);
+        // console.log(`${loaded}kb of ${total}kb | ${percent}`);
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -23,7 +23,7 @@ export const uploadImage = async (file, token, percentHandler) => {
       options
     );
     if (data.data.location) {
-      console.log("location", data.data.location);
+      // console.log("location", data.data.location);
       return data.data.location;
     }
   } catch (err) {
@@ -33,7 +33,7 @@ export const uploadImage = async (file, token, percentHandler) => {
 
 export const uploadMultiImage = async (files, token, percentHandler) => {
   try {
-    // console.log('files1', typeof files)
+    // // console.log('files1', typeof files)
     const bodyFormData = new FormData();
     [...files].forEach((file) => {
       bodyFormData.append("image", file);
@@ -44,7 +44,7 @@ export const uploadMultiImage = async (files, token, percentHandler) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
         percentHandler(percent);
-        console.log(`${loaded}kb of ${total}kb | ${percent}`);
+        // console.log(`${loaded}kb of ${total}kb | ${percent}`);
       },
       headers: {
         "Content-Type": "multipart/form-data",

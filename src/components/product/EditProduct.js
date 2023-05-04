@@ -53,7 +53,7 @@ export default function EditProductModel(props) {
 
   const stockHandler = (e) => {
     e.persist();
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setStock(e.target.value === "true" ? true : false);
   };
 
@@ -109,7 +109,7 @@ export default function EditProductModel(props) {
         const { data } = await axiosInstance.get(`/api/product/${id}`, {
           headers: { Authorization: token },
         });
-        console.log("edit product data", res, data);
+        // console.log("edit product data", res, data);
 
         const product = data.product;
         setName(product.name);
@@ -121,7 +121,7 @@ export default function EditProductModel(props) {
         setProductImage(product.product_images[0]);
         setPreview(product.product_images[0]);
 
-        console.log(res.data.categories, res.data.subCategories);
+        // console.log(res.data.categories, res.data.subCategories);
         setCategories([...res.data.categories]);
         setSubCategories([...res.data.subCategories]);
         setQuantities([...res.data.quantities]);
@@ -186,7 +186,7 @@ export default function EditProductModel(props) {
         }
       );
 
-      console.log("product update data", data);
+      // console.log("product update data", data);
       if (data.product) {
         toast.success("Product Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -330,7 +330,7 @@ export default function EditProductModel(props) {
                                   (q) =>
                                     q.qname === qname && q.amount === amount
                                 );
-                                console.log({ index });
+                                // console.log({ index });
                                 if (index > -1) {
                                   // only splice array when item is found
 

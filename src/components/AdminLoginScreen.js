@@ -37,7 +37,7 @@ export default function AdminLoginScreen() {
         password: password,
       });
 
-      console.log("data", data);
+      // console.log("data", data);
       if (data.token) {
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
         localStorage.setItem("userInfo", JSON.stringify(data.user));
@@ -49,7 +49,7 @@ export default function AdminLoginScreen() {
         toast.error(data, { position: toast.POSITION.BOTTOM_CENTER });
       }
     } catch (err) {
-      console.log("err", err.response);
+      // console.log("err", err.response);
       dispatch({
         type: "FETCH_FAIL",
         payload: getError(err),

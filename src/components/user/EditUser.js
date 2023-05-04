@@ -42,7 +42,7 @@ export default function EditUserModel(props) {
         const { data } = await axiosInstance.get(`/api/admin/user/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // console.log(data);
 
         const user = data.user;
         // setPassword(user.password);
@@ -88,7 +88,7 @@ export default function EditUserModel(props) {
         }
       );
 
-      console.log("user update data", data);
+      // console.log("user update data", data);
       if (data.user) {
         toast.success("User Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,

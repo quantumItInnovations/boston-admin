@@ -33,7 +33,7 @@ const ViewSubCategory = () => {
         const { data } = await axiosInstance.get(`/api/subCategory/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // // console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
