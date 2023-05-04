@@ -11,6 +11,9 @@ import NotFound from "./components/layout/NotFound";
 
 import ViewProfile from "./components/profile/ViewProfile";
 
+import Quantity from "./components/quantity/Quantity";
+import AddQuantity from "./components/quantity/AddQuantity";
+
 import Category from "./components/category/Category";
 import AddCategory from "./components/category/AddCategory";
 import ViewCategory from "./components/category/ViewCategory";
@@ -52,6 +55,8 @@ function App() {
     { path: "/view-profile", element: <ViewProfile /> },
     { path: "/admin/users", element: <Users /> },
     { path: "/admin/view/user/:id", element: <ViewUser /> },
+    { path: "/admin/quantity", element: <Quantity /> },
+    { path: "/admin/quantity/create", element: <AddQuantity /> },
     { path: "/admin/category", element: <Category /> },
     { path: "/admin/category/create", element: <AddCategory /> },
     { path: "/admin/view/category/:id", element: <ViewCategory /> },

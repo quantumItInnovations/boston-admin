@@ -15,6 +15,7 @@ const productReducer = (state, action) => {
         ...state,
         categories: action.payload.categories,
         subCategories: action.payload.subCategories,
+        quantities: action.payload.quantities,
         loading: false,
       };
     case "FETCH_FAIL":

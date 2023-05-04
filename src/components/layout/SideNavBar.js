@@ -3,15 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 import "./SideNavBar.css";
-import {RiDashboard2Fill} from 'react-icons/ri';
-import {HiUsers} from 'react-icons/hi'
-import {MdCategory, MdOutlineProductionQuantityLimits} from 'react-icons/md';
-import {BiCategory} from 'react-icons/bi';
-import {FaGift, FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
+import { RiDashboard2Fill } from "react-icons/ri";
+import { HiUsers } from "react-icons/hi";
+import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { BiCategory } from "react-icons/bi";
+import { TbNumbers } from "react-icons/tb";
+
+import { FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
 
 const linkList = [
   { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
   { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
+  { icon: <TbNumbers className="icon-md" />, text: "Quantity", url: "/admin/quantity" },
   { icon: <MdCategory className="icon-md" />, text: "Category", url: "/admin/category" },
   { icon: <BiCategory className="icon-md" />, text: "Sub Category", url: "/admin/subCategory" },
   { icon: <MdOutlineProductionQuantityLimits className="icon-md" />, text: "Products", url: "/admin/products" },
@@ -23,6 +26,7 @@ const linkList = [
 const active_text = {
   "Dashboard": "dashboard",
   "Users": "user",
+  "Quantity": "quantity",
   "Category": "category",
   "Sub Category": "subCategory",
   "Products": "product",
@@ -33,7 +37,7 @@ const active_text = {
 
 export default function SideNavbar({ isExpanded }) {
   const pathname = window.location.pathname;
-  const [activeLink, setActiveLink] = useState('Dashboard');
+  const [activeLink, setActiveLink] = useState("Dashboard");
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();

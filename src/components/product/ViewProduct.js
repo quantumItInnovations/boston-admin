@@ -14,6 +14,8 @@ import { FaEdit } from "react-icons/fa";
 import ProductReviewTable from "./ProductReviewTable";
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
+import QuantityArray from "../listView/QuantityArray";
+import { IoMdOpen } from "react-icons/io";
 
 const ViewProduct = () => {
   const { state } = useContext(Store);
@@ -25,6 +27,10 @@ const ViewProduct = () => {
     loading: true,
     error: "",
   });
+  const [arrView, setArrView] = useState(false);
+  const showModelHandler = () => {
+    setArrView(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +61,7 @@ const ViewProduct = () => {
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };
+
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -110,9 +117,18 @@ const ViewProduct = () => {
                       </Col>
                       <Col md={4}>
                         <p className="mb-0">
-                          <strong>Amount</strong>
+                          <strong>Variant</strong>
                         </p>
-                        <p>{loading ? <Skeleton /> : product.amount}</p>
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : (
+                            <IoMdOpen
+                              className="open-model"
+                              onClick={() => showModelHandler()}
+                            />
+                          )}
+                        </p>
                       </Col>
                       <Col md={4}>
                         <p className="mb-0">
@@ -191,6 +207,16 @@ const ViewProduct = () => {
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
+            {arrView ? (
+              <QuantityArray
+                show={arrView}
+                onHide={() => setArrView(false)}
+                arr={product.subProduct}
+                title="Price List"
+              />
+            ) : (
+              <></>
+            )}
             <ToastContainer />
           </>
         )}

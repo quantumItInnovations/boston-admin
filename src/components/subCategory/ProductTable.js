@@ -11,6 +11,8 @@ import { ImCross } from "react-icons/im";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import CustomSkeleton from "../layout/CustomSkeleton";
+import { IoMdOpen } from "react-icons/io";
+import QuantityArray from "../listView/QuantityArray";
 
 export default function ProductTable({ id: subCategoryId }) {
   const navigate = useNavigate();
@@ -25,6 +27,13 @@ export default function ProductTable({ id: subCategoryId }) {
   const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
+  const [variant, setVariant] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+  const showModelHandler = (ls) => {
+    // console.log("product_list", ls);
+    setVariant([...ls]);
+    setModalShow(true);
+  };
   const [
     { loading, error, products, productCount, filteredProductCount },
     dispatch,
@@ -141,7 +150,7 @@ export default function ProductTable({ id: subCategoryId }) {
                   <th>S.No</th>
                   <th>Image</th>
                   <th>Name</th>
-                  <th>Amount</th>
+                  <th>Variant</th>
                   <th>Stock</th>
                   <th>Category</th>
                   <th>Description</th>
@@ -169,7 +178,12 @@ export default function ProductTable({ id: subCategoryId }) {
                         />
                       </td>
                       <td>{product.name}</td>
-                      <td>{product.amount}</td>
+                      <td>
+                        <IoMdOpen
+                          className="open-model"
+                          onClick={() => showModelHandler(product.subProduct)}
+                        />
+                      </td>
                       <td>
                         {product.stock ? (
                           <TiTick className="green" />
@@ -232,6 +246,16 @@ export default function ProductTable({ id: subCategoryId }) {
             )}
           </Card.Footer> */}
         </Card>
+      )}
+      {variant && modalShow ? (
+        <QuantityArray
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          arr={variant}
+          title="Variant List"
+        />
+      ) : (
+        <></>
       )}
       <ToastContainer />
     </Container>
