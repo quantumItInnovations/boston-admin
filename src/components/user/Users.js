@@ -23,7 +23,6 @@ export default function Users() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log("token", token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
@@ -69,7 +68,7 @@ export default function Users() {
             headers: { Authorization: token },
           }
         );
-        console.log(res.data);
+        // // console.log(res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -86,7 +85,6 @@ export default function Users() {
 
   const numOfPages = Math.ceil(filteredUserCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-  console.log("nuofPage", numOfPages, resultPerPage);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");

@@ -14,7 +14,6 @@ export default function SubCategoryTable({ id }) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(5);
@@ -94,7 +93,6 @@ export default function SubCategoryTable({ id }) {
   }, [token, del, curPage, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
-  console.log("nuofPage", numOfPages);
 
   return (
     <Container fluid className="py-3">

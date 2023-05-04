@@ -15,7 +15,6 @@ export default function Promotions() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [{ loading, error, promotions }, dispatch] = useReducer(reducer, {
     loading: true,

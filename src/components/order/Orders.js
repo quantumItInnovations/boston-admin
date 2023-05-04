@@ -25,7 +25,6 @@ export default function Order() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [status, setStatus] = useState("all");
   const [curPage, setCurPage] = useState(1);
@@ -47,7 +46,7 @@ export default function Order() {
   );
 
   const showModelHandler = (ls) => {
-    // console.log("product_list", ls);
+    // // console.log("product_list", ls);
     setProductList([...ls]);
     setModalShow(true);
   };
@@ -80,7 +79,7 @@ export default function Order() {
             headers: { Authorization: token },
           }
         );
-        console.log("orders", res.data);
+        // // console.log("orders", res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -97,7 +96,6 @@ export default function Order() {
 
   const numOfPages = Math.ceil(filteredOrderCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-  console.log("nuofPage", numOfPages);
 
   return (
     <motion.div

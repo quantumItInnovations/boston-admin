@@ -23,7 +23,6 @@ export default function SubCategory() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
@@ -93,7 +92,6 @@ export default function SubCategory() {
 
   const numOfPages = Math.ceil(filteredSubCategoryCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-  console.log("nuofPage", numOfPages);
   return (
     <motion.div
       initial={{ x: "-100%" }}

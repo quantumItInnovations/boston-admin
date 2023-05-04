@@ -11,7 +11,7 @@ export default function QuantityArray(props) {
   console.log(props);
   const { title, arr } = props;
   let columns;
-  if (arr.length > 0) columns = getColumn(arr[0]);
+  if (arr.length > 0) columns = Object.entries(props.column);
 
   return (
     <Modal
@@ -33,7 +33,7 @@ export default function QuantityArray(props) {
               <thead>
                 <tr>
                   <th>S.No</th>
-                  {columns && columns.map((col) => <th key={col}>{col}</th>)}
+                  {columns && columns.map(([col, _]) => <th key={col}>{col}</th>)}
                 </tr>
               </thead>
               <tbody>
@@ -42,7 +42,7 @@ export default function QuantityArray(props) {
                     <tr key={i} className="odd">
                       <td className="text-center">{i + 1}</td>
                       {columns &&
-                        columns.map((col) => {
+                        columns.map(([_, col]) => {
                           return (
                             <>
                               <td key={col}>{row[col]}</td>

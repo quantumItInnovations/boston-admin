@@ -31,7 +31,7 @@ const ViewUser = () => {
         const { data } = await axiosInstance.get(`/api/admin/user/${id}`, {
           headers: { Authorization: token },
         });
-        console.log("user:", data);
+        // console.log("user:", data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {

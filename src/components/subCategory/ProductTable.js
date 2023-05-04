@@ -18,7 +18,6 @@ export default function ProductTable({ id: subCategoryId }) {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(5);
@@ -30,7 +29,7 @@ export default function ProductTable({ id: subCategoryId }) {
   const [variant, setVariant] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const showModelHandler = (ls) => {
-    // console.log("product_list", ls);
+    // // console.log("product_list", ls);
     setVariant([...ls]);
     setModalShow(true);
   };
@@ -81,14 +80,14 @@ export default function ProductTable({ id: subCategoryId }) {
           navigate("/admin/products?page=1");
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         } else {
-          console.log("subCategoryId", subCategoryId);
+          // // console.log("subCategoryId", subCategoryId);
           const res = await axiosInstance.get(
             `/api/subCategory/${subCategoryId}/products`,
             {
               headers: { Authorization: token },
             }
           );
-          console.log(res.data);
+          // // console.log(res.data);
           dispatch({ type: "FETCH_SUCCESS", payload: res.data });
         }
       } catch (error) {
@@ -252,6 +251,7 @@ export default function ProductTable({ id: subCategoryId }) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           arr={variant}
+          column={{"Quantity Type": "qname","Amount": "amount"}}
           title="Variant List"
         />
       ) : (

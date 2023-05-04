@@ -45,7 +45,7 @@ export default function AddProduct() {
   const [variant, setVariant] = useState([]);
   const [amount, setAmount] = useState("");
   const [qname, setQname] = useState("");
-  const [stock, setStock] = useState("false");
+  const [stock, setStock] = useState("true");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
@@ -61,7 +61,7 @@ export default function AddProduct() {
   };
   const stockHandler = (e) => {
     e.persist();
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setStock(e.target.value);
   };
 
@@ -160,7 +160,7 @@ export default function AddProduct() {
         }
       );
 
-      console.log("product add data", data);
+      // console.log("product add data", data);
       if (data.product) {
         toast.success("Product Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -185,14 +185,14 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
-    console.log("fetch 1");
+    // console.log("fetch 1");
     const fetchData = async () => {
-      console.log("fetch 2");
+      // console.log("fetch 2");
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get("/api/admin/all/?quantity=true");
-        console.log("add product data", res);
+        // console.log("add product data", res);
         dispatch({ type: "FETCH_ADD_PRODUCT_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -339,7 +339,7 @@ export default function AddProduct() {
                                           q.qname === qname &&
                                           q.amount === amount
                                       );
-                                      console.log({ index });
+                                      // console.log({ index });
                                       if (index > -1) {
                                         // only splice array when item is found
 

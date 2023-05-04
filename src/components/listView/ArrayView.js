@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button, Container, Table } from "react-bootstrap";
 
 export default function ArrayView(props) {
-  console.log("props", props);
+  // console.log("props", props);
 
   return (
     <Modal

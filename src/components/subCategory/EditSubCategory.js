@@ -84,7 +84,7 @@ export default function EditSubCategoryModel(props) {
         const { data } = await axiosInstance.get(`/api/subCategory/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // // console.log(data);
 
         const subCategory = data.subCategory;
         setName(subCategory.name);
@@ -133,7 +133,7 @@ export default function EditSubCategoryModel(props) {
         }
       );
 
-      console.log("category update data", data);
+      // // console.log("category update data", data);
       if (data.subCategory) {
         toast.success("Sub Category Updated Succesfully.  Redirecting...", {
           position: toast.POSITION.BOTTOM_CENTER,

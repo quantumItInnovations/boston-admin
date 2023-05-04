@@ -41,7 +41,7 @@ const ViewOrder = () => {
         const { data } = await axiosInstance.get(`/api/admin/order/${id}`, {
           headers: { Authorization: token },
         });
-        console.log(data);
+        // console.log(data);
         setStatus(data.order.status);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -73,7 +73,7 @@ const ViewOrder = () => {
         }
       );
 
-      console.log("category add data", data);
+      // console.log("category add data", data);
       if (data.order) {
         toast.success("Order Status Updated Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,

@@ -62,7 +62,6 @@ const CustomPagination = ({ pages, pageHandler, curPage }) => {
               activeLabel=""
               onClick={() => pageHandler(left)}
             >
-              {console.log("ffdfdf", left)}
               {left}
             </Pagination.Item>
             <Pagination.Ellipsis />

@@ -38,7 +38,7 @@ export default function AddQuantity() {
         { headers: { Authorization: token } }
       );
 
-      console.log("quantity add data", data);
+      // console.log("quantity add data", data);
       if (data.quantity) {
         toast.success("Quantity Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,

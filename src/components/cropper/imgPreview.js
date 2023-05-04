@@ -18,7 +18,7 @@ export async function imgPreview(image, crop, scale = 1, rotate = 0) {
   const blob = await toBlob(canvas);
 
   if (!blob) {
-    console.error("Failed to create blob");
+    // console.error("Failed to create blob");
     return "";
   }
 

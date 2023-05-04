@@ -66,7 +66,7 @@ export default function AddPromotion() {
   };
 
   const uploadFileHandler = async (file, type) => {
-    console.log("file", file);
+    // console.log("file", file);
     // if (!e.target.files[0]) {
     if (!file) {
       setPromoImage(null);
@@ -106,7 +106,7 @@ export default function AddPromotion() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get("/api/admin/all/?product=true");
-        console.log("add promotion data", res);
+        // console.log("add promotion data", res);
 
         dispatch({ type: "FETCH_ADD_PROMOTION_SUCCESS", payload: res.data });
       } catch (error) {
@@ -166,7 +166,7 @@ export default function AddPromotion() {
         }
       );
 
-      console.log("category add data", data);
+      // console.log("category add data", data);
       if (data.promotion) {
         toast.success("Promotion Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,

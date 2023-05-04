@@ -119,7 +119,7 @@ export default function AddSubCategory() {
         }
       );
 
-      console.log("subCategory add data", data);
+      // console.log("subCategory add data", data);
       if (data.subCategory) {
         toast.success("Sub Category Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -144,9 +144,9 @@ export default function AddSubCategory() {
   };
 
   useEffect(() => {
-    console.log("fetch 1");
+    // console.log("fetch 1");
     const fetchData = async () => {
-      console.log("fetch 2");
+      // console.log("fetch 2");
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
@@ -154,7 +154,7 @@ export default function AddSubCategory() {
           headers: { Authorization: token },
         });
 
-        console.log("add subCategory data", res);
+        // console.log("add subCategory data", res);
         dispatch({
           type: "FETCH_SUCCESS",
           payload: res.data,
@@ -222,7 +222,7 @@ export default function AddSubCategory() {
                         <option key="blankChoice" hidden value>
                           Select Category
                         </option>
-                        {/* {console.log("dfsdf", categories)} */}
+                        {/* {// console.log("dfsdf", categories)} */}
 
                         {categories &&
                           categories.map((cat) => (

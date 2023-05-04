@@ -101,7 +101,7 @@ export default function AddCategory() {
         }
       );
 
-      console.log("category add data", data);
+      // console.log("category add data", data);
       if (data.category) {
         toast.success("Category Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,

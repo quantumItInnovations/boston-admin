@@ -27,7 +27,6 @@ export default function Products() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
-  console.log(token);
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
@@ -39,7 +38,7 @@ export default function Products() {
   const [variant, setVariant] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const showModelHandler = (ls) => {
-    // console.log("product_list", ls);
+    // // console.log("product_list", ls);
     setVariant([...ls]);
     setModalShow(true);
   };
@@ -82,7 +81,7 @@ export default function Products() {
             headers: { Authorization: token },
           }
         );
-        console.log("res", curPage, res.data);
+        // // console.log("res", curPage, res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -267,6 +266,7 @@ export default function Products() {
             show={modalShow}
             onHide={() => setModalShow(false)}
             arr={variant}
+            column={{"Quantity Type": "qname","Amount": "amount"}}
             title="Variant List"
           />
         ) : (
