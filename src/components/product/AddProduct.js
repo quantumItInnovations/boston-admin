@@ -32,19 +32,19 @@ function getAllSubCategory(subCategories, categoryId) {
 export default function AddProduct() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
-  const { token, userInfo } = state;
+  const { token } = state;
 
-  const [{ loading, error, subCategories, categories }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, error, subCategories, categories, quantities }, dispatch] =
+    useReducer(reducer, {
       loading: true,
       error: "",
-    }
-  );
+    });
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [variant, setVariant] = useState([]);
   const [amount, setAmount] = useState("");
+  const [qname, setQname] = useState("");
   const [stock, setStock] = useState("false");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
@@ -53,7 +53,7 @@ export default function AddProduct() {
   const resetForm = () => {
     setName("");
     setDescription("");
-    setAmount("");
+    setVariant([]);
     setStock("");
     setProductImage("");
     setCategory("");
@@ -132,6 +132,13 @@ export default function AddProduct() {
       );
       return;
     }
+    if (variant.length <= 0) {
+      toast.warning(
+        "Please provide at least one key-value for quantity and amount.",
+        { position: toast.POSITION.BOTTOM_CENTER }
+      );
+      return;
+    }
     try {
       setLoadingUpdate(true);
 
@@ -140,7 +147,7 @@ export default function AddProduct() {
         {
           name,
           description,
-          amount,
+          variant,
           stock,
           product_images,
           category,
@@ -184,7 +191,7 @@ export default function AddProduct() {
 
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const res = await axiosInstance.get("/api/admin/all");
+        const res = await axiosInstance.get("/api/admin/all/?quantity=true");
         console.log("add product data", res);
         dispatch({ type: "FETCH_ADD_PRODUCT_SUCCESS", payload: res.data });
       } catch (error) {
@@ -199,6 +206,24 @@ export default function AddProduct() {
     };
     fetchData();
   }, [token]);
+
+  const priceHandler = () => {
+    if (!qname) {
+      toast.warning("Quantity name can't be empty.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    if (!amount) {
+      toast.warning("Please set an amount for the quantity.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    variant.push({ qname, amount });
+    setQname("");
+    setAmount("");
+  };
 
   return (
     <motion.div
@@ -238,16 +263,107 @@ export default function AddProduct() {
                       required
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="amount">
-                    <Form.Label>Amount</Form.Label>
-                    <Form.Control
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                  <Row>
+                    <Col md={4}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mr-3">Quantity</Form.Label>
+                        {loading ? (
+                          <Skeleton />
+                        ) : (
+                          <Form.Select
+                            aria-label="Select Quantity"
+                            aria-controls="variant"
+                            value={qname}
+                            onChange={(e) => {
+                              setQname(e.target.value);
+                            }}
+                          >
+                            <option key="blankChoice" hidden value>
+                              Select Quantity
+                            </option>
+                            {quantities &&
+                              quantities.map((quan) => (
+                                <option key={quan._id} value={quan.qname}>
+                                  {quan.qname}
+                                </option>
+                              ))}
+                          </Form.Select>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group className="mb-3" controlId="amount">
+                        <Form.Label>Amount</Form.Label>
+                        <Form.Control
+                          type="number"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Button className="mt-4" onClick={priceHandler}>
+                        Add Qauntity
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row>
+                    {variant && variant.length > 0 && (
+                      <div className="table-responsive">
+                        <table
+                          id="example1"
+                          className="table table-bordered table-striped col-6"
+                        >
+                          <thead>
+                            <tr>
+                              <th>Quantity Name</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {variant.map(({ qname, amount }, i) => (
+                              <tr
+                                key={variant.findIndex(
+                                  (q) => q.qname === qname && q.amount === amount
+                                )}
+                              >
+                                <td>{qname}</td>
+                                <td>{amount}</td>
+                                <td>
+                                  <Button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      const index = variant.findIndex(
+                                        (q) =>
+                                          q.qname === qname &&
+                                          q.amount === amount
+                                      );
+                                      console.log({ index });
+                                      if (index > -1) {
+                                        // only splice array when item is found
 
+                                        setVariant([
+                                          ...variant.slice(0, index),
+
+                                          // part of the array after the given item
+                                          ...variant.slice(index + 1),
+                                        ]);
+                                      }
+                                    }}
+                                    type="danger"
+                                    className="btn btn-danger btn-block"
+                                  >
+                                    Delete
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </Row>
                   <Form.Group className="mb-3" controlId="stock">
                     <Form.Label>Stock</Form.Label>
                     <br></br>

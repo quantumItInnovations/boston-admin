@@ -26,6 +26,8 @@ export default function ArrayView(props) {
               <tr>
                 <th>S.No</th>
                 <th>Product Name</th>
+                <th>Variant Type</th>
+                <th>Variant Amount</th>
                 <th>Quantity</th>
               </tr>
             </thead>
@@ -34,7 +36,9 @@ export default function ArrayView(props) {
                 props.arr.map((product, i) => (
                   <tr key={product._id} className="odd">
                     <td className="text-center">{i + 1}</td>
-                    <td>{product.product.name}</td>
+                    <td>{product?.parent_prod?.name}</td>
+                    <td>{product?.product?.qname}</td>
+                    <td>{product?.product?.amount}</td>
                     <td>{product.quantity}</td>
                   </tr>
                 ))}

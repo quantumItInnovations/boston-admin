@@ -5,7 +5,15 @@ import { editReducer as reducer } from "../../reducers/commonReducer";
 import { uploadMultiImage } from "../../utils/uploadImage";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
+import {
+  Modal,
+  Form,
+  Button,
+  Container,
+  ProgressBar,
+  Row,
+  Col,
+} from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import axiosInstance from "../../utils/axiosUtil";
 
@@ -31,9 +39,12 @@ export default function EditProductModel(props) {
 
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [quantities, setQuantities] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [variant, setVariant] = useState([]);
   const [amount, setAmount] = useState("");
+  const [qname, setQname] = useState("");
   const [stock, setStock] = useState("");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
@@ -93,7 +104,7 @@ export default function EditProductModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const res = await axiosInstance.get("/api/admin/all");
+        const res = await axiosInstance.get("/api/admin/all/?quantity=true");
 
         const { data } = await axiosInstance.get(`/api/product/${id}`, {
           headers: { Authorization: token },
@@ -104,7 +115,7 @@ export default function EditProductModel(props) {
         setName(product.name);
         setDescription(product.description);
         setStock(product.stock);
-        setAmount(product.amount);
+        setVariant(product.subProduct);
         if (product.category) setCategory(product.category._id);
         if (product.sub_category) setSubCategory(product.sub_category._id);
         setProductImage(product.product_images[0]);
@@ -113,6 +124,7 @@ export default function EditProductModel(props) {
         console.log(res.data.categories, res.data.subCategories);
         setCategories([...res.data.categories]);
         setSubCategories([...res.data.subCategories]);
+        setQuantities([...res.data.quantities]);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
@@ -147,6 +159,13 @@ export default function EditProductModel(props) {
       });
       return;
     }
+    if (variant.length <= 0) {
+      toast.warning(
+        "Please provide at least one key-value for quantity and amount.",
+        { position: toast.POSITION.BOTTOM_CENTER }
+      );
+      return;
+    }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axiosInstance.put(
@@ -154,7 +173,7 @@ export default function EditProductModel(props) {
         {
           name,
           description,
-          amount,
+          variant,
           stock,
           product_images,
           category,
@@ -189,6 +208,23 @@ export default function EditProductModel(props) {
     }
   };
 
+  const priceHandler = () => {
+    if (!qname) {
+      toast.warning("Quantity name can't be empty.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    if (!amount) {
+      toast.warning("Please set an amount for the quantity.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    variant.push({ qname, amount });
+    setQname("");
+    setAmount("");
+  };
   return (
     <Modal
       {...props}
@@ -223,14 +259,102 @@ export default function EditProductModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="amount">
-              <Form.Label>Amount</Form.Label>
-              <Form.Control
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-              />
-            </Form.Group>
+            <Row>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="mr-3">Quantity</Form.Label>
+                  <Form.Select
+                    aria-label="Select Quantity"
+                    aria-controls="variant"
+                    value={qname}
+                    onChange={(e) => {
+                      setQname(e.target.value);
+                    }}
+                  >
+                    <option key="blankChoice" hidden value>
+                      Select Quantity
+                    </option>
+                    {quantities &&
+                      quantities.map((quan) => (
+                        <option key={quan._id} value={quan.qname}>
+                          {quan.qname}
+                        </option>
+                      ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3" controlId="amount">
+                  <Form.Label>Amount</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Button className="mt-4" onClick={priceHandler}>
+                  Add Qauntity
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              {variant && variant.length > 0 && (
+                <div className="table-responsive">
+                  <table
+                    id="example1"
+                    className="table table-bordered table-striped col-6"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Quantity Name</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {variant.map(({ qname, amount }, i) => (
+                        <tr
+                          key={variant.findIndex(
+                            (q) => q.qname === qname && q.amount === amount
+                          )}
+                        >
+                          <td>{qname}</td>
+                          <td>{amount}</td>
+                          <td>
+                            <Button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                const index = variant.findIndex(
+                                  (q) =>
+                                    q.qname === qname && q.amount === amount
+                                );
+                                console.log({ index });
+                                if (index > -1) {
+                                  // only splice array when item is found
+
+                                  setVariant([
+                                    ...variant.slice(0, index),
+
+                                    // part of the array after the given item
+                                    ...variant.slice(index + 1),
+                                  ]);
+                                }
+                              }}
+                              type="danger"
+                              className="btn btn-danger btn-block"
+                            >
+                              Delete
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Row>
             <Form.Group className="mb-3" controlId="stock">
               <Form.Label>Stock</Form.Label>
               <br></br>
