@@ -58,6 +58,7 @@ const ViewProduct = () => {
   }, [id]);
 
   const getDateTime = (dt) => {
+    if(!dt) return;
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };

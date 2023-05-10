@@ -6,21 +6,29 @@ import "./SideNavBar.css";
 import { RiDashboard2Fill } from "react-icons/ri";
 import { HiUsers } from "react-icons/hi";
 import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
-import { BiCategory } from "react-icons/bi";
-import { TbNumbers } from "react-icons/tb";
+import { BiCategory, BiCircle } from "react-icons/bi";
+import { TbNumbers, TbDiscount2 } from "react-icons/tb";
 
-import { FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt} from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp, FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt } from 'react-icons/fa';
 
 const linkList = [
   { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
   { icon: <MdCategory className="icon-md" />, text: "Category", url: "/admin/category" },
   { icon: <BiCategory className="icon-md" />, text: "Sub Category", url: "/admin/subCategory" },
   { icon: <MdOutlineProductionQuantityLimits className="icon-md" />, text: "Products", url: "/admin/products" },
-  { icon: <FaShoppingBasket className="icon-md" />, text: "Orders", url: "/admin/orders"},
+  { icon: <FaShoppingBasket className="icon-md" />, text: "Orders", url: "/admin/orders" },
   { icon: <FaStarHalfAlt className="icon-md" />, text: "Reviews", url: "/admin/reviews" },
   { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
+  { icon: <TbDiscount2 className="icon-md" />, text: "Sale", url: "/admin/sale" },
   { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" },
   { icon: <TbNumbers className="icon-md" />, text: "Quantity", url: "/admin/quantity" },
+];
+
+const SaleLinkList = [
+  { url: "/admin/sale/on-site", text: "On Site" },
+  { url: "/admin/sale/product", text: "Product Sale" },
+  { url: "/admin/sale/category", text: "Category Sale" },
+  { url: "/admin/sale/subCategory", text: "SubCategory Sale" }
 ];
 
 const active_text = {
@@ -33,6 +41,11 @@ const active_text = {
   "Users": "user",
   "Promotions": "promotion",
   "Quantity": "quantity",
+  "Sale": "sale",
+  "On Site": "on-site",
+  "Product Sale": "sale/product",
+  "Category Sale": "sale/category",
+  "SubCategory Sale": "sale/subCategory"
 };
 
 export default function SideNavbar({ isExpanded }) {
@@ -50,7 +63,7 @@ export default function SideNavbar({ isExpanded }) {
   };
 
   const activeLinkHandler = (text) => {
-    // // console.log("text", active_text[text]);
+    // console.log("text", text,  active_text[text], activeLink);
     // // console.log(pathname.includes(active_text[text]));
     return pathname.includes(active_text[text]);
   };
@@ -109,23 +122,41 @@ export default function SideNavbar({ isExpanded }) {
                 {linkList.map(({ icon, text, url }) => (
                   <li
                     key={url}
-                    className={`nav-item has-treeview ${
-                      isExpanded ? "menu-item" : "menu-item menu-item-NX"
-                    } ${activeLinkHandler(text) && "active-item"}`}
+                    className={`nav-item has-treeview ${isExpanded ? "menu-item" : "menu-item menu-item-NX"
+                      } ${activeLinkHandler(text) && "active-item"}`}
                     onClick={() => setActiveLink(text)}
                   >
                     <Link to={url} className="nav-link">
-                      {/* <i className={icon}></i> */}
                       {icon}
                       <p className="ms-2">{text}</p>
                     </Link>
                   </li>
                 ))}
 
+                {/* <li
+                  className={`nav-item has-treeview ${isExpanded ? "menu-item" : "menu-item menu-item-NX"
+                    }`}
+                >
+                  <Link className="dropdown-nav-link">
+                    <TbDiscount2 className="icon-md" />
+                    <p className="ms-2">Sale
+                      <FaAngleDown className="right icon-md" />
+                    </p>
+                  </Link>
+                  <ul className="nav nav-treeview" style={{ display: "block" }}>
+                    {SaleLinkList.map(({ url, text }) =>
+                      <li key={url} className={`nav-item ${activeLinkHandler(text) && "active-item"}`}
+                      onClick={() => setActiveLink(text)}>
+                        <Link to={url} className="nav-link sub-nav-link">                        <BiCircle className="icon-md" />
+                          <p className="ms-2">{text}</p>
+                        </Link>
+                      </li>)}
+
+                  </ul>
+                </li> */}
                 <li
-                  className={`nav-item has-treeview ${
-                    isExpanded ? "menu-item" : "menu-item menu-item-NX"
-                  }`}
+                  className={`nav-item has-treeview ${isExpanded ? "menu-item" : "menu-item menu-item-NX"
+                    }`}
                 >
                   <Link onClick={signoutHandler} to="/" className="nav-link">
                     {/* <i className="fas fa-sign-out-alt"></i> */}

@@ -10,6 +10,27 @@
 	padding-top: 0;
 }
 
+/* set the width of the scrollbar */
+.sidebar::-webkit-scrollbar {
+	width: 8px;
+}
+
+/* set the background color of the track */
+.sidebar::-webkit-scrollbar-track {
+	background-color: #bbb;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+	/* set the color of the thumb */
+	background-color: #7a797a;
+	/* round the corners of the thumb */
+	border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+	/* set the color of the thumb on hover */
+	background-color: #323432b4;
+}
 .side-nav-container {
 	position: relative;
 	width: 250px;

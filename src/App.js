@@ -33,13 +33,18 @@ import ViewPromotion from "./components/promotion/ViewPromotion";
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
 
+import Order from "./components/order/Orders";
+import ViewOrder from "./components/order/ViewOrder";
+
+import Sale from "./components/sale/Sale";
+import AddSale from "./components/sale/AddSale";
+import ViewSale from "./components/sale/ViewSale";
+
 import Review from "./components/review/Review";
 
 import AdminLoginScreen from "./components/AdminLoginScreen";
 import Dashboard from "./components/layout/Dashboard";
 import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
-import Order from "./components/order/Orders";
-import ViewOrder from "./components/order/ViewOrder";
 
 function App() {
   const { state } = useContext(Store);
@@ -72,6 +77,13 @@ function App() {
     { path: "/admin/view/promotion/:id", element: <ViewPromotion /> },
     { path: "/admin/orders", element: <Order /> },
     { path: "/admin/view/order/:id", element: <ViewOrder /> },
+    { path: "/admin/sale", element: <Sale /> },
+    { path: "/admin/sale/create", element: <AddSale /> },
+    { path: "/admin/view/sale/:id", element: <ViewSale /> },
+    // { path: "/admin/sale/on-site", element: <OnSiteSale /> },
+    // { path: "/admin/sale/product", element: <ProductSale /> },
+    // { path: "/admin/sale/category", element: <CategorySale /> },
+    // { path: "/admin/sale/subCategory", element: <SubCategorySale /> },
   ];
 
   return (
