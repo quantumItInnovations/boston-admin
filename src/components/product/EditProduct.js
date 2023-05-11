@@ -115,7 +115,7 @@ export default function EditProductModel(props) {
         setName(product.name);
         setDescription(product.description);
         setStock(product.stock);
-        setVariant(product.subProduct);
+        setVariant(product.subProducts);
         if (product.category) setCategory(product.category._id);
         if (product.sub_category) setSubCategory(product.sub_category._id);
         setProductImage(product.product_images[0]);

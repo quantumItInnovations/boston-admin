@@ -33,13 +33,13 @@ export default function ArrayView(props) {
             </thead>
             <tbody>
               {props.arr &&
-                props.arr.map((product, i) => (
+                props.arr.map(({ product, quantity }, i) => (
                   <tr key={product._id} className="odd">
                     <td className="text-center">{i + 1}</td>
-                    <td>{product?.parent_prod?.name}</td>
-                    <td>{product?.product?.qname}</td>
-                    <td>{product?.product?.amount}</td>
-                    <td>{product.quantity}</td>
+                    <td>{product?.pid?.name}</td>
+                    <td>{product?.qname}</td>
+                    <td>{product?.amount}</td>
+                    <td>{quantity}</td>
                   </tr>
                 ))}
             </tbody>

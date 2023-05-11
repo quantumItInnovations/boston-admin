@@ -27,9 +27,9 @@ const ViewProduct = () => {
     loading: true,
     error: "",
   });
-  const [arrView, setArrView] = useState(false);
+  const [arrModalShow, setArrModalShow] = useState(false);
   const showModelHandler = () => {
-    setArrView(true);
+    setArrModalShow(true);
   };
 
   useEffect(() => {
@@ -208,11 +208,11 @@ const ViewProduct = () => {
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
-            {arrView ? (
+            {arrModalShow ? (
               <QuantityArray
-                show={arrView}
-                onHide={() => setArrView(false)}
-                arr={product.subProduct}
+                show={arrModalShow}
+                onHide={() => setArrModalShow(false)}
+                arr={product.subProducts}
                 column={{"Quantity Type": "qname","Amount": "amount"}}
                 title="Price List"
               />
