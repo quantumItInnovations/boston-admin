@@ -248,6 +248,7 @@ const ViewOrder = () => {
                         <th>Variant Type</th>
                         <th>Variant Amount</th>
                         <th>Quantity</th>
+                        <th>Purchased Amount</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -255,13 +256,14 @@ const ViewOrder = () => {
                         <CustomSkeleton resultPerPage={5} column={3} />
                       ) : (
                         order.products &&
-                        order.products.map(({ product, quantity }, i) => (
+                        order.products.map(({ product, quantity, parent_prod, updatedAmount }, i) => (
                           <tr key={product._id} className="odd">
                             <td className="text-center">{i + 1}</td>
-                            <td>{product?.pid?.name}</td>
+                            <td>{parent_prod?.name}</td>
                             <td>{product?.qname}</td>
                             <td>{product?.amount}</td>
                             <td>{quantity}</td>
+                            <td>{updatedAmount}</td>
                           </tr>
                         ))
                       )}

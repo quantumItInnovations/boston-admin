@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button, Container, Table } from "react-bootstrap";
 
 export default function ArrayView(props) {
-  // console.log("props", props);
+  console.log("props", props);
 
   return (
     <Modal
@@ -29,17 +29,19 @@ export default function ArrayView(props) {
                 <th>Variant Type</th>
                 <th>Variant Amount</th>
                 <th>Quantity</th>
+                <th>Purchased Amount</th>
               </tr>
             </thead>
             <tbody>
               {props.arr &&
-                props.arr.map(({ product, quantity }, i) => (
+                props.arr.map(({ product, quantity, parent_prod, updatedAmount }, i) => (
                   <tr key={product._id} className="odd">
                     <td className="text-center">{i + 1}</td>
-                    <td>{product?.pid?.name}</td>
+                    <td>{parent_prod?.name}</td>
                     <td>{product?.qname}</td>
                     <td>{product?.amount}</td>
                     <td>{quantity}</td>
+                    <td>{updatedAmount}</td>
                   </tr>
                 ))}
             </tbody>
