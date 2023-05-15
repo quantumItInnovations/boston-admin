@@ -39,6 +39,13 @@ export default function AddSale() {
     setInput({ ...input, [e.target.name]: e.target.value });
   }
 
+  const getMinDate = () => {
+    if(!input.start_date) return;
+    const date = new Date(input.start_date);
+    console.log(input.start_date, date)
+    return new Date(date.setDate(date.getDate() + 1)).toISOString().split("T")[0]
+  }
+
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   const resetForm = () => {
@@ -197,6 +204,8 @@ export default function AddSale() {
                   <Form.Group className="mb-3" controlId="discount">
                     <Form.Label>Discount</Form.Label>
                     <Form.Control
+                      type="number"
+                      min={0}
                       name="discount"
                       value={input.discount}
                       placeholder="Discount"
@@ -212,6 +221,7 @@ export default function AddSale() {
                           name="start_date"
                           value={input.start_date}
                           type="date"
+                          min={new Date().toISOString().split("T")[0]}
                           onChange={inputHandler}
                           required
                         />
@@ -224,7 +234,9 @@ export default function AddSale() {
                           name="end_date"
                           value={input.end_date}
                           type="date"
+                          min={getMinDate()}
                           onChange={inputHandler}
+                          disabled={input.start_date ? false : true}
                           required
                         />
                       </Form.Group>

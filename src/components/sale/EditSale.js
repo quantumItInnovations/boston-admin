@@ -25,8 +25,15 @@ export default function EditSaleModel(props) {
     error: "",
   });
 
+  const [minDate, setMinDate] = useState("");
   const [end_date, setEndDate] = useState("");
 
+  const getMinDate = (start_date) => {
+    if(!start_date) return;
+    const date = new Date(start_date);
+    console.log(start_date, date)
+    return new Date(date.setDate(date.getDate() + 1)).toISOString().split("T")[0]
+  }
   const resetForm = () => { setEndDate("") };
 
   useEffect(() => {
@@ -41,6 +48,7 @@ export default function EditSaleModel(props) {
 
         const sale = data.sale;
 
+        setMinDate(getMinDate(sale.start_date));
         setEndDate(new Date(sale.end_date).toISOString().slice(0, 10));
 
         dispatch({ type: "FETCH_SUCCESS" });
@@ -110,6 +118,7 @@ export default function EditSaleModel(props) {
               <Form.Label>End Date</Form.Label>
               <Form.Control
                 value={end_date}
+                min={minDate}
                 type="date"
                 onChange={(e) => setEndDate(e.target.value)}
                 required
