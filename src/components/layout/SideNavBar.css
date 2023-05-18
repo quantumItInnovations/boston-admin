@@ -31,6 +31,7 @@
 	/* set the color of the thumb on hover */
 	background-color: #323432b4;
 }
+
 .side-nav-container {
 	position: relative;
 	width: 250px;
@@ -53,6 +54,7 @@
 	top: 0;
 	z-index: 1030;
 }
+
 @media (max-width: 768px) {
 	.side-nav-container-NX {
 		margin-left: -4.6rem;
@@ -62,10 +64,12 @@
 	.body-wrapper.mini-body {
 		margin-left: 0;
 	}
+
 	.sidebar-overlay {
 		display: block;
 	}
 }
+
 .brand-link {
 	border-bottom: 1px solid #4b545c;
 	text-decoration: none;
@@ -176,38 +180,11 @@
 
 .nav-sidebar .nav-item>.nav-link {
 	position: relative;
-}
-
-.nav-sidebar .nav-item>.nav-link {
 	margin-bottom: 0.2rem;
-}
-
-.nav-sidebar .nav-item>.nav-link {
-	position: relative;
-}
-
-.nav-sidebar .nav-item>.nav-link {
-	margin-bottom: 0.2rem;
-}
-
-.menu-item .nav-link,
-.info-text {
-	color: #001c4e;
-}
-
-
-
-.nav-pills .nav-link {
-	border-radius: 0.25rem;
 }
 
 .nav-pills .nav-link {
 	border-radius: 0.25rem;
-}
-
-.nav-link {
-	display: block;
-	padding: 0.5rem 1rem;
 }
 
 .nav-link {
