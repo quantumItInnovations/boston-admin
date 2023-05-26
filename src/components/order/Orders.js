@@ -188,7 +188,7 @@ export default function Order() {
                         </td>
                         <td>{order.amount}</td>
                         <td>{order.status}</td>
-                        <td>{order.address.town}</td>
+                        <td>{order.address?.town}</td>
                         <td>
                           <Button
                             onClick={() => {

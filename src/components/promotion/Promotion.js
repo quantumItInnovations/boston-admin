@@ -94,8 +94,8 @@ export default function Promotions() {
                   <tr>
                     <th>S.No</th>
                     <th>Image</th>
-                    <th>Product</th>
-                    <th>Updated Price</th>
+                    {/* <th>Product</th>
+                    <th>Updated Price</th> */}
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -119,14 +119,14 @@ export default function Promotions() {
                             }}
                           />
                         </td>
-                        <td>
+                        {/* <td>
                           {promotion.product ? (
                             promotion.product.name
                           ) : (
                             <b>Promotion product not found</b>
                           )}
                         </td>
-                        <td>{promotion.updated_price}</td>
+                        <td>{promotion.updated_price}</td> */}
                         <td>
                           <Button
                             onClick={() => {

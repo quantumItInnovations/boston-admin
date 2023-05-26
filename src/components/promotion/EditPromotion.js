@@ -23,8 +23,8 @@ export default function EditPromotionModel(props) {
 
   const [promo_image, setPromoImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [updated_price, setUpdatedPrice] = useState("");
-  const [product, setProduct] = useState(null);
+  // const [updated_price, setUpdatedPrice] = useState("");
+  // const [product, setProduct] = useState(null);
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -71,7 +71,7 @@ export default function EditPromotionModel(props) {
 
   const resetForm = () => {
     setPreview(null);
-    setUpdatedPrice(null);
+    // setUpdatedPrice(null);
     setPromoImage(null);
   };
 
@@ -86,8 +86,8 @@ export default function EditPromotionModel(props) {
         // console.log("edit promotion", data);
 
         const promotion = data.promotion;
-        setProduct(promotion.product);
-        setUpdatedPrice(promotion.updated_price);
+        // setProduct(promotion.product);
+        // setUpdatedPrice(promotion.updated_price);
         setPreview(promotion.promo_image);
         setPromoImage(promotion.promo_image);
 
@@ -119,8 +119,8 @@ export default function EditPromotionModel(props) {
       const { data } = await axiosInstance.put(
         `/api/admin/promotion/${id}`,
         {
-          product,
-          updated_price,
+          // product,
+          // updated_price,
           promo_image,
         },
         {
@@ -172,14 +172,14 @@ export default function EditPromotionModel(props) {
           <Modal.Body>
             <Container className="small-container">
               <img src={preview} width={200} className="img-fluid"></img>
-              <Form.Group className="mb-3" controlId="updated_price">
+              {/* <Form.Group className="mb-3" controlId="updated_price">
                 <Form.Label>Updated Price</Form.Label>
                 <Form.Control
                   value={updated_price}
                   onChange={(e) => setUpdatedPrice(e.target.value)}
                   required
                 />
-              </Form.Group>
+              </Form.Group> */}
               <Cropper
                 uploadHandler={uploadFileHandler}
                 w={15}

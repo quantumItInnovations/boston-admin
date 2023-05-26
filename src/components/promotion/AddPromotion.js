@@ -20,43 +20,43 @@ import axiosInstance from "../../utils/axiosUtil";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 
-function getAllSubCategory(subCategories, categoryId) {
-  if (!categoryId) return [];
+// function getAllSubCategory(subCategories, categoryId) {
+//   if (!categoryId) return [];
 
-  const subCategoryList = subCategories.filter((subCat) => {
-    if (subCat.category) return subCat.category === categoryId;
-  });
-  return subCategoryList;
-}
+//   const subCategoryList = subCategories.filter((subCat) => {
+//     if (subCat.category) return subCat.category === categoryId;
+//   });
+//   return subCategoryList;
+// }
 
-function getAllProduct(products, subCategoryId, categoryId) {
-  if (!categoryId || !subCategoryId) return [];
+// function getAllProduct(products, subCategoryId, categoryId) {
+//   if (!categoryId || !subCategoryId) return [];
 
-  const productList = products.filter((prod) => {
-    if (prod.sub_category && prod.category)
-      return (
-        prod.sub_category === subCategoryId && prod.category === categoryId
-      );
-  });
-  return productList;
-}
+//   const productList = products.filter((prod) => {
+//     if (prod.sub_category && prod.category)
+//       return (
+//         prod.sub_category === subCategoryId && prod.category === categoryId
+//       );
+//   });
+//   return productList;
+// }
 
 export default function AddPromotion() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token, userInfo } = state;
 
-  const [{ loading, error, categories, subCategories, products }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-    });
+  // const [{ loading, error, categories, subCategories, products }, dispatch] =
+  //   useReducer(reducer, {
+  //     loading: true,
+  //     error: "",
+  //   });
 
   const [promo_image, setPromoImage] = useState(null);
-  const [updated_price, setUpdatedPrice] = useState("");
-  const [product, setProduct] = useState(null);
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
+  // const [updated_price, setUpdatedPrice] = useState("");
+  // const [product, setProduct] = useState(null);
+  // const [category, setCategory] = useState("");
+  // const [subCategory, setSubCategory] = useState("");
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -101,47 +101,47 @@ export default function AddPromotion() {
       });
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
-      try {
-        const res = await axiosInstance.get("/api/admin/all/?product=true");
-        // console.log("add promotion data", res);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     dispatch({ type: "FETCH_REQUEST" });
+  //     try {
+  //       const res = await axiosInstance.get("/api/admin/all/?product=true");
+  //       // console.log("add promotion data", res);
 
-        dispatch({ type: "FETCH_ADD_PROMOTION_SUCCESS", payload: res.data });
-      } catch (error) {
-        dispatch({
-          type: "FETCH_FAIL",
-          payload: getError(error),
-        });
-        toast.error(getError(error), {
-          position: toast.POSITION.BOTTOM_CENTER,
-        });
-      }
-    };
-    fetchData();
-  }, [token]);
+  //       dispatch({ type: "FETCH_ADD_PROMOTION_SUCCESS", payload: res.data });
+  //     } catch (error) {
+  //       dispatch({
+  //         type: "FETCH_FAIL",
+  //         payload: getError(error),
+  //       });
+  //       toast.error(getError(error), {
+  //         position: toast.POSITION.BOTTOM_CENTER,
+  //       });
+  //     }
+  //   };
+  //   fetchData();
+  // }, [token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!category) {
-      toast.warning("Please select a category.", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      return;
-    }
-    if (!subCategory) {
-      toast.warning("Please select a sub category.", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      return;
-    }
-    if (!product) {
-      toast.warning("Please select a product.", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      return;
-    }
+    // if (!category) {
+    //   toast.warning("Please select a category.", {
+    //     position: toast.POSITION.BOTTOM_CENTER,
+    //   });
+    //   return;
+    // }
+    // if (!subCategory) {
+    //   toast.warning("Please select a sub category.", {
+    //     position: toast.POSITION.BOTTOM_CENTER,
+    //   });
+    //   return;
+    // }
+    // if (!product) {
+    //   toast.warning("Please select a product.", {
+    //     position: toast.POSITION.BOTTOM_CENTER,
+    //   });
+    //   return;
+    // }
 
     if (!promo_image) {
       toast.warning("Please select an image for promotion.", {
@@ -155,8 +155,8 @@ export default function AddPromotion() {
       const { data } = await axiosInstance.post(
         "/api/admin/promotion/create",
         {
-          product,
-          updated_price,
+          // product,
+          // updated_price,
           promo_image,
         },
         {
@@ -211,7 +211,7 @@ export default function AddPromotion() {
               <Card.Header as={"h4"}>Add Details</Card.Header>
               <Form onSubmit={submitHandler}>
                 <Card.Body>
-                  <Form.Group className="mb-3">
+                  {/* <Form.Group className="mb-3">
                     <Form.Label className="mr-3">Category</Form.Label>
                     {loading ? (
                       <Skeleton />
@@ -286,9 +286,9 @@ export default function AddPromotion() {
                           )}
                       </Form.Select>
                     </Form.Group>
-                  )}
+                  )} */}
 
-                  <Form.Group className="mb-3" controlId="updated_price">
+                  {/* <Form.Group className="mb-3" controlId="updated_price">
                     <Form.Label>Updated Price</Form.Label>
                     <Form.Control
                       type="number"
@@ -296,7 +296,7 @@ export default function AddPromotion() {
                       onChange={(e) => setUpdatedPrice(e.target.value)}
                       required
                     />
-                  </Form.Group>
+                  </Form.Group> */}
 
                   <Cropper
                     uploadHandler={uploadFileHandler}

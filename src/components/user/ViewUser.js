@@ -107,12 +107,12 @@ const ViewUser = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : user.mobile_no}</p>
                   </Col>
-                  <Col md={4}>
+                  {/* <Col md={4}>
                     <p className="mb-0">
                       <strong>Fax</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : user.fax}</p>
-                  </Col>
+                  </Col> */}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Role</strong>

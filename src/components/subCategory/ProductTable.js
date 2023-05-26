@@ -180,7 +180,7 @@ export default function ProductTable({ id: subCategoryId }) {
                       <td>
                         <IoMdOpen
                           className="open-model"
-                          onClick={() => showModelHandler(product.subProduct)}
+                          onClick={() => showModelHandler(product.subProducts)}
                         />
                       </td>
                       <td>

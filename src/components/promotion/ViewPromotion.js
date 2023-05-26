@@ -77,7 +77,7 @@ const ViewPromotion = () => {
               </Card.Header>
               <Card.Body>
                 <Row className="mb-3">
-                  <Col md={4}>
+                  <Col>
                     {loading ? (
                       <Skeleton height={200} />
                     ) : (
@@ -85,14 +85,15 @@ const ViewPromotion = () => {
                         src={promotion.promo_image}
                         alt=""
                         className="img-fluid"
-                        width={"200px"}
-                        // height={"200px"}
+                      // width={"200px"}
+                      // height={"200px"}
                       />
                     )}
                   </Col>
-                  <Col md={8}>
-                    <Row>
-                      <Col md={6}>
+                </Row>
+
+                <Row>
+                  {/* <Col md={6}>
                         <p className="mb-0">
                           <strong>Product</strong>
                         </p>
@@ -113,34 +114,33 @@ const ViewPromotion = () => {
                         <p>
                           {loading ? <Skeleton /> : promotion.updated_price}
                         </p>
-                      </Col>
-                      <Col md={6}>
-                        <p className="mb-0">
-                          <strong>Created At</strong>
-                        </p>
-                        <p>
-                          {loading ? (
-                            <Skeleton />
-                          ) : (
-                            getDateTime(promotion.createdAt)
-                          )}
-                        </p>
-                      </Col>
-                      <Col md={6}>
-                        <p className="mb-0">
-                          <strong>Last Update</strong>
-                        </p>
-                        <p>
-                          {loading ? (
-                            <Skeleton />
-                          ) : (
-                            getDateTime(promotion.updatedAt)
-                          )}
-                        </p>
-                      </Col>
-                    </Row>
+                      </Col> */}
+                  <Col md={6}>
+                    <p className="mb-0">
+                      <strong>Created At</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        getDateTime(promotion.createdAt)
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={6}>
+                    <p className="mb-0">
+                      <strong>Last Update</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        getDateTime(promotion.updatedAt)
+                      )}
+                    </p>
                   </Col>
                 </Row>
+
               </Card.Body>
             </Card>
             <EditPromotionModel

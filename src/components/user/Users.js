@@ -135,7 +135,6 @@ export default function Users() {
                     <th>Email</th>
                     <th>Reg. Date</th>
                     <th>Mobile No.</th>
-                    <th>Fax</th>
                     <th>Role</th>
                     <th>Actions</th>
                   </tr>
@@ -153,7 +152,6 @@ export default function Users() {
                         <td>{user.email}</td>
                         <td>{getDateTime(user.createdAt && user.createdAt)}</td>
                         <td>{user.mobile_no}</td>
-                        <td>{user.fax}</td>
                         <td>{user.role}</td>
                         <td>
                           <Button

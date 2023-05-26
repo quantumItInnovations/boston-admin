@@ -155,8 +155,8 @@ export default function Sale() {
                         <td>{sale.start_date && getDateTime(sale.start_date)}</td>
                         <td>{sale.end_date && getDateTime(sale.end_date)}</td>
                         <td>{sale.discount}</td>
-                        <td>{sale.category && sale.category.name}</td>
-                        <td>{sale.product && sale.product.name}</td>
+                        <td>{sale.category ? sale.category.name : '--'}</td>
+                        <td>{sale.product ? sale.product.name : '--'}</td>
                         <td>
                         <Button
                             onClick={() => {

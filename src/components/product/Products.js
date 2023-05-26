@@ -183,7 +183,7 @@ export default function Products() {
                         <td>{product.name}</td>
                         <td><IoMdOpen
                             className="open-model"
-                            onClick={() => showModelHandler(product.subProduct)}
+                            onClick={() => showModelHandler(product.subProducts)}
                           /></td>
                         <td>
                           {product.stock ? (

@@ -24,14 +24,14 @@ export default function EditUserModel(props) {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [mobile_no, setMobileNo] = useState("");
-  const [fax, setFax] = useState("");
+  // const [fax, setFax] = useState("");
   const [role, setRole] = useState("");
 
   const resetForm = () => {
     setFirstname("");
     setLastname("");
     setMobileNo("");
-    setFax("");
+    // setFax("");
     setRole("");
   };
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function EditUserModel(props) {
         setFirstname(user.firstname);
         setLastname(user.lastname);
         setMobileNo(user.mobile_no);
-        setFax(user.fax);
+        // setFax(user.fax);
         setRole(user.role);
 
         dispatch({ type: "FETCH_SUCCESS" });
@@ -78,7 +78,7 @@ export default function EditUserModel(props) {
           firstname,
           lastname,
           mobile_no,
-          fax,
+          // fax,
           role,
         },
         {
@@ -160,14 +160,14 @@ export default function EditUserModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="fax">
+            {/* <Form.Group className="mb-3" controlId="fax">
               <Form.Label>Fax</Form.Label>
               <Form.Control
                 value={fax}
                 onChange={(e) => setFax(e.target.value)}
                 required
               />
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group className="mb-3" controlId="role">
               <Form.Label>Role</Form.Label>

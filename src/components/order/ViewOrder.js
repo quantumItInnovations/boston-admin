@@ -207,31 +207,37 @@ const ViewOrder = () => {
                 </Row>
                 <h4 className="my-3">Address</h4>
                 <Row>
-                  <Col md={6}>
+                  <Col md={4}>
                     <p className="mb-0">
-                      <strong>Country</strong>
+                      <strong>Province</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : order.address.country}</p>
+                    <p>{loading ? <Skeleton /> : order.address.province}</p>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>Town</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : order.address.town}</p>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Unit</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order.address.unit}</p>
+                  </Col>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>Street</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : order.address.street}</p>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>Post Code</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : order.address.post_code}</p>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>Mobile No.</strong>
                     </p>
