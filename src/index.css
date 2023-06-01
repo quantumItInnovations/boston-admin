@@ -10,10 +10,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  transition: margin-left .3s ease-in-out, width .3s ease-in-out !important;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -125,6 +121,19 @@ td {
   background-color: #02a97b5e;
 }
 
+.accordion-header {
+  padding: 0;
+  background-color: transparent;
+  display: flex;
+}
+
+.accordion-button:focus {
+  z-index: 3;
+  border-color: var(--bs-accordion-btn-focus-border-color);
+  outline: 0;
+  /* box-shadow: var(--bs-accordion-btn-focus-box-shadow); */
+  box-shadow: none;
+}
 .card-title {
   display: inline-block;
 }
@@ -154,6 +163,7 @@ td {
 }
 
 .body-wrapper {
+  transition: margin-left .3s ease-in-out, width .3s ease-in-out !important;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;

@@ -30,6 +30,12 @@ import Promotions from "./components/promotion/Promotion";
 import AddPromotion from "./components/promotion/AddPromotion";
 import ViewPromotion from "./components/promotion/ViewPromotion";
 
+import Faqs from "./components/faq/Faq";
+import AddFaq from "./components/faq/AddFaq";
+
+import Shipping from "./components/shipping/Shipping";
+import AddShipping from "./components/shipping/AddShipping";
+
 import Users from "./components/user/Users";
 import ViewUser from "./components/user/ViewUser";
 
@@ -75,6 +81,10 @@ function App() {
     { path: "/admin/promotions", element: <Promotions /> },
     { path: "/admin/promotion/create", element: <AddPromotion /> },
     { path: "/admin/view/promotion/:id", element: <ViewPromotion /> },
+    { path: "/admin/faqs", element: <Faqs /> },
+    { path: "/admin/faq/create", element: <AddFaq /> },
+    { path: "/admin/shipping", element: <Shipping /> },
+    { path: "/admin/shipping/create", element: <AddShipping /> },
     { path: "/admin/orders", element: <Order /> },
     { path: "/admin/view/order/:id", element: <ViewOrder /> },
     { path: "/admin/sale", element: <Sale /> },

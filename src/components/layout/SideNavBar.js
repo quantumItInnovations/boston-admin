@@ -9,7 +9,7 @@ import { MdCategory, MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { BiCategory, BiCircle } from "react-icons/bi";
 import { TbNumbers, TbDiscount2 } from "react-icons/tb";
 
-import { FaAngleDown, FaAngleUp, FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt } from 'react-icons/fa';
+import { FaShippingFast, FaQuestion, FaStarHalfAlt, FaMagic, FaShoppingBasket, FaSignOutAlt } from 'react-icons/fa';
 
 const linkList = [
   { icon: <RiDashboard2Fill className="icon-md" />, text: "Dashboard", url: "/admin/dashboard" },
@@ -20,15 +20,10 @@ const linkList = [
   { icon: <FaStarHalfAlt className="icon-md" />, text: "Reviews", url: "/admin/reviews" },
   { icon: <HiUsers className="icon-md" />, text: "Users", url: "/admin/users" },
   { icon: <TbDiscount2 className="icon-md" />, text: "Sale", url: "/admin/sale" },
+  { icon: <FaQuestion className="icon-md" />, text: "FAQs", url: "/admin/faqs" },
   { icon: <FaMagic className="icon-md" />, text: "Promotions", url: "/admin/promotions" },
+  { icon: <FaShippingFast className="icon-md" />, text: "Shipping Details", url: "/admin/shipping" },
   { icon: <TbNumbers className="icon-md" />, text: "Quantity", url: "/admin/quantity" },
-];
-
-const SaleLinkList = [
-  { url: "/admin/sale/on-site", text: "On Site" },
-  { url: "/admin/sale/product", text: "Product Sale" },
-  { url: "/admin/sale/category", text: "Category Sale" },
-  { url: "/admin/sale/subCategory", text: "SubCategory Sale" }
 ];
 
 const active_text = {
@@ -42,6 +37,8 @@ const active_text = {
   "Promotions": "promotion",
   "Quantity": "quantity",
   "Sale": "sale",
+  "FAQs": "faq",
+  "Shipping Details": "shipping",
   "On Site": "on-site",
   "Product Sale": "sale/product",
   "Category Sale": "sale/category",
