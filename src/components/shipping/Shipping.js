@@ -9,29 +9,49 @@ import {
   Button,
   Card,
   Container,
-  Form,
+  ListGroup,
   Table,
 } from "react-bootstrap";
-import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import EditShippingModel from "./EditShipping";
 import CustomSkeleton from "../layout/CustomSkeleton";
+
+function formatText(text) {
+  // Format text starting with a dollar sign ($) as bold
+  const formattedText = text.replace(/\$(\d+)/g, '<strong>$&</strong>');
+
+  // Format "Note:-" as bold
+  const finalText = formattedText.replace(/Note:-/g, '<strong><br/><br/>Note:-</strong>');
+
+  console.log({finalText});
+  return finalText;
+};
 
 export default function Shipping() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
 
+  const [del, setDel] = useState(false);
+
+  const [modalShow, setModalShow] = useState(false);
+  const [shippingId, setShippingId] = useState();
+  const showModelHandler = (id) => {
+    console.log({ id });
+    setModalShow(true);
+    setShippingId(id);
+  }
+
   const [{ loading, error, shippings }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
-  
-  const [del, setDel] = useState(false);
+
   const deleteShipping = async (id) => {
     if (
-      window.confirm("Are you sure you want to delete this shipping charge?") === true
+      window.confirm("Are you sure you want to delete this shipping?") === true
     ) {
       try {
         setDel(true);
@@ -52,7 +72,7 @@ export default function Shipping() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const { data } = await axiosInstance.get(
-          `/api/admin/shipping/all`,
+          `/api/shipping/all/`,
           { headers: { Authorization: token } }
         );
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -68,6 +88,14 @@ export default function Shipping() {
     };
     fetchData();
   }, [token, del]);
+
+  const setNewShipping = (id, newShipping) => {
+    console.log({ id, newShipping });
+    const idx = shippings.findIndex((x) => x._id === id);
+    shippings[idx].label = newShipping.label;
+    shippings[idx].charge = newShipping.charge;
+    shippings[idx].description = newShipping.description;
+  };
 
   return (
     <motion.div
@@ -97,24 +125,24 @@ export default function Shipping() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Cases</th>
+                    <th>Case</th>
                     <th>Charge</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resultPerPage={shippings.length} column={4} />
+                    <CustomSkeleton resultPerPage={3} column={4} />
                   ) : (
                     shippings &&
                     shippings.map((shipping, i) => (
                       <tr key={shipping._id} className="odd">
                         <td className="text-center">{i + 1}</td>
-                        <td>{shipping.name}</td>
-                        <td>{shipping.description}</td>
+                        <td>{shipping.label}</td>
+                        <td>{shipping.charge}</td>
                         <td>
                           <Button
-                            onClick={() => {}}
+                            onClick={() => showModelHandler(shipping._id)}
                             type="success"
                             className="btn btn-primary"
                           >
@@ -135,9 +163,35 @@ export default function Shipping() {
                   )}
                 </tbody>
               </Table>
+
+              <h3 className="my-3">Shipping Charges Details</h3>
+              <ListGroup as="ol" numbered className="mt-3">
+                {loading ? (
+                  <CustomSkeleton resultPerPage={3} column={1} />
+                ) : (
+                  shippings &&
+                  shippings.map(({ label, description }, i) => (
+                    <ListGroup.Item
+                      as="li"
+                      className="d-flex justify-content-between align-items-start"
+                    >
+                      <div className="ms-2 me-auto">
+                        <div className="fw-bold">{label}</div>
+                        <div  dangerouslySetInnerHTML={{__html: formatText(description)}}></div>
+                      </div>
+                    </ListGroup.Item>
+                  ))
+                )}
+              </ListGroup>
             </Card.Body>
           </Card>
         )}
+        <EditShippingModel
+          show={modalShow}
+          onHide={() => setModalShow(!modalShow)}
+          shippingHandler={setNewShipping}
+          id={shippingId}
+        />
         <ToastContainer />
       </Container>
     </motion.div>

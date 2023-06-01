@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
-import { uploadImage } from "../../utils/uploadImage";
 import { toast, ToastContainer } from "react-toastify";
 import {
   Button,
@@ -10,105 +9,53 @@ import {
   Col,
   Container,
   Form,
-  ProgressBar,
   Row,
   Spinner,
 } from "react-bootstrap";
-import Cropper from "../cropper/cropper";
 import axiosInstance from "../../utils/axiosUtil";
 import { motion } from "framer-motion";
 
-export default function AddCategory() {
+export default function AddShipping() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token, userInfo } = state;
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category_image, setCategoryImage] = useState("");
-
+  const [shipping, setShipping] = useState({
+    label: "",
+    charge: "",
+  });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
-  const [uploadPercentage, setUploadPercentage] = useState(0);
-  const [isUploaded, setIsUploaded] = useState(false);
-  const uploadPercentageHandler = (per) => {
-    setUploadPercentage(per);
-  };
-
-  // const uploadFileHandler = async (file, type) => {
-  const uploadFileHandler = async (e, type) => {
-    if (!e.target.files[0]) {
-      // if (!file) {
-      setCategoryImage(null);
-      return;
-    }
-    if(e.target.files[0].size > 5000000) {
-      toast.warning("Image size is too large. (max size 5MB)", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      setCategoryImage(null);
-      return;
-    }
-    try {
-      // if (e.target.files[0]) {
-      const location = await uploadImage(
-        e.target.files[0],
-        // file,
-        token,
-        uploadPercentageHandler
-      );
-      if (location.error) {
-        throw location.error;
-      }
-
-      setCategoryImage(location);
-      setTimeout(() => {
-        setUploadPercentage(0);
-        setIsUploaded(true);
-      }, 1000);
-    } catch (error) {
-      toast.error(error, {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-    }
-  };
 
   const resetForm = () => {
-    setName("");
-    setDescription("");
-    setCategoryImage("");
+    setShipping({
+      label: "",
+      charge: "",
+    });
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!category_image) {
-      toast.warning("Please select an image or wait till image is uploaded.", {
+    if (shipping && !shipping.label) {
+      toast.warning("Please select a label.", {
         position: toast.POSITION.BOTTOM_CENTER,
-      });
+      })
       return;
     }
     try {
       setLoadingUpdate(true);
       const { data } = await axiosInstance.post(
-        "/api/admin/category/create",
-        {
-          name,
-          description,
-          category_image,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+        "/api/admin/shipping/create", shipping,
+        { headers: { Authorization: token } }
       );
 
-      // console.log("category add data", data);
-      if (data.category) {
-        toast.success("Category Added Succesfully", {
+      // console.log("shipping add data", data);
+      if (data.shipping) {
+        toast.success("Shipping Added Succesfully", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         resetForm();
         setTimeout(() => {
-          navigate("/admin/category");
+          navigate("/admin/shipping");
           setLoadingUpdate(false);
         }, 3000);
       } else {
@@ -138,7 +85,7 @@ export default function AddCategory() {
           style={{ borderBottom: "1px solid rgba(0,0,0,0.2)" }}
         >
           <Col>
-            <span style={{ fontSize: "xx-large" }}>Add Category</span>
+            <span style={{ fontSize: "xx-large" }}>Add Shipping</span>
           </Col>
         </Row>
         <Row>
@@ -147,54 +94,28 @@ export default function AddCategory() {
               <Card.Header as={"h4"}>Add Details</Card.Header>
               <Form onSubmit={submitHandler}>
                 <Card.Body>
-                  <Form.Group className="mb-3" controlId="name">
-                    <Form.Label>Name</Form.Label>
+                  <Form.Group className="mb-3" controlId="charge">
+                    <Form.Label>Shipping Charge</Form.Label>
                     <Form.Control
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      value={shipping.charge}
+                      onChange={(e) => setShipping({ ...shipping, charge: e.target.value })}
                       required
                     />
                   </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="description">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-
-                  {/* <Cropper
-                      uploadHandler={uploadFileHandler}
-                      w={25}
-                      h={17}
-                      isUploaded={isUploaded}
-                    />
-                    {uploadPercentage > 0 && (
-                      <ProgressBar
-                        now={uploadPercentage}
-                        active="true"
-                        label={`${uploadPercentage}%`}
-                      />
-                    )} */}
-                  <Form.Group className="mb-3" controlId="category_image">
-                    <Form.Label>Upload Image</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        uploadFileHandler(e);
-                      }}
-                      required
-                    />
-                    {uploadPercentage > 0 && (
-                      <ProgressBar
-                        now={uploadPercentage}
-                        active
-                        label={`${uploadPercentage}%`}
-                      />
-                    )}
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mr-3">Label</Form.Label>
+                    <Form.Select
+                      aria-label="Select Label"
+                      value={shipping.label}
+                      onChange={(e) => setShipping({ ...shipping, label: e.target.value })}
+                    >
+                      <option key="blankChoice" hidden value>
+                        Select Label
+                      </option>
+                      <option value="Local">Local</option>
+                      <option value="Provincial">Provincial</option>
+                      <option value="National">National</option>
+                    </Form.Select>
                   </Form.Group>
                 </Card.Body>
                 <Card.Footer>

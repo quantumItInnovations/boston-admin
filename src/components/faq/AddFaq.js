@@ -15,27 +15,34 @@ import {
 import axiosInstance from "../../utils/axiosUtil";
 import { motion } from "framer-motion";
 
-export default function AddCategory() {
+export default function AddFAQ() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token, userInfo } = state;
 
   const [faq, setFaq] = useState({
     question: "",
-    answer: ""
+    answer: "",
+    type: "",
   });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   const resetForm = () => {
     setFaq({
       question: "",
-      answer: ""
+      answer: "",
+      type: "",
     });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (faq && !faq.type) {
+      toast.warning("Please select the type of FAQ.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      })
+      return;
+    }
     try {
       setLoadingUpdate(true);
       const { data } = await axiosInstance.post(
@@ -105,6 +112,23 @@ export default function AddCategory() {
                       onChange={(e) => setFaq({ ...faq, answer: e.target.value })}
                       required
                     />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mr-3">Type</Form.Label>
+                    <Form.Select
+                      aria-label="Select Type"
+                      value={faq.type}
+                      onChange={(e) => setFaq({ ...faq, type: e.target.value })}
+                    >
+                      <option key="blankChoice" hidden value>
+                        Select Type
+                      </option>
+                      <option value="top-most">Top Most</option>
+                      <option value="shipping">Shipping</option>
+                      <option value="payment">Payment</option>
+                      <option value="ordering">Ordering</option>
+                    </Form.Select>
                   </Form.Group>
                 </Card.Body>
                 <Card.Footer>

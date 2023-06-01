@@ -6,7 +6,6 @@ const shippingReducer = (state, action) => {
       return {
         ...state,
         shippings: action.payload.shippings,
-        filteredShippingCount: action.payload.filteredShippingCount,
         loading: false,
       };
     case "FETCH_FAIL":

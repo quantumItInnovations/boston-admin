@@ -13,10 +13,10 @@ import {
 import LoadingBox from "../layout/LoadingBox";
 import axiosInstance from "../../utils/axiosUtil";
 
-export default function EditCategoryModel(props) {
+export default function EditFAQModel(props) {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = props; // category/:id
+  const { id } = props; // faq/:id
 
   const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -25,13 +25,15 @@ export default function EditCategoryModel(props) {
 
   const [faq, setFaq] = useState({
     question: "",
-    answer: ""
+    answer: "",
+    type: "",
   });
 
   const resetForm = () => {
     setFaq({
       question: "",
-      answer: ""
+      answer: "",
+      type: "",
     });
   };
 
@@ -45,8 +47,8 @@ export default function EditCategoryModel(props) {
         });
         // // console.log(data);
 
-        const { question, answer } = data.faq;
-        setFaq({ question, answer });
+        const { question, answer, type } = data.faq;
+        setFaq({ question, answer, type });
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -132,6 +134,23 @@ export default function EditCategoryModel(props) {
                 onChange={(e) => setFaq({ ...faq, answer: e.target.value })}
                 required
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="mr-3">Type</Form.Label>
+              <Form.Select
+                aria-label="Select Type"
+                value={faq.type}
+                onChange={(e) => setFaq({ ...faq, type: e.target.value })}
+              >
+                <option key="blankChoice" hidden value>
+                  Select Type
+                </option>
+                <option value="top-most">Top Most</option>
+                <option value="shipping">Shipping</option>
+                <option value="payment">Payment</option>
+                <option value="ordering">Ordering</option>
+              </Form.Select>
             </Form.Group>
             <ToastContainer />
           </Container>

@@ -11,11 +11,12 @@ import {
   Card,
   Container,
   Form,
+  InputGroup,
   useAccordionButton,
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import EditFaqModel from "./EditFaq";
 import Skeleton from "react-loading-skeleton";
@@ -45,8 +46,9 @@ export default function Faq() {
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
+  const [searchInput, setSearchInput] = useState("");
+  const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
-  // const [BG, setBG] = useState("#fff");
   const curPageHandler = (p) => setCurPage(p);
 
   const [modalShow, setModalShow] = useState(false);
@@ -88,7 +90,7 @@ export default function Faq() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const { data } = await axiosInstance.get(
-          `/api/faq/all/?resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/faq/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           { headers: { Authorization: token } }
         );
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -103,7 +105,7 @@ export default function Faq() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage]);
+  }, [token, del, curPage, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredFaqCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
@@ -114,7 +116,7 @@ export default function Faq() {
     faqs[idx].question = newFAQ.question;
     faqs[idx].answer = newFAQ.answer;
   };
-
+  console.log({faqs})
   return (
     <motion.div
       initial={{ x: "-100%" }}
@@ -137,17 +139,31 @@ export default function Faq() {
               >
                 Add FAQ
               </Button>
+              <div className="search-box float-end">
+                <InputGroup>
+                  <Form.Control
+                    aria-label="Search Input"
+                    placeholder="Search"
+                    type="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                  <InputGroup.Text
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setQuery(searchInput);
+                      setCurPage(1);
+                    }}
+                  >
+                    <FaSearch />
+                  </InputGroup.Text>
+                </InputGroup>
+              </div>
             </Card.Header>
             <Card.Body>
               <Accordion defaultActiveKey="0">
                 {loading ? (
-                  <>
-                    <Skeleton height={35} />
-                    <Skeleton height={35} />
-                    <Skeleton height={35} />
-                    <Skeleton height={35} />
-                    <Skeleton height={35} />
-                  </>
+                  <Skeleton count={5} height={35} />
                 ) : (
                   faqs && faqs.map(({ _id, question, answer }, i) => (
                     <Card key={_id}>

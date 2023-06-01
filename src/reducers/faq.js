@@ -3,9 +3,10 @@ const faqReducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
+      const keyVal = Object.entries(action.payload.faqs);
       return {
         ...state,
-        faqs: action.payload.faqs,
+        faqs: keyVal.map(([k, v]) => v).flat(1),
         filteredFaqCount: action.payload.filteredFaqCount,
         loading: false,
       };
