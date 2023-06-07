@@ -11,12 +11,11 @@ import {
   Card,
   Container,
   Form,
-  InputGroup,
   useAccordionButton,
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEdit, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import EditFaqModel from "./EditFaq";
 import Skeleton from "react-loading-skeleton";
@@ -46,7 +45,6 @@ export default function Faq() {
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
-  const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
   const curPageHandler = (p) => setCurPage(p);
@@ -116,7 +114,7 @@ export default function Faq() {
     faqs[idx].question = newFAQ.question;
     faqs[idx].answer = newFAQ.answer;
   };
-  console.log({faqs})
+  console.log({ faqs })
   return (
     <motion.div
       initial={{ x: "-100%" }}
@@ -139,48 +137,48 @@ export default function Faq() {
               >
                 Add FAQ
               </Button>
-              <div className="search-box float-end">
-                <InputGroup>
-                  <Form.Control
-                    aria-label="Search Input"
-                    placeholder="Search"
-                    type="search"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                  />
-                  <InputGroup.Text
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setQuery(searchInput);
-                      setCurPage(1);
+              <div className="float-md-end d-flex align-items-center">
+                <p className="p-bold m-0 me-3">FAQ Type</p>
+                <Form.Group controlId="time">
+                  <Form.Select
+                    value={query}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
                     }}
+                    aria-label="Default select example"
                   >
-                    <FaSearch />
-                  </InputGroup.Text>
-                </InputGroup>
+                    <option key="blankChoice" hidden value>
+                      Select Type
+                    </option>
+                    <option value="top-most">Top Most</option>
+                    <option value="shipping">Shipping</option>
+                    <option value="payment">Payment</option>
+                    <option value="ordering">Ordering</option>
+                  </Form.Select>
+                </Form.Group>
               </div>
             </Card.Header>
             <Card.Body>
-              <Accordion defaultActiveKey="0">
-                {loading ? (
-                  <Skeleton count={5} height={35} />
-                ) : (
-                  faqs && faqs.map(({ _id, question, answer }, i) => (
-                    <Card key={_id}>
-                      <Card.Header className="accordion-header">
-                        <CustomToggle eventKey={i}>{question}</CustomToggle>
-                        <div className="f-center card-tools" style={{ padding: "0 1.25rem", gap: "0.5rem", backgroundColor: "#e7f1ff" }}>
-                          <FaEdit color="blue" onClick={() => showModelHandler(_id)} />
-                          <FaTrashAlt color="red" onClick={() => deleteFaq(_id)} />
-                        </div>
-                      </Card.Header>
-                      <Accordion.Collapse eventKey={i}>
-                        <Card.Body>{answer}</Card.Body>
-                      </Accordion.Collapse>
-                    </Card>
-                  ))
-                )}
-              </Accordion>
+              {loading
+                ? <Skeleton count={5} height={35} />
+                : faqs?.length
+                  ? <Accordion defaultActiveKey="0">
+                    {faqs.map(({ _id, question, answer }, i) => (
+                      <Card key={_id}>
+                        <Card.Header className="accordion-header">
+                          <CustomToggle eventKey={i}>{question}</CustomToggle>
+                          <div className="f-center card-tools" style={{ padding: "0 1.25rem", gap: "0.5rem", backgroundColor: "#e7f1ff" }}>
+                            <FaEdit color="blue" onClick={() => showModelHandler(_id)} />
+                            <FaTrashAlt color="red" onClick={() => deleteFaq(_id)} />
+                          </div>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey={i}>
+                          <Card.Body>{answer}</Card.Body>
+                        </Accordion.Collapse>
+                      </Card>
+                    ))}
+                  </Accordion>
+                  : <h2>No FAQ</h2>}
             </Card.Body>
             <Card.Footer>
               <div className="float-start d-flex align-items-center mt-3">
