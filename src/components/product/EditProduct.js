@@ -208,7 +208,7 @@ export default function EditProductModel(props) {
     }
   };
 
-  const priceHandler = () => {
+  const priceHandler = async () => {
     if (!qname) {
       toast.warning("Quantity name can't be empty.", {
         position: toast.POSITION.TOP_CENTER,
@@ -221,10 +221,60 @@ export default function EditProductModel(props) {
       });
       return;
     }
-    variant.push({ qname, amount });
-    setQname("");
-    setAmount("");
+
+    try {
+      const { data } = await axiosInstance.post("/api/admin/sub-product/create", { pid: id, qname, amount }, {
+        headers: {
+          Authorization: token,
+        }
+      });
+
+      console.log({ data });
+      variant.push(data.subProduct);
+      setQname("");
+      setAmount("");
+    } catch (error) {
+      toast.error(getError(error), {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
   };
+
+  // console.log({ variant })
+  const deleteVariant = async (e, variantID) => {
+    e.preventDefault();
+    if (variant.length === 1) {
+      toast.warning("Can't be deleted, as there must be at least one variant.", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
+      return;
+    }
+    try {
+      await axiosInstance.delete(`/api/admin/sub-product/${variantID}`, {
+        headers: {
+          Authorization: token,
+        }
+      });
+
+      const index = variant.findIndex((q) => q._id === variantID);
+      // console.log({ index });
+      if (index > -1) {
+        // only splice array when item is found
+
+        setVariant([
+          ...variant.slice(0, index),
+
+          // part of the array after the given item
+          ...variant.slice(index + 1),
+        ]);
+      }
+    } catch (error) {
+      toast.error(getError(error), {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+  }
+
   return (
     <Modal
       {...props}
@@ -314,34 +364,13 @@ export default function EditProductModel(props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {variant.map(({ qname, amount }, i) => (
-                        <tr
-                          key={variant.findIndex(
-                            (q) => q.qname === qname && q.amount === amount
-                          )}
-                        >
+                      {variant.map(({ qname, amount, _id }) => (
+                        <tr key={_id}>
                           <td>{qname}</td>
                           <td>{amount}</td>
                           <td>
                             <Button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                const index = variant.findIndex(
-                                  (q) =>
-                                    q.qname === qname && q.amount === amount
-                                );
-                                // console.log({ index });
-                                if (index > -1) {
-                                  // only splice array when item is found
-
-                                  setVariant([
-                                    ...variant.slice(0, index),
-
-                                    // part of the array after the given item
-                                    ...variant.slice(index + 1),
-                                  ]);
-                                }
-                              }}
+                              onClick={(e) => { deleteVariant(e, _id) }}
                               type="danger"
                               className="btn btn-danger btn-block"
                             >
