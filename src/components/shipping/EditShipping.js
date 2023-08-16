@@ -26,12 +26,14 @@ export default function EditShippingModel(props) {
   const [shipping, setShipping] = useState({
     label: "",
     charge: "",
+    description: ""
   });
 
   const resetForm = () => {
     setShipping({
       label: "",
       charge: "",
+      description: ""
     });
   };
 
@@ -46,8 +48,8 @@ export default function EditShippingModel(props) {
         });
         // // console.log(data);
 
-        const { charge, label } = data.shipping;
-        setShipping({ charge, label });
+        const { charge, label, description } = data.shipping;
+        setShipping({ charge, label, description });
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -127,6 +129,14 @@ export default function EditShippingModel(props) {
               <Form.Control
                 value={shipping.charge}
                 onChange={(e) => setShipping({ ...shipping, charge: e.target.value })}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="desc">
+              <Form.Label>Shipping Description</Form.Label>
+              <Form.Control
+                value={shipping.description}
+                onChange={(e) => setShipping({ ...shipping, description: e.target.value })}
                 required
               />
             </Form.Group>

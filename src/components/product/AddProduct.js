@@ -260,7 +260,7 @@ export default function AddProduct() {
                     <Form.Control
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      required
+                      // required
                     />
                   </Form.Group>
                   <Row>
@@ -303,7 +303,7 @@ export default function AddProduct() {
                     </Col>
                     <Col>
                       <Button className="mt-4" onClick={priceHandler}>
-                        Add Qauntity
+                        Add Quantity
                       </Button>
                     </Col>
                   </Row>

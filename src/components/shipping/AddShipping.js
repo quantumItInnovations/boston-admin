@@ -23,6 +23,7 @@ export default function AddShipping() {
   const [shipping, setShipping] = useState({
     label: "",
     charge: "",
+    description: ""
   });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
@@ -30,6 +31,7 @@ export default function AddShipping() {
     setShipping({
       label: "",
       charge: "",
+      description: "",
     });
   };
 
@@ -99,6 +101,14 @@ export default function AddShipping() {
                     <Form.Control
                       value={shipping.charge}
                       onChange={(e) => setShipping({ ...shipping, charge: e.target.value })}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="charge">
+                    <Form.Label>Shipping Description</Form.Label>
+                    <Form.Control
+                      value={shipping.description}
+                      onChange={(e) => setShipping({ ...shipping, description: e.target.value })}
                       required
                     />
                   </Form.Group>

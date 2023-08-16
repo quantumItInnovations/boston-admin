@@ -305,7 +305,7 @@ export default function EditProductModel(props) {
               <Form.Control
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                required
+                // required
               />
             </Form.Group>
 
@@ -345,7 +345,7 @@ export default function EditProductModel(props) {
               </Col>
               <Col>
                 <Button className="mt-4" onClick={priceHandler}>
-                  Add Qauntity
+                  Add Quantity
                 </Button>
               </Col>
             </Row>
