@@ -76,12 +76,12 @@ export default function Products() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/product/all/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
         );
-        // // console.log("res", curPage, res.data);
+        console.log("res", curPage, res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({

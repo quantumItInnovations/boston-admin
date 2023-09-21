@@ -41,7 +41,7 @@ export default function EditSubCategoryModel(props) {
       setSubCategoryImage(null);
       return;
     }
-    if(e.target.files[0].size > 5000000) {
+    if (e.target.files[0].size > 5000000) {
       toast.warning("Image size is too large. (max size 5MB)", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
@@ -84,7 +84,7 @@ export default function EditSubCategoryModel(props) {
         const { data } = await axiosInstance.get(`/api/subCategory/${id}`, {
           headers: { Authorization: token },
         });
-        // // console.log(data);
+        console.log(data);
 
         const subCategory = data.subCategory;
         setName(subCategory.name);
@@ -107,11 +107,17 @@ export default function EditSubCategoryModel(props) {
     };
     fetchData();
   }, [id, props.show]);
-
+  console.log({ categories, category })
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!sub_category_image) {
       toast.warning("Please choose a file or wait till image is uploaded.", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      return;
+    }
+    if (!category) {
+      toast.warning("Please select a category", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       return;
@@ -194,7 +200,7 @@ export default function EditSubCategoryModel(props) {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option disabled>Select Category</option>
+                <option>Select Category</option>
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat.name} value={cat._id}>

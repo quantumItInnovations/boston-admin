@@ -37,7 +37,7 @@ const ViewProduct = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get(`/api/product/${id}`, {
+        const { data } = await axiosInstance.get(`/api/admin/product/${id}`, {
           headers: { Authorization: token },
         });
         // console.log(data);
