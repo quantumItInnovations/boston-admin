@@ -4,11 +4,12 @@ import { getError } from "../../utils/error";
 import { viewUserReducer as reducer } from "../../reducers/user";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEdit } from "react-icons/fa";
+import { FaCheck, FaEdit } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 
@@ -17,11 +18,45 @@ const ViewUser = () => {
   const { token } = state;
   const { id } = useParams(); // user/:id
 
+  const [freeShip, setFreeShip] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [{ loading, error, user }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
+
+  const handleUserShip = async (e) => {
+    e.preventDefault();
+    try {
+      setLoadingUpdate(true);
+      // console.log({ freeShip, e })
+      const { data } = await axiosInstance.put(`/api/admin/user/${id}`,
+        { free_ship: e.target.checked },
+        { headers: { Authorization: token } }
+      );
+
+      if (data.user) {
+        setFreeShip(data.user.free_ship);
+        toast.success("Free Shipping For User Updated Succesfully", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        setTimeout(() => {
+          setLoadingUpdate(false);
+        }, 3000);
+      } else {
+        toast.error(data.error.message, {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        setLoadingUpdate(false);
+      }
+    } catch (err) {
+      setLoadingUpdate(false);
+      toast.error(getError(err), {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +67,7 @@ const ViewUser = () => {
           headers: { Authorization: token },
         });
         // console.log("user:", data);
-
+        setFreeShip(data.user.free_ship);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
@@ -107,12 +142,20 @@ const ViewUser = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : user.mobile_no}</p>
                   </Col>
-                  {/* <Col md={4}>
+                  <Col md={4}>
                     <p className="mb-0">
-                      <strong>Fax</strong>
+                      <strong>Free Shipping</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.fax}</p>
-                  </Col> */}
+                    <p>{loading ? <Skeleton /> : loadingUpdate ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      <Form.Check className="ship-box" onChange={handleUserShip} checked={freeShip} />
+                    )
+                      // user.free_ship
+                      //   ? <FaCheck className="green" />
+                      //   : <ImCross className="red" />
+                    }</p>
+                  </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Role</strong>
