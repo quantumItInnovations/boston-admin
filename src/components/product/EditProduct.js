@@ -335,7 +335,7 @@ export default function EditProductModel(props) {
               </Col>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="amount">
-                  <Form.Label>Amount</Form.Label>
+                  <Form.Label>Price</Form.Label>
                   <Form.Control
                     type="number"
                     value={amount}
@@ -359,7 +359,7 @@ export default function EditProductModel(props) {
                     <thead>
                       <tr>
                         <th>Quantity Name</th>
-                        <th>Amount</th>
+                        <th>Price</th>
                         <th>Action</th>
                       </tr>
                     </thead>
