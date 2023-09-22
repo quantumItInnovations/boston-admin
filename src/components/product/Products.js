@@ -96,9 +96,9 @@ export default function Products() {
     fetchData();
   }, [token, del, curPage, resultPerPage, query]);
 
-  const numOfPages = Math.ceil(filteredProductCount / resultPerPage);
+  const numOfPages = Math.ceil(productCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
-
+  console.log({numOfPages})
   return (
     <motion.div
       initial={{ x: "-100%" }}
@@ -153,7 +153,7 @@ export default function Products() {
                     <th>Image</th>
                     <th>Name</th>
                     <th>Variant</th>
-                    <th>Stock</th>
+                    {/* <th>Stock</th> */}
                     <th>Category</th>
                     <th>SubCategory</th>
                     <th>Description</th>
@@ -185,13 +185,13 @@ export default function Products() {
                             className="open-model"
                             onClick={() => showModelHandler(product.subProducts)}
                           /></td>
-                        <td>
+                        {/* <td>
                           {product.stock ? (
                             <TiTick className="green" />
                           ) : (
                             <ImCross className="red" />
                           )}
-                        </td>
+                        </td> */}
                         <td>
                           {product.category ? (
                             product.category.name
@@ -251,7 +251,7 @@ export default function Products() {
                   </Form.Select>
                 </Form.Group>
               </div>
-              {resultPerPage < filteredProductCount && (
+              {resultPerPage < productCount && (
                 <CustomPagination
                   pages={numOfPages}
                   pageHandler={curPageHandler}
@@ -266,7 +266,7 @@ export default function Products() {
             show={modalShow}
             onHide={() => setModalShow(false)}
             arr={variant}
-            column={{"Quantity Type": "qname","Amount": "amount"}}
+            column={{"Quantity Type": "qname","Amount": "amount", "Volume": "volume"}}
             title="Variant List"
           />
         ) : (

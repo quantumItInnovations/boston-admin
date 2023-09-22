@@ -45,7 +45,8 @@ export default function AddProduct() {
   const [variant, setVariant] = useState([]);
   const [amount, setAmount] = useState("");
   const [qname, setQname] = useState("");
-  const [stock, setStock] = useState("true");
+  const [volume, setVolume] = useState(0);
+  // const [stock, setStock] = useState("true");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
@@ -54,16 +55,16 @@ export default function AddProduct() {
     setName("");
     setDescription("");
     setVariant([]);
-    setStock("");
+    // setStock("");
     setProductImage("");
     setCategory("");
     setSubCategory("");
   };
-  const stockHandler = (e) => {
-    e.persist();
-    // console.log(e.target.value);
-    setStock(e.target.value);
-  };
+  // const stockHandler = (e) => {
+  //   e.persist();
+  //   // console.log(e.target.value);
+  //   setStock(e.target.value);
+  // };
 
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [uploadPercentage, setUploadPercentage] = useState(0);
@@ -148,7 +149,7 @@ export default function AddProduct() {
           name,
           description,
           variant,
-          stock,
+          // stock,
           product_images,
           category,
           sub_category,
@@ -220,9 +221,16 @@ export default function AddProduct() {
       });
       return;
     }
-    variant.push({ qname, amount });
+    if (!volume) {
+      toast.warning("Please set a volume for the quantity.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    variant.push({ qname, amount, volume, stock: volume > 0 });
     setQname("");
     setAmount("");
+    setVolume(0);
   };
 
   return (
@@ -260,11 +268,11 @@ export default function AddProduct() {
                     <Form.Control
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      // required
+                    // required
                     />
                   </Form.Group>
                   <Row>
-                    <Col md={4}>
+                    <Col md={3}>
                       <Form.Group className="mb-3">
                         <Form.Label className="mr-3">Quantity</Form.Label>
                         {loading ? (
@@ -291,13 +299,23 @@ export default function AddProduct() {
                         )}
                       </Form.Group>
                     </Col>
-                    <Col md={4}>
+                    <Col md={3}>
                       <Form.Group className="mb-3" controlId="amount">
                         <Form.Label>Price</Form.Label>
                         <Form.Control
                           type="number"
                           value={amount}
                           onChange={(e) => setAmount(e.target.value)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group className="mb-3" controlId="volume">
+                        <Form.Label>Volume</Form.Label>
+                        <Form.Control
+                          type="number"
+                          value={volume}
+                          onChange={(e) => setVolume(e.target.value)}
                         />
                       </Form.Group>
                     </Col>
@@ -318,18 +336,20 @@ export default function AddProduct() {
                             <tr>
                               <th>Quantity Name</th>
                               <th>Price</th>
+                              <th>Volume</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {variant.map(({ qname, amount }, i) => (
+                            {variant.map(({ qname, amount, volume }, i) => (
                               <tr
                                 key={variant.findIndex(
-                                  (q) => q.qname === qname && q.amount === amount
+                                  (q) => q.qname === qname && q.amount === amount && q.volume === volume
                                 )}
                               >
                                 <td>{qname}</td>
                                 <td>{amount}</td>
+                                <td>{volume}</td>
                                 <td>
                                   <Button
                                     onClick={(e) => {
@@ -337,7 +357,8 @@ export default function AddProduct() {
                                       const index = variant.findIndex(
                                         (q) =>
                                           q.qname === qname &&
-                                          q.amount === amount
+                                          q.amount === amount &&
+                                          q.volume === volume
                                       );
                                       // console.log({ index });
                                       if (index > -1) {
@@ -364,7 +385,7 @@ export default function AddProduct() {
                       </div>
                     )}
                   </Row>
-                  <Form.Group className="mb-3" controlId="stock">
+                  {/* <Form.Group className="mb-3" controlId="stock">
                     <Form.Label>Stock</Form.Label>
                     <br></br>
                     <Form.Check
@@ -385,7 +406,7 @@ export default function AddProduct() {
                       onChange={stockHandler}
                       checked={stock === "false"}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
 
                   <Form.Group className="mb-3">
                     <Form.Label className="mr-3">Category</Form.Label>

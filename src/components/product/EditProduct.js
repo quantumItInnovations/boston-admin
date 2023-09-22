@@ -45,17 +45,18 @@ export default function EditProductModel(props) {
   const [variant, setVariant] = useState([]);
   const [amount, setAmount] = useState("");
   const [qname, setQname] = useState("");
+  const [volume, setVolume] = useState(0);
   const [stock, setStock] = useState("");
   const [product_images, setProductImage] = useState(null);
   const [category, setCategory] = useState("");
   const [sub_category, setSubCategory] = useState("");
   const [preview, setPreview] = useState("");
 
-  const stockHandler = (e) => {
-    e.persist();
-    // console.log(e.target.value);
-    setStock(e.target.value === "true" ? true : false);
-  };
+  // const stockHandler = (e) => {
+  //   e.persist();
+  //   // console.log(e.target.value);
+  //   setStock(e.target.value === "true" ? true : false);
+  // };
 
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const uploadPercentageHandler = (per) => {
@@ -106,7 +107,7 @@ export default function EditProductModel(props) {
 
         const res = await axiosInstance.get("/api/admin/all/?quantity=true");
 
-        const { data } = await axiosInstance.get(`/api/product/${id}`, {
+        const { data } = await axiosInstance.get(`/api/admin/product/${id}`, {
           headers: { Authorization: token },
         });
         // console.log("edit product data", res, data);
@@ -114,7 +115,7 @@ export default function EditProductModel(props) {
         const product = data.product;
         setName(product.name);
         setDescription(product.description);
-        setStock(product.stock);
+        // setStock(product.stock);
         setVariant(product.subProducts);
         if (product.category) setCategory(product.category._id);
         if (product.sub_category) setSubCategory(product.sub_category._id);
@@ -174,7 +175,7 @@ export default function EditProductModel(props) {
           name,
           description,
           variant,
-          stock,
+          // stock,
           product_images,
           category,
           sub_category,
@@ -221,9 +222,14 @@ export default function EditProductModel(props) {
       });
       return;
     }
-
+    if (!volume) {
+      toast.warning("Please set a volume for the quantity.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     try {
-      const { data } = await axiosInstance.post("/api/admin/sub-product/create", { pid: id, qname, amount }, {
+      const { data } = await axiosInstance.post("/api/admin/sub-product/create", { pid: id, qname, amount, volume }, {
         headers: {
           Authorization: token,
         }
@@ -233,6 +239,7 @@ export default function EditProductModel(props) {
       variant.push(data.subProduct);
       setQname("");
       setAmount("");
+      setVolume(0);
     } catch (error) {
       toast.error(getError(error), {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -305,12 +312,12 @@ export default function EditProductModel(props) {
               <Form.Control
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                // required
+              // required
               />
             </Form.Group>
 
             <Row>
-              <Col md={4}>
+              <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="mr-3">Quantity</Form.Label>
                   <Form.Select
@@ -333,13 +340,23 @@ export default function EditProductModel(props) {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col md={4}>
+              <Col md={3}>
                 <Form.Group className="mb-3" controlId="amount">
                   <Form.Label>Price</Form.Label>
                   <Form.Control
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <Form.Group className="mb-3" controlId="volume">
+                  <Form.Label>Volume</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={volume}
+                    onChange={(e) => setVolume(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -360,14 +377,16 @@ export default function EditProductModel(props) {
                       <tr>
                         <th>Quantity Name</th>
                         <th>Price</th>
+                        <th>Volume</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {variant.map(({ qname, amount, _id }) => (
+                      {variant.map(({ qname, amount, volume, _id }) => (
                         <tr key={_id}>
                           <td>{qname}</td>
                           <td>{amount}</td>
+                          <td>{volume}</td>
                           <td>
                             <Button
                               onClick={(e) => { deleteVariant(e, _id) }}
@@ -384,7 +403,7 @@ export default function EditProductModel(props) {
                 </div>
               )}
             </Row>
-            <Form.Group className="mb-3" controlId="stock">
+            {/* <Form.Group className="mb-3" controlId="stock">
               <Form.Label>Stock</Form.Label>
               <br></br>
               <Form.Check
@@ -405,7 +424,7 @@ export default function EditProductModel(props) {
                 onChange={stockHandler}
                 checked={stock === false}
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label className="mr-3">Category</Form.Label>
               <Form.Select

@@ -54,11 +54,11 @@ const ViewProduct = () => {
       }
     };
     fetchData();
-    return () => {};
+    return () => { };
   }, [id]);
 
   const getDateTime = (dt) => {
-    if(!dt) return;
+    if (!dt) return;
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };
@@ -98,7 +98,7 @@ const ViewProduct = () => {
                         alt=""
                         className="img-fluid"
                         width={"200px"}
-                        // height={"200px"}
+                      // height={"200px"}
                       />
                     )}
                   </Col>
@@ -131,7 +131,7 @@ const ViewProduct = () => {
                           )}
                         </p>
                       </Col>
-                      <Col md={4}>
+                      {/* <Col md={4}>
                         <p className="mb-0">
                           <strong>Stock</strong>
                         </p>
@@ -142,7 +142,7 @@ const ViewProduct = () => {
                         ) : (
                           <ImCross className="red" />
                         )}
-                      </Col>
+                      </Col> */}
                       <Col md={4}>
                         <p className="mb-0">
                           <strong>Category</strong>
@@ -213,7 +213,7 @@ const ViewProduct = () => {
                 show={arrModalShow}
                 onHide={() => setArrModalShow(false)}
                 arr={product.subProducts}
-                column={{"Quantity Type": "qname","Amount": "amount"}}
+                column={{ "Quantity Type": "qname", "Amount": "amount", "Volume": "volume" }}
                 title="Price List"
               />
             ) : (
