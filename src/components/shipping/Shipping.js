@@ -192,7 +192,7 @@ export default function Shipping() {
           shippingHandler={setNewShipping}
           id={shippingId}
         />
-        <ToastContainer />
+        {!modalShow && <ToastContainer />}
       </Container>
     </motion.div>
   );
