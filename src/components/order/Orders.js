@@ -128,6 +128,7 @@ export default function Order() {
                     <option value="pending">Pending</option>
                     <option value="paid">Paid</option>
                     <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
                   </Form.Select>
                 </Form.Group>
               </div>

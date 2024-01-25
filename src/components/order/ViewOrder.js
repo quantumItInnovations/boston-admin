@@ -19,6 +19,8 @@ import axiosInstance from "../../utils/axiosUtil";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
+import { FaCheck } from 'react-icons/fa'
+import { ImCross } from 'react-icons/im'
 
 const ViewOrder = () => {
   const { state } = useContext(Store);
@@ -100,6 +102,22 @@ const ViewOrder = () => {
     return `${dT[0]} ${dT[1]}`;
   };
 
+  const handleOptions = () => {
+    switch (status) {
+      case "pending":
+        return ["pending", "cancelled", "paid"];
+
+      case "paid":
+        return ["paid", "delivered"];
+
+      case "delivered":
+        return ["delivered"];
+
+      default:
+        return ["cancelled"];
+    }
+  }
+
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -162,10 +180,11 @@ const ViewOrder = () => {
                                   setStatus(e.target.value);
                                 }}
                                 aria-label="Default select example"
+                                style={{ textTransform: "capitalize" }}
                               >
-                                <option value="pending">Pending</option>
-                                <option value="paid">Paid</option>
-                                <option value="delivered">Delivered</option>
+                                {handleOptions().map((value) => {
+                                  return (<option value={value} key={value} style={{ textTransform: "capitalize" }}>{value}</option>)
+                                })}
                               </Form.Select>
                             </Form.Group>
                           </Col>
@@ -184,7 +203,39 @@ const ViewOrder = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Amount</strong>
+                      <strong>Sub total</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order?.amount - (order.free_ship ? 0 : order?.shipping_charge) + order?.coupon_amount + order?.points_used}</p>
+                  </Col>
+
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Shipping Charge </strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order?.free_ship ? <span style={{ display: "flex", gap: "3px" }}><p style={{ textDecoration: "line-through" }}>{order.shipping_charge}</p><p>0</p></span> : <>{order.shipping_charge}</>} </p>
+                  </Col>
+                  
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Free Ship </strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order?.free_ship ? <FaCheck className="green" /> : <ImCross className="red" />} </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Points Used</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order.points_used}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Coupon Discount</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : order.coupon_amount}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>TotalAmount</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : order.amount}</p>
                   </Col>
