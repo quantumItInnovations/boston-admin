@@ -4,12 +4,7 @@ import { getError } from "../../utils/error";
 import { editReducer as reducer } from "../../reducers/commonReducer";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import {
-  Modal,
-  Form,
-  Button,
-  Container,
-} from "react-bootstrap";
+import { Modal, Form, Button, Container } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import axiosInstance from "../../utils/axiosUtil";
 
@@ -26,17 +21,16 @@ export default function EditShippingModel(props) {
   const [shipping, setShipping] = useState({
     label: "",
     charge: "",
-    description: ""
+    description: "",
   });
 
   const resetForm = () => {
     setShipping({
       label: "",
       charge: "",
-      description: ""
+      description: "",
     });
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,13 +64,14 @@ export default function EditShippingModel(props) {
     if (shipping && !shipping.label) {
       toast.warning("Please select a label.", {
         position: toast.POSITION.BOTTOM_CENTER,
-      })
+      });
       return;
     }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axiosInstance.put(
-        `/api/admin/shipping/${id}`, shipping,
+        `/api/admin/shipping/${id}`,
+        shipping,
         { headers: { Authorization: token } }
       );
 
@@ -84,14 +79,14 @@ export default function EditShippingModel(props) {
       props.shippingHandler(id, shipping);
       if (data.shipping) {
         toast.success("Shipping Updated Succesfully.  Redirecting...", {
-          position: toast.POSITION.BOTTOM_CENTER, autoClose: 2000
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 2000,
         });
 
         resetForm();
         setTimeout(() => {
           props.onHide();
         }, 3000);
-
       } else {
         toast.error(data.error.message, {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -99,7 +94,6 @@ export default function EditShippingModel(props) {
       }
 
       dispatch({ type: "UPDATE_SUCCESS" });
-
     } catch (err) {
       props.onHide();
       dispatch({ type: "UPDATE_FAIL" });
@@ -118,17 +112,29 @@ export default function EditShippingModel(props) {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          Edit FAQ
+          Edit Shipping Charge Details
         </Modal.Title>
       </Modal.Header>
       <Form onSubmit={submitHandler}>
         <Modal.Body>
           <Container className="small-container">
+            <Form.Group className="mb-3" controlId="shipvalue">
+              <Form.Label>Shipping Value to avoid Shipping Charge</Form.Label>
+              <Form.Control
+                value={shipping.shipvalue}
+                onChange={(e) =>
+                  setShipping({ ...shipping, shipvalue: e.target.value })
+                }
+                required
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="charge">
               <Form.Label>Shipping Charge</Form.Label>
               <Form.Control
                 value={shipping.charge}
-                onChange={(e) => setShipping({ ...shipping, charge: e.target.value })}
+                onChange={(e) =>
+                  setShipping({ ...shipping, charge: e.target.value })
+                }
                 required
               />
             </Form.Group>
@@ -136,7 +142,9 @@ export default function EditShippingModel(props) {
               <Form.Label>Shipping Description</Form.Label>
               <Form.Control
                 value={shipping.description}
-                onChange={(e) => setShipping({ ...shipping, description: e.target.value })}
+                onChange={(e) =>
+                  setShipping({ ...shipping, description: e.target.value })
+                }
                 required
               />
             </Form.Group>
@@ -145,7 +153,9 @@ export default function EditShippingModel(props) {
               <Form.Select
                 aria-label="Select Label"
                 value={shipping.label}
-                onChange={(e) => setShipping({ ...shipping, label: e.target.value })}
+                onChange={(e) =>
+                  setShipping({ ...shipping, label: e.target.value })
+                }
               >
                 <option key="blankChoice" hidden value>
                   Select Label

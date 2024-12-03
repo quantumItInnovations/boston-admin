@@ -23,7 +23,8 @@ export default function AddShipping() {
   const [shipping, setShipping] = useState({
     label: "",
     charge: "",
-    description: ""
+    description: "",
+    shipvalue: "",
   });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
@@ -32,6 +33,7 @@ export default function AddShipping() {
       label: "",
       charge: "",
       description: "",
+      shipvalue: "",
     });
   };
 
@@ -40,13 +42,14 @@ export default function AddShipping() {
     if (shipping && !shipping.label) {
       toast.warning("Please select a label.", {
         position: toast.POSITION.BOTTOM_CENTER,
-      })
+      });
       return;
     }
     try {
       setLoadingUpdate(true);
       const { data } = await axiosInstance.post(
-        "/api/admin/shipping/create", shipping,
+        "/api/admin/shipping/create",
+        shipping,
         { headers: { Authorization: token } }
       );
 
@@ -96,11 +99,26 @@ export default function AddShipping() {
               <Card.Header as={"h4"}>Add Details</Card.Header>
               <Form onSubmit={submitHandler}>
                 <Card.Body>
+                  <Form.Group className="mb-3" controlId="shipvalue">
+                    <Form.Label>
+                      Shipping Value to avoid Shipping Charge
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      value={shipping.shipvalue}
+                      onChange={(e) =>
+                        setShipping({ ...shipping, shipvalue: e.target.value })
+                      }
+                      required
+                    />
+                  </Form.Group>
                   <Form.Group className="mb-3" controlId="charge">
                     <Form.Label>Shipping Charge</Form.Label>
                     <Form.Control
                       value={shipping.charge}
-                      onChange={(e) => setShipping({ ...shipping, charge: e.target.value })}
+                      onChange={(e) =>
+                        setShipping({ ...shipping, charge: e.target.value })
+                      }
                       required
                     />
                   </Form.Group>
@@ -108,7 +126,12 @@ export default function AddShipping() {
                     <Form.Label>Shipping Description</Form.Label>
                     <Form.Control
                       value={shipping.description}
-                      onChange={(e) => setShipping({ ...shipping, description: e.target.value })}
+                      onChange={(e) =>
+                        setShipping({
+                          ...shipping,
+                          description: e.target.value,
+                        })
+                      }
                       required
                     />
                   </Form.Group>
@@ -117,7 +140,9 @@ export default function AddShipping() {
                     <Form.Select
                       aria-label="Select Label"
                       value={shipping.label}
-                      onChange={(e) => setShipping({ ...shipping, label: e.target.value })}
+                      onChange={(e) =>
+                        setShipping({ ...shipping, label: e.target.value })
+                      }
                     >
                       <option key="blankChoice" hidden value>
                         Select Label

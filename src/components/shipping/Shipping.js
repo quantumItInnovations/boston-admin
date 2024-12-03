@@ -5,13 +5,7 @@ import { shippingReducer as reducer } from "../../reducers/shipping";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
-import {
-  Button,
-  Card,
-  Container,
-  ListGroup,
-  Table,
-} from "react-bootstrap";
+import { Button, Card, Container, ListGroup, Table } from "react-bootstrap";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -20,14 +14,17 @@ import CustomSkeleton from "../layout/CustomSkeleton";
 
 function formatText(text) {
   // Format text starting with a dollar sign ($) as bold
-  const formattedText = text.replace(/\$(\d+)/g, '<strong>$&</strong>');
+  const formattedText = text.replace(/\$(\d+)/g, "<strong>$&</strong>");
 
   // Format "Note:-" as bold
-  const finalText = formattedText.replace(/Note:-/g, '<strong><br/><br/>Note:-</strong>');
+  const finalText = formattedText.replace(
+    /Note:-/g,
+    "<strong><br/><br/>Note:-</strong>"
+  );
 
-  console.log({finalText});
+  console.log({ finalText });
   return finalText;
-};
+}
 
 export default function Shipping() {
   const navigate = useNavigate();
@@ -42,7 +39,7 @@ export default function Shipping() {
     console.log({ id });
     setModalShow(true);
     setShippingId(id);
-  }
+  };
 
   const [{ loading, error, shippings }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -71,10 +68,9 @@ export default function Shipping() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await axiosInstance.get(
-          `/api/shipping/all/`,
-          { headers: { Authorization: token } }
-        );
+        const { data } = await axiosInstance.get(`/api/shipping/all/`, {
+          headers: { Authorization: token },
+        });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({
@@ -95,6 +91,7 @@ export default function Shipping() {
     shippings[idx].label = newShipping.label;
     shippings[idx].charge = newShipping.charge;
     shippings[idx].description = newShipping.description;
+    shippings[idx].shipvalue = newShipping.shipvalue;
   };
 
   return (
@@ -127,6 +124,7 @@ export default function Shipping() {
                     <th>S.No</th>
                     <th>Case</th>
                     <th>Charge</th>
+                    <th>Ship Value</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -140,6 +138,7 @@ export default function Shipping() {
                         <td className="text-center">{i + 1}</td>
                         <td>{shipping.label}</td>
                         <td>{shipping.charge}</td>
+                        <td>{shipping.shipvalue}</td>
                         <td>
                           <Button
                             onClick={() => showModelHandler(shipping._id)}
@@ -177,7 +176,11 @@ export default function Shipping() {
                     >
                       <div className="ms-2 me-auto">
                         <div className="fw-bold">{label}</div>
-                        <div  dangerouslySetInnerHTML={{__html: formatText(description)}}></div>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatText(description),
+                          }}
+                        ></div>
                       </div>
                     </ListGroup.Item>
                   ))
